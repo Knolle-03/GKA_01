@@ -1,3 +1,5 @@
+package de.hawh.ld.GKA01;
+
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -14,6 +16,7 @@ import java.util.*;
 public class Test {
 
 
+
     public static boolean populateGraphFromFile(Graph graph, String fileName) throws IOException {
 
 
@@ -23,13 +26,18 @@ public class Test {
         boolean isDirected = false;
         while (scanner.hasNextLine()) {
 
-            counter++;
+
 
             String currentLine = scanner.nextLine();
             if (currentLine.length() == 0) continue;
-            if (currentLine.contains("directed")) isDirected = true;
+            if (currentLine.contains("directed")) {
+                isDirected = true;
+                continue;
+            }
+            counter++;
             currentLine = currentLine.replaceAll("[ ;)]", "");
             currentLine = currentLine.replaceFirst("[:]", "");
+
             //System.out.println(currentLine);
             String [] parts = currentLine.split("[,:(]");
             //System.out.println(Arrays.toString(parts));
@@ -68,7 +76,7 @@ public class Test {
             dataSets.add(singleSet);
         }
 
-        System.out.println(dataSets);
+        //System.out.println(dataSets);
 
         String path = "resources/";
         String extension = ".graph";
@@ -76,7 +84,7 @@ public class Test {
         String toBeWritten = "";
         FileOutputStream out = new FileOutputStream(file);
 
-        if (graph.getEdge(1).isDirected()) out.write("# directed\n".getBytes());
+        if (graph.getEdge(1).isDirected()) out.write("# directed;\n".getBytes());
 
         for (List<String> dataSet : dataSets) {
 
@@ -96,37 +104,30 @@ public class Test {
         return true;
     }
 
+    public static void breadthFirstSearch (Node source, Node target) {
+        Iterator<? extends Node> k = source.getBreadthFirstIterator();
+        int i = 0;
+        System.out.println(source.getId());
 
-
-
-
-
-    public static void main(String[] args) throws IOException {
-        String fileName;
-
-        for (int i = 1; i <= 10; i++) {
-            String number = String.format("%02d", i);
-            fileName = "resources/graph" + number + ".graph";
-            System.out.println(fileName);
-
-
-            Graph graph = new MultiGraph(fileName);
-            graph.setStrict(false);
-            graph.setAutoCreate(true);
-            if (populateGraphFromFile(graph, fileName)) {
-
-                for (Node node : graph) {
-                    node.setAttribute("ui.label", node.getId());
-                }
-
-                writeGraphToFile(graph, "writtenGraph" + number);
-
-                //graph.display();
-            } else {
-                System.out.println("population went south");
-            }
-
+        while (k.hasNext()) {
+            Node next = k.next();
+            next.setAttribute("ui.class", "marked");
+            next.setAttribute("step", i + 1);
+            sleep();
+            if (next.equals(target)) break;
+            i++;
         }
     }
+
+    protected static void sleep() {
+        try { Thread.sleep(1000); } catch (Exception ignored) {}
+    }
+
+
+
+
+
+
+
 
 }
