@@ -3,7 +3,10 @@ package de.hawh.ld.GKA01;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.*;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.graphicGraph.stylesheet.StyleConstants;
+import org.graphstream.ui.spriteManager.Sprite;
+import org.graphstream.ui.spriteManager.SpriteManager;
 
 import java.io.File;
 
@@ -15,9 +18,19 @@ import java.util.*;
 
 public class Test {
 
+    private Graph graph;
+    private SpriteManager sprites;
 
+    public Test() {
+        this(new SingleGraph("defaultGraph"));
+    }
 
-    public static boolean populateGraphFromFile(Graph graph, String fileName) throws IOException {
+    public Test(Graph graph) {
+        this.graph = graph;
+        this.sprites = new SpriteManager(graph);
+    }
+
+    public boolean populateGraphFromFile(String fileName) throws IOException {
 
 
         Scanner scanner = new Scanner(new File(fileName), Charset.forName("windows-1252"));
@@ -25,8 +38,6 @@ public class Test {
         scanner.useDelimiter("\n");
         boolean isDirected = false;
         while (scanner.hasNextLine()) {
-
-
 
             String currentLine = scanner.nextLine();
             if (currentLine.length() == 0) continue;
@@ -61,7 +72,7 @@ public class Test {
         return true;
     }
 
-    public static boolean writeGraphToFile(Graph graph, String writeFile) throws IOException {
+    public boolean writeGraphToFile(String writeFile) throws IOException {
 
         List<List<String>> dataSets = new ArrayList<>();
 
@@ -104,19 +115,46 @@ public class Test {
         return true;
     }
 
-    public static void breadthFirstSearch (Node source, Node target) {
-        Iterator<? extends Node> k = source.getBreadthFirstIterator();
-        int i = 0;
-        System.out.println(source.getId());
+    public boolean breadthFirstSearch (Node source, Node target) {
+        attachSpriteToNodeInBFS(source, 0);
+        int step = 1;
+        List<Node> adjacentReachableNodes = getAdjacentReachableMarkedNodes(source, step,   )
 
-        while (k.hasNext()) {
-            Node next = k.next();
-            next.setAttribute("ui.class", "marked");
-            next.setAttribute("step", i + 1);
-            sleep();
-            if (next.equals(target)) break;
-            i++;
+    }
+
+    private boolean breadthFirstSearch(Node source, Node target, int step) {
+
+    }
+
+
+
+    private void attachSpriteToNodeInBFS(Node node, int step) {
+        String spriteID = "Step counter for: " + node.getId() + " count: " + step;
+        Sprite sprite = sprites.addSprite(spriteID);
+        sprite.attachToNode(node.getId());
+        sprite.setPosition(StyleConstants.Units.PX, 30, 180, 0);
+        sprite.setAttribute("ui.label", step);
+    }
+
+    private List<Node> getAdjacentReachableMarkedNodes(Node source , int step) {
+
+        Iterable<? extends Edge> iterable = source.getEachLeavingEdge();
+
+        List<Node> adjacentReachableMarkedNodes = new ArrayList<>();
+        for (Edge edge : iterable) {
+            Node node = edge.getOpposite(source);
+            if (node.getAttribute("ui.label") != "marked"){
+                System.out.println(node);
+                node.setAttribute("ui.class", "marked");
+                attachSpriteToNodeInBFS(node, step);
+                node.setAttribute("step", step);
+                adjacentReachableMarkedNodes.add(node);
+            }
+
         }
+
+
+        return adjacentReachableMarkedNodes;
     }
 
     protected static void sleep() {
