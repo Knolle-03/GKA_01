@@ -1,61 +1,37 @@
 package de.hawh.ld.GKA01;
 
-import org.graphstream.graph.Edge;
+import de.hawh.ld.GKA01.Algorithms.ShortestPath;
+import de.hawh.ld.GKA01.Conversion.GraphFromFile;
+import de.hawh.ld.GKA01.IO.FileReader;
+import org.graphstream.algorithm.Algorithm;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.MultiGraph;
 
-import java.io.IOException;
+import java.util.List;
 
-import static de.hawh.ld.GKA01.Test.*;
+import static de.hawh.ld.GKA01.Algorithms.ShortestPath.*;
+
 
 public class Main {
 
-
-
-    public static void main(String[] args) throws IOException {
-        String fileName;
-
-        String styleSheet =
-                "node {" +
-                        "	fill-color: black;" +
-                        "}" +
-                        "node.marked {" +
-                        "	fill-color: red;" +
-                        "}";
+    public static void main(String[] args) {
 
         for (int i = 3; i <= 3; i++) {
             String number = String.format("%02d", i);
-            fileName = "resources/graph" + number + ".graph";
-            //System.out.println(fileName);
+            String fileName = "resources/givenGraphs/graph" + number + ".graph";
+
+            List<String> lines = FileReader.readLines(fileName);
+
+            Graph graph = GraphFromFile.populateGraph(lines);
+            graph.addAttribute("ui.antialias");
 
 
-            Graph graph = new MultiGraph(fileName);
-            graph.setAttribute("ui.stylesheet", styleSheet);
-            graph.setStrict(false);
-            graph.setAutoCreate(true);
-            if (populateGraphFromFile(graph, fileName)) {
+            shortestPath(graph.getNode("Oldenburg"), graph.getNode("Detmold"));
 
-                for (Node node : graph.getEachNode()) {
-                    node.setAttribute("ui.label", node.getId());
-                    System.out.println("Index: " + node.getIndex() + "\t" + "Identifier:" + node.getId());
-                }
 
+            graph.display();
 
 
 
-
-
-
-                //writeGraphToFile(graph, "writtenGraph" + number);
-                graph.display();
-                for (int j = 0; j < 5 ; j++) {
-                    sleep();
-                }
-                breadthFirstSearch(graph.getNode("Kiel"), graph.getNode("Hamburg"));
-            } else {
-                System.out.println("population went south");
-            }
 
         }
     }

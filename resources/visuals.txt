@@ -1,0 +1,12 @@
+"node {" +
+                    "	fill-color: black;" +
+                    "}" +
+            "node.marked {" +
+                    "   size: 5px;" +
+
+                    "}" +
+            "sprite {" +
+                    "   size: 30px;" +
+                    "   fill-color: blue;" +
+                    "   stroke-color: black;" +
+                    "}";
