@@ -9,10 +9,10 @@ import java.util.List;
 
 public class FileWriter {
 
-    public static void writeToFile(List<String> graphInfo, String fileName, String fileType){
+    public static void writeToFile(List<String> graphInfo, String fileName){
 
 
-        Path file = Paths.get(fileName + fileType);
+        Path file = Paths.get(fileName);
 
         try {
             Files.write(file, graphInfo, Charset.forName("windows-1252"));

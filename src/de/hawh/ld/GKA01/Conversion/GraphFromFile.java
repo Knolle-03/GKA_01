@@ -15,11 +15,11 @@ public class GraphFromFile {
     private static final String IDENTIFIER = "[A-za-z0-9ÄäÖöÜü]+";
     private static final String ATTRIBUTE = "(:[0-9]+)";
     private static final String EDGE = "( \\([A-Za-z0-9ÄäÖöÜü]+\\))";
-    private static final String WEIGHT = "( :: [0-9]+)";
+    private static final String WEIGHT = "( :: +[0-9]+)";
     private static final String DIGITS = "[0-9]+";
     private static final String FIRST_NODE = IDENTIFIER + ATTRIBUTE + "?";
-    private static final String SECOND_NODE_AND_INFO = "(," + IDENTIFIER + ATTRIBUTE + "?" + EDGE + "?" + WEIGHT + "?" + ")?";
-    //private final String OPTIONAL_INFO =
+    private static final String SECOND_NODE_AND_INFO = "(," + IDENTIFIER + ATTRIBUTE + "?" + EDGE + "?" + WEIGHT + "?" + ")? ?";
+
 
     private static final Pattern ORIENTATION_PATTERN = Pattern.compile(DIRECTED);
     private static final Pattern VALID_ROW_PATTERN = Pattern.compile(FIRST_NODE + SECOND_NODE_AND_INFO + ";");
@@ -89,11 +89,12 @@ public class GraphFromFile {
                         // Edge als Attribut hinzufügen
 
                         multiGraph.getEdge(node1 + node2).addAttribute("ui.label", edge);
+                        multiGraph.getEdge(node1 + node2).addAttribute("edge.name", edge);
+
                         if (weight != null) {
                             multiGraph.getEdge(node1 + node2).setAttribute("weight", Integer.valueOf(weight));
                             multiGraph.getEdge(node1 + node2).addAttribute("ui.label",
-                                    multiGraph.getEdge(node1 + node2).getAttribute("ui.label") + " :: "
-                                            + Integer.valueOf(weight));
+                                    multiGraph.getEdge(node1 + node2).getAttribute("ui.label") + " :: " + Integer.valueOf(weight));
                         }
                     } else if (weight != null) {
                         multiGraph.getEdge(node1 + node2).setAttribute("weight", Integer.valueOf(weight));
@@ -116,6 +117,7 @@ public class GraphFromFile {
 
 
     private static boolean isGraphDirected (String firstLine) {
+        System.out.println(ORIENTATION_PATTERN.matcher(firstLine).matches());
        return ORIENTATION_PATTERN.matcher(firstLine).matches();
     }
 

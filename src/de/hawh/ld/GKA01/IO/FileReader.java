@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class FileReader {
 
 
-    FibonacciHeap
 
     public static List<String> readLines(String path) {
 
