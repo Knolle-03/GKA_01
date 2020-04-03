@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.IO;
+package de.hawh.ld.GKA01.io;
 
 
 import java.io.File;

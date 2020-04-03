@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.Algorithms;
+package de.hawh.ld.GKA01.algorithms;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
@@ -12,12 +12,17 @@ public class BFS {
 
 
     public static boolean breadthFirstSearch (Node source, Node target) {
+        //check if nodes are valid
+        if (source == null || target == null) throw new NullPointerException("One or both nodes are null");
 
+
+        // trivial case (source == target)
         if (source.equals(target)) {
             System.out.println("Source and target are the same vertex.");
             return true;
         }
 
+        // mark source node as visited
         source.setAttribute("isMarked", "marked");
         source.setAttribute("step", 0);
 
@@ -27,9 +32,9 @@ public class BFS {
 
         while (!queue.isEmpty()) {
 
-            source = queue.poll();
+            Node currentNode = queue.poll();
 
-            List<Node> adjNodes = getAdjacentReachableNewlyMarkedNodes(source);
+            List<Node> adjNodes = getAdjacentReachableNewlyMarkedNodes(currentNode);
             if (adjNodes.contains(target)) return true;
             else queue.addAll(adjNodes);
 

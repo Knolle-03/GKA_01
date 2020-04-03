@@ -1,10 +1,6 @@
-package de.hawh.ld.GKA01.IO;
+package de.hawh.ld.GKA01.io;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class FileWriter {
@@ -17,8 +13,8 @@ public class FileWriter {
                 writer.write(line + "\n");
             }
             writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
 

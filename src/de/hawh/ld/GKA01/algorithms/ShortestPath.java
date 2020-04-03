@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.Algorithms;
+package de.hawh.ld.GKA01.algorithms;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
@@ -8,12 +8,15 @@ import java.util.*;
 public class ShortestPath {
 
     public static List<Node> shortestPath (Node source, Node target) {
+        //check if nodes are valid
+        if (source == null || target == null) throw new NullPointerException("One or both nodes are null");
+
 
         // test if target is reachable from source
         if (!BFS.breadthFirstSearch(source, target)) System.out.println("There is no path between " + source + " and " + target + ".");
 
         else {
-            // trivial case
+            // trivial case (source == target)
             if (source.equals(target)) {
                 List<Node> list = new ArrayList<>();
                 list.add(source);
@@ -21,7 +24,7 @@ public class ShortestPath {
             }
 
 
-            System.out.println(target + " is reachable in " + target.getAttribute("step") + " steps");
+            System.out.println(target + " is reachable in " + target.getAttribute("step") + (target.getAttribute("step") == Integer.valueOf(1) ?" step" : " steps")  + " from " + source + ".");
             List<Node> list = new ArrayList<>();
             Queue<Node> queue = new LinkedList<>();
             queue.add(target);
@@ -42,12 +45,12 @@ public class ShortestPath {
                 }
             }
 
-            System.out.println(list.size());
-            System.out.println(list.get(list.size() - 1));
+            System.out.print("start: " + list.get(list.size() - 1));
             for (int i = list.size() - 2 ; i >= 0 ; i--) {
                 System.out.print(" --> " + list.get(i));
             }
-
+            System.out.println("\n");
+            Collections.reverse(list);
             return list;
         }
 
