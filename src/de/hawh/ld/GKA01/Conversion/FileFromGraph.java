@@ -9,12 +9,9 @@ import java.util.List;
 
 public class FileFromGraph {
 
-    public static List<String> linesFromGraph(Graph graph) {
+    public static List<String> getFileLines (Graph graph) {
 
         List<String> lines = new ArrayList<>();
-
-
-
 
         for (Edge edge : graph.getEachEdge()) {
             if (edge.isDirected()) {
@@ -23,41 +20,44 @@ public class FileFromGraph {
             }
         }
 
+
         for (Edge edge : graph.getEachEdge()) {
 
-            Node node1 = edge.getNode0();
-            Node node2 = edge.getNode1();
+            Node node0 = edge.getNode0();
+            Node node1 = edge.getNode1();
 
+            StringBuilder line;
+            StringBuilder part0 = new StringBuilder(node0.toString());
+            StringBuilder part1 = new StringBuilder(node1.toString());
 
-
-
-
-            String line;
-            String part1 = node1.toString();
-            if (node1.hasAttribute("attributeOne")) {
-                part1 = part1 + ":" + edge.getNode0().getAttribute("attributeOne");
+            if (node0.hasAttribute("attr1")) {
+                part0.append(":").append(node0.getAttribute("attr1").toString());
             }
 
-            String part2 = node2.toString();
-            if (node2.hasAttribute("attributeTwo")) {
-                part2 = part2 + ":" + edge.getNode1().getAttribute("attributeTwo");
+            if (node1.hasAttribute("attr2")) {
+                part1.append(":").append(node0.getAttribute("attr2").toString());
             }
 
-            if (edge.hasAttribute("edge.name")) {
-                part2 = part2 + " :: " + edge.getAttribute("edge.name");
+            if (edge.hasAttribute("name")) {
+                part1.append("(").append(edge.getAttribute("name").toString()).append(")");
             }
 
             if (edge.getAttribute("weight") != null) {
-                part2 = part2 + " :: " + edge.getAttribute("weight");
+                part1.append(" :: ").append(edge.getAttribute("weight").toString());
             }
 
-            line = part1 + "," + part2 + ";";
-            lines.add(line);
+            line = part0.append(",").append(part1).append(";");
+
+            lines.add(line.toString());
+
         }
 
 
         return lines;
+
     }
+
+
 
 
 

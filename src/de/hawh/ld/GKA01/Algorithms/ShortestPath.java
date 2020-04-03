@@ -7,35 +7,51 @@ import java.util.*;
 
 public class ShortestPath {
 
-    public static void shortestPath (Node source, Node target) {
+    public static List<Node> shortestPath (Node source, Node target) {
+
+        // test if target is reachable from source
         if (!BFS.breadthFirstSearch(source, target)) System.out.println("There is no path between " + source + " and " + target + ".");
 
         else {
+            // trivial case
+            if (source.equals(target)) {
+                List<Node> list = new ArrayList<>();
+                list.add(source);
+                return list;
+            }
+
+
             System.out.println(target + " is reachable in " + target.getAttribute("step") + " steps");
-            Deque<Node> deque = new LinkedList<>();
+            List<Node> list = new ArrayList<>();
             Queue<Node> queue = new LinkedList<>();
             queue.add(target);
-            deque.add(target);
+            list.add(target);
 
 
 
-            while (!deque.contains(source)){
+            while (!list.contains(source)){
 
                 Node currentNode = queue.poll();
 
                 List<Node> nodes = getAllNodesFromEnteringEdgesWithCurrentStepSizeMinusOne(currentNode);
                 if (nodes.contains(source)) {
-                    deque.add(source);
+                    list.add(source);
                 } else {
-                    deque.add(nodes.get(0));
+                    list.add(nodes.get(0));
                     queue.add(nodes.get(0));
                 }
             }
-            int step = 0;
-            while (!deque.isEmpty()) {
-                System.out.println(step++ + " : " + deque.pollLast());
+
+            System.out.println(list.size());
+            System.out.println(list.get(list.size() - 1));
+            for (int i = list.size() - 2 ; i >= 0 ; i--) {
+                System.out.print(" --> " + list.get(i));
             }
+
+            return list;
         }
+
+        return null;
     }
 
 

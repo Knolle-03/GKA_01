@@ -9,13 +9,14 @@ import java.util.List;
 
 public class FileWriter {
 
-    public static void writeToFile(List<String> graphInfo, String fileName){
-
-
-        Path file = Paths.get(fileName);
+    public static void writeLines(List<String> lines, String fileName){
 
         try {
-            Files.write(file, graphInfo, Charset.forName("windows-1252"));
+            java.io.FileWriter writer = new java.io.FileWriter(fileName);
+            for (String line : lines) {
+                writer.write(line + "\n");
+            }
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
