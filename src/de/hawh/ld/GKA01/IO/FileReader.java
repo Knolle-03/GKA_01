@@ -1,6 +1,5 @@
 package de.hawh.ld.GKA01.IO;
 
-import org.graphstream.algorithm.util.FibonacciHeap;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileReader {
-
-
-    FibonacciHeap
 
     public static List<String> readLines(String path) {
 

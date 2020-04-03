@@ -13,6 +13,10 @@ public class BFS {
 
     public static boolean breadthFirstSearch (Node source, Node target) {
 
+        if (source.equals(target)) {
+            System.out.println("Source and target are the same vertex.");
+            return true;
+        }
 
         source.setAttribute("isMarked", "marked");
         source.setAttribute("step", 0);
