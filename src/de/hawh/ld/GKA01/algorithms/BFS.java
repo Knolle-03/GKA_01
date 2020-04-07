@@ -11,6 +11,19 @@ import java.util.Queue;
 public class BFS {
 
 
+    /**
+     * Test if there is a way from source to target
+     *
+     * @param source
+     *            node to start from
+     *
+     * @param target
+     *              node to get to
+     *
+     * @return true if there is a way false if not.
+     */
+
+
     public static boolean breadthFirstSearch (Node source, Node target) {
         //check if nodes are valid
         if (source == null || target == null) throw new NullPointerException("One or both nodes are null");
@@ -33,9 +46,11 @@ public class BFS {
         while (!queue.isEmpty()) {
 
             Node currentNode = queue.poll();
-
+            // get next chunk of nodes
             List<Node> adjNodes = getAdjacentReachableNewlyMarkedNodes(currentNode);
+            // target found
             if (adjNodes.contains(target)) return true;
+            // keep looking
             else queue.addAll(adjNodes);
 
         }
@@ -46,15 +61,17 @@ public class BFS {
 
 
     private static List<Node> getAdjacentReachableNewlyMarkedNodes(Node source) {
-
+        // all "usable" edges
         Iterable<? extends Edge> iterable = source.getEachLeavingEdge();
 
         List<Node> adjacentReachableMarkedNodes = new ArrayList<>();
+        //each reachable Node
         for (Edge edge : iterable) {
             Node node = edge.getOpposite(source);
+            // if not marked mark the node to avoid visiting a node twice
             if (node.getAttribute("isMarked") != "marked"){
                 node.setAttribute("isMarked", "marked");
-                //attachSpriteToNodeInBFS(node, step);
+                // set number of steps to reach that node
                 int sourceStep = source.getAttribute("step");
                 node.setAttribute("step", sourceStep + 1);
                 adjacentReachableMarkedNodes.add(node);

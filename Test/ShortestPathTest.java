@@ -25,9 +25,9 @@ public class ShortestPathTest {
     @BeforeEach
     public void setUp() {
 
-        String fileName1= "resources/givenGraphs/graph01.graph";
-        String fileName3 = "resources/givenGraphs/graph03.graph";
-        String fileName6 = "resources/givenGraphs/graph06.graph";
+        String fileName1= "testResources/givenGraphs/graph01.graph";
+        String fileName3 = "testResources/givenGraphs/graph03.graph";
+        String fileName6 = "testResources/givenGraphs/graph06.graph";
 
         shortestPathList01 = new ArrayList<>();
         shortestPathList03 = new ArrayList<>();

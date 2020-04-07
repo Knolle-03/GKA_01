@@ -10,6 +10,16 @@ import java.util.Scanner;
 
 public class FileReader {
 
+    /**
+     * Creates a graph from a list
+     *
+     * @param path
+     *            Path of the file to be read
+     *
+     * @return List of all Strings from the file:
+     *
+     */
+
     public static List<String> readLines(String path) {
 
         List<String> lines = new ArrayList<>();

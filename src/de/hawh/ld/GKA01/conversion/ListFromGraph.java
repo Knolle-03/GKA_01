@@ -9,6 +9,19 @@ import java.util.List;
 
 public class ListFromGraph {
 
+    /**
+     * Creates a graph from a list
+     *
+     * @param graph
+     *            Graph to be stored as a List.
+
+     *
+     * @return List of all Nodes and Edges in the format:
+     *
+     * ["#directed;"]
+     * node1,[":"attr1],[","node2,[" :"attr2],[" ("edge")"],[" :: "weight]];
+     */
+
     public static List<String> getFileLines (Graph graph) {
 
         List<String> lines = new ArrayList<>();
@@ -46,6 +59,8 @@ public class ListFromGraph {
 
         }
 
+
+        // collect nodes without edges if there are any
         if (graph.getNodeCount() != allNodes.size()) {
             for (Node node : graph.getEachNode()) {
                 if (node.getDegree() == 0) {
