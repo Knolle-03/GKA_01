@@ -1,21 +1,19 @@
 package de.hawh.ld.GKA01.main;
 
-import de.hawh.ld.GKA01.conversion.ListFromGraph;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
+import de.hawh.ld.GKA01.conversion.ListFromGraph;
 import de.hawh.ld.GKA01.io.FileReader;
 import de.hawh.ld.GKA01.io.FileWriter;
 import org.graphstream.graph.Graph;
 
 import java.util.List;
 
-import static de.hawh.ld.GKA01.algorithms.ShortestPath.shortestPath;
-
 
 public class Main {
 
     public static void main(String[] args) {
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 3; i <= 3; i++) {
             String number = String.format("%02d", i);
             String fileNameRead = "resources/givenGraphs/graph" + number + ".graph";
 
