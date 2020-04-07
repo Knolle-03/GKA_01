@@ -3,16 +3,16 @@ package tests.conversion;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
 import de.hawh.ld.GKA01.conversion.ListFromGraph;
 import de.hawh.ld.GKA01.io.FileReader;
-import graphPaths.GraphPaths;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static graphPaths.GraphPath.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ConversionTest implements GraphPaths {
+public class ConversionTest {
 
 
     List<String> lines0;
@@ -33,15 +33,15 @@ public class ConversionTest implements GraphPaths {
     @BeforeEach
     void setUp() {
 
-        lines0 = FileReader.readLines(GraphPaths.READ_GRAPH_00_PATH);
-        lines1 = FileReader.readLines(GraphPaths.READ_GRAPH_01_PATH);
-        lines3 = FileReader.readLines(GraphPaths.READ_GRAPH_03_PATH);
-        lines6 = FileReader.readLines(GraphPaths.READ_GRAPH_06_PATH);
+        lines0 = FileReader.readLines(READ_GRAPH_00_PATH.getPath());
+        lines1 = FileReader.readLines(READ_GRAPH_01_PATH.getPath());
+        lines3 = FileReader.readLines(READ_GRAPH_03_PATH.getPath());
+        lines6 = FileReader.readLines(READ_GRAPH_06_PATH.getPath());
 
-        graph0 = GraphFromList.populateGraph(lines0, GraphPaths.READ_GRAPH_00_PATH);
-        graph1 = GraphFromList.populateGraph(lines1, GraphPaths.READ_GRAPH_01_PATH);
-        graph3 = GraphFromList.populateGraph(lines3, GraphPaths.READ_GRAPH_03_PATH);
-        graph6 = GraphFromList.populateGraph(lines6, GraphPaths.READ_GRAPH_06_PATH);
+        graph0 = GraphFromList.populateGraph(lines0, READ_GRAPH_00_PATH.getPath());
+        graph1 = GraphFromList.populateGraph(lines1, READ_GRAPH_00_PATH.getPath());
+        graph3 = GraphFromList.populateGraph(lines3, READ_GRAPH_00_PATH.getPath());
+        graph6 = GraphFromList.populateGraph(lines6, READ_GRAPH_00_PATH.getPath());
 
 
         linesFromGraph0 = ListFromGraph.getFileLines(graph0);

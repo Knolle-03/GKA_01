@@ -3,7 +3,6 @@ package tests.algorithms;
 import de.hawh.ld.GKA01.algorithms.ShortestPath;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
 import de.hawh.ld.GKA01.io.FileReader;
-import graphPaths.GraphPaths;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +11,10 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static graphPaths.GraphPath.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ShortestPathTest implements GraphPaths {
+public class ShortestPathTest {
 
     private Graph graph01;
     private Graph graph03;
@@ -31,9 +31,9 @@ public class ShortestPathTest implements GraphPaths {
         shortestPathList03 = new ArrayList<>();
         shortestPathList06 = new ArrayList<>();
 
-        graph01 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_01_PATH), READ_GRAPH_01_PATH);
-        graph03 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_03_PATH), READ_GRAPH_03_PATH);
-        graph06 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_06_PATH), READ_GRAPH_06_PATH);
+        graph01 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_01_PATH.getPath()), READ_GRAPH_01_PATH.getPath());
+        graph03 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_03_PATH.getPath()), READ_GRAPH_03_PATH.getPath());
+        graph06 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_06_PATH.getPath()), READ_GRAPH_06_PATH.getPath());
 
         shortestPathList01.add(graph01.getNode("a"));
         shortestPathList01.add(graph01.getNode("b"));

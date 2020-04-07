@@ -2,7 +2,6 @@ package tests.io;
 
 import de.hawh.ld.GKA01.io.FileReader;
 import de.hawh.ld.GKA01.io.FileWriter;
-import graphPaths.GraphPaths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static graphPaths.GraphPath.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IOTest implements GraphPaths {
+public class IOTest {
 
     private Path path0;
     private Path path1;
@@ -38,25 +38,25 @@ public class IOTest implements GraphPaths {
     void setUp() {
 
 
-        path0 = Paths.get(READ_GRAPH_00_PATH);
-        path1 = Paths.get(READ_GRAPH_01_PATH);
-        path3 = Paths.get(READ_GRAPH_03_PATH);
-        path6 = Paths.get(READ_GRAPH_06_PATH);
+        path0 = Paths.get(READ_GRAPH_00_PATH.getPath());
+        path1 = Paths.get(READ_GRAPH_01_PATH.getPath());
+        path3 = Paths.get(READ_GRAPH_03_PATH.getPath());
+        path6 = Paths.get(READ_GRAPH_06_PATH.getPath());
 
-        writtenPath0 = Paths.get(WRITE_GRAPH_00_PATH);
-        writtenPath1 = Paths.get(WRITE_GRAPH_01_PATH);
-        writtenPath3 = Paths.get(WRITE_GRAPH_03_PATH);
-        writtenPath6 = Paths.get(WRITE_GRAPH_06_PATH);
+        writtenPath0 = Paths.get(WRITE_GRAPH_00_PATH.getPath());
+        writtenPath1 = Paths.get(WRITE_GRAPH_01_PATH.getPath());
+        writtenPath3 = Paths.get(WRITE_GRAPH_03_PATH.getPath());
+        writtenPath6 = Paths.get(WRITE_GRAPH_06_PATH.getPath());
 
-        lines0 = FileReader.readLines(READ_GRAPH_00_PATH);
-        lines1 = FileReader.readLines(READ_GRAPH_01_PATH);
-        lines3 = FileReader.readLines(READ_GRAPH_03_PATH);
-        lines6 = FileReader.readLines(READ_GRAPH_06_PATH);
+        lines0 = FileReader.readLines(READ_GRAPH_00_PATH.getPath());
+        lines1 = FileReader.readLines(READ_GRAPH_01_PATH.getPath());
+        lines3 = FileReader.readLines(READ_GRAPH_03_PATH.getPath());
+        lines6 = FileReader.readLines(READ_GRAPH_06_PATH.getPath());
 
-        FileWriter.writeLines(lines0, WRITE_GRAPH_00_PATH);
-        FileWriter.writeLines(lines1, WRITE_GRAPH_01_PATH);
-        FileWriter.writeLines(lines3, WRITE_GRAPH_03_PATH);
-        FileWriter.writeLines(lines6, WRITE_GRAPH_06_PATH);
+        FileWriter.writeLines(lines0, WRITE_GRAPH_00_PATH.getPath());
+        FileWriter.writeLines(lines1, WRITE_GRAPH_01_PATH.getPath());
+        FileWriter.writeLines(lines3, WRITE_GRAPH_03_PATH.getPath());
+        FileWriter.writeLines(lines6, WRITE_GRAPH_06_PATH.getPath());
 
 
     }

@@ -3,14 +3,14 @@ package tests.algorithms;
 import de.hawh.ld.GKA01.algorithms.BFS;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
 import de.hawh.ld.GKA01.io.FileReader;
-import graphPaths.GraphPaths;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static graphPaths.GraphPath.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BFSTest implements GraphPaths {
+public class BFSTest {
 
     private Graph graph01;
     private Graph graph03;
@@ -19,9 +19,9 @@ public class BFSTest implements GraphPaths {
     @BeforeEach
     public void setUp() {
 
-        graph01 = GraphFromList.populateGraph(FileReader.readLines(GraphPaths.READ_GRAPH_01_PATH), GraphPaths.READ_GRAPH_01_PATH);
-        graph03 = GraphFromList.populateGraph(FileReader.readLines(GraphPaths.READ_GRAPH_03_PATH), GraphPaths.READ_GRAPH_03_PATH);
-        graph06 = GraphFromList.populateGraph(FileReader.readLines(GraphPaths.READ_GRAPH_06_PATH), GraphPaths.READ_GRAPH_06_PATH);
+        graph01 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_01_PATH.getPath()), READ_GRAPH_01_PATH.getPath());
+        graph03 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_03_PATH.getPath()), READ_GRAPH_03_PATH.getPath());
+        graph06 = GraphFromList.populateGraph(FileReader.readLines(READ_GRAPH_06_PATH.getPath()), READ_GRAPH_06_PATH.getPath());
     }
 
 
