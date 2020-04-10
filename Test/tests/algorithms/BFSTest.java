@@ -52,13 +52,13 @@ public class BFSTest {
         String expectedMsg = "One or both nodes are null";
 
 
-        Throwable exception01 = assertThrows( NullPointerException.class,() -> BFS.breadthFirstSearch(graph03.getNode("Oldenburg"), graph03.getNode(null)));
+        Throwable exception01 = assertThrows( IllegalArgumentException.class,() -> BFS.breadthFirstSearch(graph03.getNode("Oldenburg"), graph03.getNode(null)));
         assertEquals(expectedMsg, exception01.getMessage());
 
-        Throwable exception02 = assertThrows( NullPointerException.class,() -> BFS.breadthFirstSearch(graph03.getNode(null), graph03.getNode(null)));
+        Throwable exception02 = assertThrows( IllegalArgumentException.class,() -> BFS.breadthFirstSearch(graph03.getNode(null), graph03.getNode(null)));
         assertEquals(expectedMsg, exception02.getMessage());
 
-        Throwable exception03 = assertThrows( NullPointerException.class,() -> BFS.breadthFirstSearch(null, null));
+        Throwable exception03 = assertThrows( IllegalArgumentException.class,() -> BFS.breadthFirstSearch(null, null));
         assertEquals(expectedMsg, exception03.getMessage());
 
     }

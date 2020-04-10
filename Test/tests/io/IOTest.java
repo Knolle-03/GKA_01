@@ -73,10 +73,8 @@ public class IOTest {
     void writeLines() {
         try {
 
-            // Files.mismatch since JDK 12
-            // TODO: figure out why graph00.graph isn't equal
-            //assertEquals(-1, Files.mismatch(path0,writtenPath0));
-            //assertArrayEquals(Files.readAllBytes(path0), Files.readAllBytes(writtenPath0));
+            assertEquals(-1, Files.mismatch(path0,writtenPath0));
+            assertArrayEquals(Files.readAllBytes(path0), Files.readAllBytes(writtenPath0));
 
             assertEquals(-1, Files.mismatch(path1,writtenPath1));
             assertArrayEquals(Files.readAllBytes(path1), Files.readAllBytes(writtenPath1));

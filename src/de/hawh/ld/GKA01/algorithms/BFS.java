@@ -26,7 +26,7 @@ public class BFS {
 
     public static boolean breadthFirstSearch (Node source, Node target) {
         //check if nodes are valid
-        if (source == null || target == null) throw new NullPointerException("One or both nodes are null");
+        if (source == null || target == null) throw new IllegalArgumentException("One or both nodes are null");
 
 
         // trivial case (source == target)
@@ -35,8 +35,7 @@ public class BFS {
             return true;
         }
 
-        // mark source node as visited
-        source.setAttribute("isMarked", "marked");
+        // mark source node as visited by adding step attribute
         source.setAttribute("step", 0);
 
         Queue<Node> queue = new LinkedList<>();
@@ -55,7 +54,6 @@ public class BFS {
 
         }
 
-
         return false;
     }
 
@@ -64,22 +62,21 @@ public class BFS {
         // all "usable" edges
         Iterable<? extends Edge> iterable = source.getEachLeavingEdge();
 
-        List<Node> adjacentReachableMarkedNodes = new ArrayList<>();
+        List<Node> adjacentReachableNewlyMarkedNodes = new ArrayList<>();
         //each reachable Node
         for (Edge edge : iterable) {
             Node node = edge.getOpposite(source);
-            // if not marked mark the node to avoid visiting a node twice
-            if (node.getAttribute("isMarked") != "marked"){
-                node.setAttribute("isMarked", "marked");
-                // set number of steps to reach that node
+            // if the node has no step attribute it was not visited yet
+              if (!node.hasAttribute("step")) {
+                // set number of steps to reach that node and mark as visited by adding the step attribute
                 int sourceStep = source.getAttribute("step");
                 node.setAttribute("step", sourceStep + 1);
-                adjacentReachableMarkedNodes.add(node);
+                adjacentReachableNewlyMarkedNodes.add(node);
             }
 
         }
 
-        return adjacentReachableMarkedNodes;
+        return adjacentReachableNewlyMarkedNodes;
     }
 
 }

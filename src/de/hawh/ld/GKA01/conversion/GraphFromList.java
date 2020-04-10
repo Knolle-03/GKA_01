@@ -3,9 +3,7 @@ package de.hawh.ld.GKA01.conversion;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.graph.implementations.SingleGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +12,14 @@ import java.util.regex.Pattern;
 
 public class GraphFromList {
 
+    //["#directed;"]
+    //node1,[":"attr1],[","node2,[" :"attr2],[" ("edge")"],[" :: "weight]];
+    // missing semicolons, p etc. result in an invalid row
+    // and therefore not show up in the graph
+
+
     private static final String DIRECTED = "#directed;";
-    private static final String ID = "[A-za-z0-9\u00C0-\u00FF]+";
+    private static final String ID = "[A-Za-z0-9\u00C0-\u00FF]+";
     private static final String ATTRIBUTE = "(:[0-9]+)";
     private static final String EDGE = "( \\([A-Za-z0-9\u00C0-\u00FF]+\\))";
     private static final String WEIGHT = "( :: [0-9]+)";
@@ -35,6 +39,7 @@ public class GraphFromList {
 
     /**
      * Creates a graph from a list
+     *
      *
      * @param lines
      *            Lines read by the FileReader in the io package.
@@ -86,7 +91,7 @@ public class GraphFromList {
                 String weight = patternFromString(WEIGHT_PATTERN, rightSide) == null ? null : patternFromString(DIGITS_PATTERN, patternFromString(WEIGHT_PATTERN, rightSide));
 
 
-                Edge currentEdge = graph.addEdge(node1 + node2, node1, node2, isDirected);
+                Edge currentEdge = graph.addEdge(node1 + "-" + node2, node1, node2, isDirected);
                 if (attr1 != null) graph.getNode(node1).setAttribute("attr1", attr1);
                 if (attr2 != null) graph.getNode(node2).addAttribute("attr2", attr2);
 

@@ -18,17 +18,13 @@ public class FileWriter {
      */
     public static void writeLines(List<String> lines, String fileName){
 
-        try {
-            java.io.FileWriter writer = new java.io.FileWriter(fileName);
+        try(java.io.FileWriter writer = new java.io.FileWriter(fileName)) {
+
             for (String line : lines) {
                 writer.write(line + "\n");
             }
-            writer.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-
     }
-
 }

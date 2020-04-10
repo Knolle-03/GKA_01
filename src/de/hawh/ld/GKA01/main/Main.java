@@ -4,8 +4,11 @@ import de.hawh.ld.GKA01.conversion.GraphFromList;
 import de.hawh.ld.GKA01.conversion.ListFromGraph;
 import de.hawh.ld.GKA01.io.FileReader;
 import de.hawh.ld.GKA01.io.FileWriter;
+import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Path;
 
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -13,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        for (int i = 3; i <= 3; i++) {
+        for (int i = 1; i <= 1; i++) {
             String number = String.format("%02d", i);
             String fileNameRead = "resources/givenGraphs/graph" + number + ".graph";
 
@@ -24,10 +27,24 @@ public class Main {
             //System.out.println(writtenLines.get(0));
             FileWriter.writeLines(writtenLines, fileNameWritten);
 
+               graph.display();
+            graph.addAttribute("ui.antialias");
+
+            Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, null);
 
 
-//            graph.addAttribute("ui.antialias");
-            graph.display();
+            dijkstra.init(graph);
+            dijkstra.setSource(graph.getNode("e"));
+            dijkstra.compute();
+
+
+            Iterator<Path> pathIterator = dijkstra.getAllPathsIterator(graph.getNode("l"));
+
+            while (pathIterator.hasNext()) {
+                System.out.println(pathIterator.next());
+            }
+
+
 
 
             //System.out.println(graph.getEdge("ee").isLoop());
