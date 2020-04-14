@@ -12,7 +12,7 @@ public class BFS {
 
 
     /**
-     * Test if there is a way from source to target
+     * BFS approach to test if there is a way from source to target
      *
      * @param source
      *            node to start from

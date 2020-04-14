@@ -103,12 +103,12 @@ public class GraphFromList {
 
                     // add weight to ui.label
                     if (weight != null) {
-                        currentEdge.addAttribute("weight", Integer.parseInt(weight));
+                        currentEdge.addAttribute("weight", Double.parseDouble(weight));
                         currentEdge.setAttribute("ui.label", edge + " :: " + weight);
                     }
                     //add weight as the only ui.label if no name is given
                 } else if (weight != null) {
-                    currentEdge.addAttribute("weight", Integer.parseInt(weight));
+                    currentEdge.addAttribute("weight", Double.parseDouble(weight));
                     currentEdge.setAttribute("ui.label", weight);
                 }
             } else if (!line.equals("#directed;")) {

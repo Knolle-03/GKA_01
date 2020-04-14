@@ -37,7 +37,7 @@ public class ShortestPathTest {
     @BeforeEach
     public void setUp()  {
         Random random = new Random();
-        int nodeCount = 500_00;
+        int nodeCount = 500;
         firstID = random.nextInt(nodeCount);
         secondID = random.nextInt(nodeCount);
 
@@ -81,12 +81,6 @@ public class ShortestPathTest {
 
     @Test
     void shortestPath() {
-
-
-
-
-
-
 
         boolean pathIncluded = false;
         Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, null);
