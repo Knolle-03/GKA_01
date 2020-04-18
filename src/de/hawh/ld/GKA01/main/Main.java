@@ -1,22 +1,14 @@
 package de.hawh.ld.GKA01.main;
 
-import de.hawh.ld.GKA01.algorithms.MyDijkstra;
-import de.hawh.ld.GKA01.conversion.GraphFromList;
-import de.hawh.ld.GKA01.conversion.ListFromGraph;
-import de.hawh.ld.GKA01.io.FileReader;
-import de.hawh.ld.GKA01.io.FileWriter;
-import org.graphstream.algorithm.Dijkstra;
+import de.hawh.ld.GKA01.util.Stopwatch;
+import org.graphstream.algorithm.Kruskal;
+import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
-import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.SingleGraph;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 
@@ -25,14 +17,15 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int nodeCount = 1000;
-
-
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        System.out.println("generating graph...");
+        int nodeCount = 5_500_000;
         Graph rndGraph = new SingleGraph("rndGraph");
-        Generator generator = new RandomGenerator(2);
+        Generator generator = new DorogovtsevMendesGenerator();
         generator.addSink(rndGraph);
         generator.begin();
-        for (int j = 0; j < nodeCount ; j++) {
+        for (int j = 0; j < nodeCount; j++) {
             generator.nextEvents();
         }
         generator.end();
@@ -43,41 +36,199 @@ public class Main {
 
 
         for (Edge edge : rndGraph.getEachEdge()) {
-            edge.addAttribute("weight", random.nextDouble() );
+            edge.addAttribute("weight", random.nextInt(1000));
+            edge.addAttribute("ui.label", edge.getAttribute("weight").toString());
         }
 
-
-
-        rndGraph.addAttribute("ui.antialias");
-
-
-
-        MyDijkstra myDijkstra = new MyDijkstra(rndGraph);
-        myDijkstra.compute(rndGraph.getNode(firstID));
-
-
-
-
-
-        List<Node> path = myDijkstra.getPath(rndGraph.getNode(secondID));
-
-        System.out.println("mine: " + path);
-
-
-
-        Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, null);
-
-
-        dijkstra.init(rndGraph);
-        dijkstra.setSource(rndGraph.getNode(firstID));
-        dijkstra.compute();
-
-
-        Iterator<Path> pathIterator = dijkstra.getAllPathsIterator(rndGraph.getNode(secondID));
-
-        while (pathIterator.hasNext()) {
-            System.out.println("Ref: " + pathIterator.next());
+        for (Node node : rndGraph) {
+            node.addAttribute("ui.label", node.getId());
         }
+
+        stopwatch.stop();
+
+        System.out.println("Graph generated in: " + stopwatch.elapsedTime());
+
+        stopwatch.reset();
+
+
+        String css = "edge.used {size:10px;fill-color:yellow;}" +
+                     "edge.unused {size:2px;fill-color:black;}";
+
+        stopwatch.start();
+        Kruskal gsKruskal = new Kruskal();
+        gsKruskal.init(rndGraph);
+        gsKruskal.compute();
+        stopwatch.stop();
+        System.out.println("gsWeight: " + gsKruskal.getTreeWeight());
+        System.out.println("gsKruskal time: " + stopwatch.elapsedTime());
+        gsKruskal.clear();
+
+        stopwatch.reset();
+
+        stopwatch.start();
+        de.hawh.ld.GKA01.algorithms.Kruskal myKruskal = new de.hawh.ld.GKA01.algorithms.Kruskal();
+        myKruskal.init(rndGraph);
+        myKruskal.compute();
+        stopwatch.stop();
+        System.out.println("myWeight: " + myKruskal.getTreeWeight());
+        System.out.println("myKruskal time: " + stopwatch.elapsedTime());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        int fail = 0;
+//        int win = 0;
+//        int noConnection = 0;
+//        long start = System.currentTimeMillis();
+//
+//
+//        for (int i = 0; i < 1_000_000 ; i++) {
+//
+//
+//
+//
+//
+//              TODO RANDOM GRAPH HERE
+//
+//
+//
+//            //-------------------------------------------------------------
+//
+//            if (BFS.breadthFirstSearch(rndGraph.getNode(firstID), rndGraph.getNode(secondID))) {
+//                //System.out.println("BFS true");
+//
+//                rndGraph.addAttribute("ui.antialias");
+//
+//
+//                MyDijkstra myDijkstra = new MyDijkstra(rndGraph);
+//                myDijkstra.compute(rndGraph.getNode(firstID));
+//
+//
+//                List<Node> path = myDijkstra.getPath(rndGraph.getNode(secondID));
+//
+//                //System.out.println("mee: " + path);
+//
+//
+//                Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, "distanceFromSource", "weight");
+//                dijkstra.init(rndGraph);
+//                //System.out.println("Init Ref algo");
+//                dijkstra.setSource(rndGraph.getNode(firstID));
+//                //System.out.println("Set source for ref algo");
+//                dijkstra.compute();
+//
+//
+//                //System.out.println("FirstID: " + firstID + "\n" + "SecondID: " + secondID);
+//                MyDijkstra.Data data = rndGraph.getNode(secondID).getAttribute("data");
+//
+//
+////
+////                System.out.println("MyDijkstra: " + data.getDistance());
+////                System.out.println(dijkstra.getPathLength(rndGraph.getNode(secondID)));
+//
+//
+//
+//
+//                if (data.getDistance() == dijkstra.getPathLength(rndGraph.getNode(secondID))){
+//                    win++;
+//                } else {
+//                    System.out.println("FAIL!!!elfeins1");
+//                    fail++;
+//                    rndGraph.display();
+//                }
+//
+//            } else {
+//                //System.out.println("BFS false");
+//                noConnection++;
+//            }
+//
+//
+//            if (i  % 10 == 0) System.out.println(i);
+//
+//        }
+//        long finish = System.currentTimeMillis();
+//
+//        long time = finish - start;
+//
+//        System.out.println("win: " + win + "\n" + "fail: " + fail + "\n");
+//        System.out.println("noConn: " + noConnection);
+//
+//        long hours = time / 3600000;
+//        long hoursRemainder = time % 3600000;
+//
+//        long minutes = hoursRemainder / 60000;
+//        long minutesRemainder = hoursRemainder % 60000;
+//
+//        long seconds = minutesRemainder / 1000;
+//        long millis = minutesRemainder % 1000;
+//
+//
+//        System.out.println("hours: " + hours);
+//        System.out.println("minutes: " + minutes);
+//        System.out.println("seconds: " + seconds);
+//        System.out.println("millis: " + millis);
+//
+//        System.out.println("time: " + time);
+//        System.out.printf("time elapsed :: %02d:%02d:%02d :: %d ", hours, minutes, seconds, millis );
+
+
+
+
+        //-------------------------------------------------------------
+
+
+        //        Iterator<Path> pathIterator = dijkstra.getAllPathsIterator(rndGraph.getNode(secondID));
+
+
+
+
+//        if (pathIterator.hasNext()) {
+//            while (pathIterator.hasNext()) {
+//                System.out.println("Ref: " + pathIterator.next());
+//            }
+//        } else {
+//            System.out.println("No path available");
+//        }
+//        System.out.println("Ref alg done");
+        //-------------------------------------------------------------
+
+
+
+    }
+
+}
+
+
+
+
+
 
 
 
@@ -163,6 +314,4 @@ public class Main {
 //                    System.out.println("No such graph available");
 //            }
 //        }
-    }
 
-}

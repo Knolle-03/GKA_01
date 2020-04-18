@@ -6,17 +6,30 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MyDijkstra {
 
-    protected static class Data {
+    public static class Data {
         FibonacciHeap<Double, Node>.Node firstNode;
         double distance;
         Node predecessor = null;
         boolean OK = false;
+
+        public double getDistance() {
+            return distance;
+        }
+
+        @Override
+        public String toString() {
+            return "Data{" +
+                    "firstNode=" + firstNode +
+                    ", distance=" + distance +
+                    ", predecessor=" + predecessor +
+                    ", OK=" + OK +
+                    '}';
+        }
     }
 
     private Node source;
@@ -52,7 +65,9 @@ public class MyDijkstra {
             List<Node> adjNodes = getAdjacentReachableNonOkNodes(currentNode);
             for (Node node : adjNodes) {
                 Edge connection = node.getEdgeBetween(currentNode);
-                double weight = connection.getAttribute("weight");
+                //TODO change!!!
+                int intWeight = connection.getAttribute("weight");
+                double weight = Double.parseDouble(String.valueOf(intWeight));
 
                 Data nodeData = node.getAttribute(DATA);
 
@@ -102,11 +117,5 @@ public class MyDijkstra {
 
         return nodeList;
     }
-
-
-
-
-
-
 
 }
