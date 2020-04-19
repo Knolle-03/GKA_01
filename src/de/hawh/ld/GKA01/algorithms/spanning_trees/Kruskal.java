@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms;
+package de.hawh.ld.GKA01.algorithms.spanning_trees;
 
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.util.DisjointSets;
@@ -38,8 +38,8 @@ public class Kruskal extends AbstractSpanningTree {
 
 
     public void init(Graph graph) {
-        this.graph = graph;
-        edges.addAll(graph.getEdgeSet());
+        this.graph = graph;                                                                                             // 1
+        edges.addAll(graph.getEdgeSet());                                                                               // e ( e= number of edges in the graph
         edges.sort(Comparator.comparingInt(this::getEdgeWeight));
         forest = new DisjointSets<>(graph.getNodeCount());
 

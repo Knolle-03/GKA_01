@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms;
+package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;

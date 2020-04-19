@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms;
+package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
 import org.graphstream.algorithm.util.FibonacciHeap;
 import org.graphstream.graph.Edge;
@@ -65,7 +65,7 @@ public class MyDijkstra {
             List<Node> adjNodes = getAdjacentReachableNonOkNodes(currentNode);
             for (Node node : adjNodes) {
                 Edge connection = node.getEdgeBetween(currentNode);
-                //TODO change!!!
+                //TODO change to use int instead of double
                 int intWeight = connection.getAttribute("weight");
                 double weight = Double.parseDouble(String.valueOf(intWeight));
 

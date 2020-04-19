@@ -1,5 +1,6 @@
-package de.hawh.ld.GKA01.algorithms;
+package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
+import de.hawh.ld.GKA01.algorithms.shortestPaths.BFS;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 

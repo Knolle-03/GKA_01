@@ -1,6 +1,6 @@
 package tests.algorithms;
 
-import de.hawh.ld.GKA01.algorithms.ShortestPath;
+import de.hawh.ld.GKA01.algorithms.shortestPaths.ShortestPath;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
 import de.hawh.ld.GKA01.io.FileReader;
 import org.graphstream.algorithm.Dijkstra;
