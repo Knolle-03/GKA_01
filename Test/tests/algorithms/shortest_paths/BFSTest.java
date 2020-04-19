@@ -1,4 +1,4 @@
-package tests.algorithms;
+package tests.algorithms.shortest_paths;
 
 import de.hawh.ld.GKA01.algorithms.shortestPaths.BFS;
 import de.hawh.ld.GKA01.conversion.GraphFromList;

@@ -1,12 +1,10 @@
 package de.hawh.ld.GKA01.main;
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal;
-import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFibonacciHeap;
 import de.hawh.ld.GKA01.util.Stopwatch;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -27,9 +25,8 @@ public class Main {
         for (int j = 0; j < repetitions ; j++) {
             stopwatch.start();
 //            System.out.println("initializing graph...");
-            nodeCount *= 2;
             Graph graph = new MultiGraph("rndGraph");
-            Generator gen = new RandomGenerator(2);
+            Generator gen = new DorogovtsevMendesGenerator();
             gen.addSink(graph);
             gen.begin();
             for(int i=0; i< nodeCount; i++)
@@ -48,12 +45,14 @@ public class Main {
             for (Node node : graph) {
                 node.addAttribute("ui.label", "node: " + node.getId());
             }
-            stopwatch.stop();
-            System.out.printf("##################%02d####################\n", (j + 1));
-            System.out.println("graph with " + nodeCount + " nodes build in " + stopwatch.elapsedTime() + "." );
-            System.out.println("-----------------------------------------");
-            stopwatch.reset();
 
+            stopwatch.stop();
+            System.out.println("\n");
+            System.out.printf("################################%02d################################\n", (j + 1));
+            System.out.printf("#  graph with %8d nodes build in %s time.    #\n", nodeCount, stopwatch.elapsedTime());
+            System.out.println("##################################################################");
+            stopwatch.reset();
+            nodeCount *= 2;
 
 //-------------------------gsPrim init---------------------------------------------------
             stopwatch.start();
@@ -64,14 +63,14 @@ public class Main {
             stopwatch.stop();
             //System.out.println("gsTreeWeight: " + gsPrim.getTreeWeight());
             gsPrim.clear();
-            System.out.println("gsPrim took: " + stopwatch.elapsedTime() + " for " + nodeCount + " nodes.");
+            System.out.printf("#  gsPrim took %s.                                #\n", stopwatch.elapsedTime());
             stopwatch.reset();
 //------------------------primFibonacciHeap init---------------------------------------------------
             stopwatch.start();
             PrimFibonacciHeap primFibonacciHeap = new PrimFibonacciHeap();
             primFibonacciHeap.makeTree(graph);
             stopwatch.stop();
-            System.out.println("PrimFibonacciHeap took " + stopwatch.elapsedTime() + " for " + nodeCount + " nodes.");
+            System.out.printf("#  PrimFibonacciHeap took %s.                     #\n", stopwatch.elapsedTime());
             //System.out.println("fibonacciPrimTreeWeight: " + primFibonacciHeap.getTreeWeight());
             stopwatch.reset();
 
@@ -82,7 +81,7 @@ public class Main {
             kruskal.init(graph);
             kruskal.compute();
             stopwatch.stop();
-            System.out.println("Kruskal took " + stopwatch.elapsedTime() + " for " + nodeCount + " nodes.");
+            System.out.printf("#  Kruskal took %s.                               #\n", stopwatch.elapsedTime());
             //System.out.println("KruskalTreeWeight: " + kruskal.getTreeWeight());
             stopwatch.reset();
 
@@ -94,7 +93,7 @@ public class Main {
             gsKruskal.compute();
             stopwatch.stop();
             gsKruskal.clear();
-            System.out.println("gsKruskal took " + stopwatch.elapsedTime() + " for " + nodeCount + " nodes");
+            System.out.printf("#  gsKruskal took %s.                             #\n", stopwatch.elapsedTime());
             //System.out.println("gsKruskalTreeWeight: " + gsKruskal.getTreeWeight());
             stopwatch.reset();
 
@@ -108,7 +107,7 @@ public class Main {
 //            //System.out.println("myPrim: " + prim.getTreeWeight());
 //            stopwatch.reset();
             //System.out.println("#########################################");
-
+            System.out.println("##################################################################");
         }
 
 

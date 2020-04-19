@@ -68,6 +68,11 @@ public class Kruskal extends AbstractSpanningTree {
         }
     }
 
+
+    public void clear() {
+        treeWeight = 0;
+    }
+
     //TODO write Iterator
     @Override
     public <T extends Edge> Iterator<T> getTreeEdgesIterator() {

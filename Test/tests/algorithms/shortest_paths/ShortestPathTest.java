@@ -1,4 +1,4 @@
-package tests.algorithms;
+package tests.algorithms.shortest_paths;
 
 import de.hawh.ld.GKA01.algorithms.shortestPaths.ShortestPath;
 import de.hawh.ld.GKA01.conversion.GraphFromList;
@@ -37,7 +37,7 @@ public class ShortestPathTest {
     @BeforeEach
     public void setUp()  {
         Random random = new Random();
-        int nodeCount = 500;
+        int nodeCount = 500_000;
         firstID = random.nextInt(nodeCount);
         secondID = random.nextInt(nodeCount);
 
