@@ -1,6 +1,7 @@
 package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
@@ -10,24 +11,27 @@ import java.util.Queue;
 
 public class BFS {
 
+    private final Graph graph;
+    private final Node source;
+    private final Node target;
+
+
+    public BFS(Graph graph, Node source, Node target) {
+        this.graph = graph;
+        this.source = source;
+        this.target = target;
+    }
 
     /**
      * BFS approach to test if there is a way from source to target
      *
-     * @param source
-     *            node to start from
-     *
-     * @param target
-     *              node to get to
-     *
      * @return true if there is a way false if not.
      */
 
+    public boolean breadthFirstSearch () {
 
-    public static boolean breadthFirstSearch (Node source, Node target) {
         //check if nodes are valid
         if (source == null || target == null) throw new IllegalArgumentException("One or both nodes are null");
-
 
         // trivial case (source == target)
         if (source.equals(target)) {
@@ -58,7 +62,7 @@ public class BFS {
     }
 
 
-    private static List<Node> getAdjacentReachableNewlyMarkedNodes(Node source) {
+    private List<Node> getAdjacentReachableNewlyMarkedNodes(Node source) {
         // all "usable" edges
         Iterable<? extends Edge> iterable = source.getEachLeavingEdge();
 
@@ -77,6 +81,12 @@ public class BFS {
         }
 
         return adjacentReachableNewlyMarkedNodes;
+    }
+
+    protected void clear() {
+        for (Node node : graph) {
+            node.removeAttribute("step");
+        }
     }
 
 }

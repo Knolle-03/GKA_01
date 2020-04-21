@@ -1,6 +1,6 @@
 package tests.algorithms.spanning_trees;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal1;
 import de.hawh.ld.GKA01.util.Stopwatch;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
@@ -16,14 +16,14 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class KruskalTest {
+class Kruskal1Test {
 
 
     private final org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
-    private final Kruskal myKruskal = new Kruskal();
+    private final Kruskal1 myKruskal1 = new Kruskal1();
 
     private final Stopwatch stopwatch = new Stopwatch();
-    private static final int REPS = 1;
+    private static final int REPS = 10;
     private static final int WEIGHT_MAX = 20;
 
 
@@ -33,7 +33,7 @@ class KruskalTest {
     @BeforeAll
     static void setUp() {
 
-        int nodeCount = 10_000_000;
+        int nodeCount = 500_000;
 
         for (int j = 0; j < REPS; j++) {
 //            System.out.println("initializing graph...");
@@ -71,50 +71,55 @@ class KruskalTest {
             gsKruskal.init(graph);
             gsKruskal.compute();
 
-            myKruskal.init(graph);
-            myKruskal.compute();
+            myKruskal1.init(graph);
+            myKruskal1.compute();
 
 
-            assertEquals(gsKruskal.getTreeWeight(), myKruskal.getTreeWeight());
+            assertEquals(gsKruskal.getTreeWeight(), myKruskal1.getTreeWeight());
             gsKruskal.clear();
-            myKruskal.clear();
+            myKruskal1.clear();
         }
     }
 
-    @Test
-    void measureTime() {
-
-        for (Graph graph : testGraphs) {
-
-            System.out.println("##################################################################");
-            stopwatch.start();
-            myKruskal.init(graph);
-            myKruskal.compute();
-            stopwatch.stop();
-            System.out.printf("#  Kruskal took %s.                               #\n", stopwatch.elapsedTime());
-            //System.out.println("KruskalTreeWeight: " + kruskal.getTreeWeight());
-
-            myKruskal.clear();
-            stopwatch.reset();
-
-
-
-            stopwatch.start();
-            org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
-            gsKruskal.init(graph);
-            gsKruskal.compute();
-            stopwatch.stop();
-            System.out.printf("#  gsKruskal took %s.                             #\n", stopwatch.elapsedTime());
-            //System.out.println("gsKruskalTreeWeight: " + gsKruskal.getTreeWeight());
-            System.out.println("##################################################################");
-
-            gsKruskal.clear();
-            stopwatch.reset();
-        }
-
-
-        assertEquals( 1, 1);
-    }
+//    @Test
+//    void measureTime() {
+//
+//        for (Graph graph : testGraphs) {
+//
+//            System.out.println("##################################################################");
+//
+//
+//            stopwatch.start();
+//            org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
+//            gsKruskal.init(graph);
+//            gsKruskal.compute();
+//            stopwatch.stop();
+//            System.out.printf("#  gsKruskal took %s.                             #\n", stopwatch.elapsedTime());
+//            //System.out.println("gsKruskalTreeWeight: " + gsKruskal.getTreeWeight());
+//            System.out.println("##################################################################");
+//
+//            gsKruskal.clear();
+//            stopwatch.reset();
+//
+//
+//            stopwatch.start();
+//            myKruskal.init(graph);
+//            myKruskal.compute();
+//            stopwatch.stop();
+//            System.out.printf("#  Kruskal took %s.                               #\n", stopwatch.elapsedTime());
+//            //System.out.println("KruskalTreeWeight: " + kruskal.getTreeWeight());
+//
+//            myKruskal.clear();
+//            stopwatch.reset();
+//
+//
+//
+//
+//        }
+//
+//
+//        assertEquals( 1, 1);
+//    }
 
 
 

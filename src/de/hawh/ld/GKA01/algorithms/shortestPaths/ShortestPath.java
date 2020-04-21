@@ -1,7 +1,7 @@
 package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
-import de.hawh.ld.GKA01.algorithms.shortestPaths.BFS;
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
@@ -11,56 +11,55 @@ import java.util.List;
 public class ShortestPath {
 
 
-    /**
-     * Uses BFS to test if there is a way between the nodes
-     *
-     * Find the/a shortest Path.
-     *
-     * @param source
-     *            node to start from
-     *
-     * @param target
-     *              node to get to
-     *
-     * @return A List of Nodes which represent the shortest way between source and target. If there is no such way null is returned.
-     */
+    private BFS bfs;
+    private Node source;
+    private Node target;
+    private LinkedList<Node> path;
 
-    public static List<Node> shortestPath (Node source, Node target) {
+
+
+
+    public ShortestPath(){}
+
+    public void init(Graph graph, Node source, Node target) {
+        this.source = source;
+        this.target = target;
+        bfs = new BFS(graph, source, target);
+        path = new LinkedList<>();
+    }
+
+    public void compute() {
         //check if nodes are valid
         if (source == null || target == null) throw new IllegalArgumentException("One or both nodes are null");
 
 
         // test if target is reachable from source
-        if (!BFS.breadthFirstSearch(source, target)){
+        if (!bfs.breadthFirstSearch()){
             System.out.println("There is no path between " + source + " and " + target + ".");
-            return new ArrayList<>();
         } else {
             // trivial case (source == target)
             if (source.equals(target)) {
-                List<Node> list = new ArrayList<>();
-                list.add(source);
-                return list;
+                path.add(source);
             }
 
-
-            System.out.println(target + " is reachable in " + target.getAttribute("step") + (target.getAttribute("step") == Integer.valueOf(1) ?" step" : " steps")  + " from " + source + ".");
+            //System.out.println(target + " is reachable in " + target.getAttribute("step") + (target.getAttribute("step") == Integer.valueOf(1) ?" step" : " steps")  + " from " + source + ".");
 
             // list of nodes used for shortest Path
 
-            LinkedList<Node> list = new LinkedList<>();
-
-            list.add(target);
 
 
-            while (!list.contains(source)){
+            path.add(target);
 
-                Node currentNode = list.get(0);
+
+            while (!path.contains(source)){
+
+                Node currentNode = path.get(0);
                 //if (currentNode == null) throw new NullPointerException("null node in graph: " + target.getGraph());
                 // TODO:: figure out in which case currentNode can be null
                 //only one node
 
                 Node reachableNode = getNodeWithCurrentStepSizeMinusOne(currentNode);
-                list.addFirst(reachableNode);
+                path.addFirst(reachableNode);
             }
             // print shortest Path to console for debugging
 //            System.out.print("start: " + list.get(list.size() - 1));
@@ -69,8 +68,27 @@ public class ShortestPath {
 //            }
 //            System.out.println();
 
-            return list;
         }
+    }
+
+
+
+    /**
+     * Uses BFS to test if there is a way between the nodes
+     *
+     * Find the/a shortest Path.
+     *
+     * @return A List of Nodes which represent the shortest way between source and target. If there is no such way null is returned.
+     */
+
+
+    public List<Node> getShortestPath() {
+        return path;
+    }
+
+    public void clear() {
+        bfs.clear();
+        path.clear();
     }
 
 
@@ -88,8 +106,6 @@ public class ShortestPath {
         }
         return null;
     }
-
-
 
 
     private static List<Node> getAllNodesFromEnteringEdgesWithCurrentStepSizeMinusOne(Node node) {

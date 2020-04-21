@@ -1,50 +1,84 @@
 package de.hawh.ld.GKA01.algorithms.spanning_trees;
 
+import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.*;
 
-public class PrimPQ {
-    //Comparator.comparingInt(this::getWeight)
+public class PrimPQ extends AbstractSpanningTree {
+
     private final String VISITED = "visited";
-    private final String USED ="used";
+    private final String USED = "used";
+    private final String IN_QUEUE = "inQueue";
 
     private final Set<Edge> spanningTree = new HashSet<>();
-    private final PriorityQueue<Edge> edgesToChooseFrom = new PriorityQueue<>(Comparator.comparingInt(this::getWeight));
+    private final PriorityQueue<Edge> edgesToChooseFrom = new PriorityQueue<>(Comparator.comparingInt(PrimPQ::getWeight));
 
     private int treeWeight;
 
+    private Graph graph;
+    private Node source;
 
 
-    public void getMinSpanTree(Graph graph, Node source) {
+    public void init(Graph graph) {
+        this.graph = graph;
+    }
 
-        edgesToChooseFrom.addAll(source.getEdgeSet());                                                                  // e*log(n) (edges of source)
-        source.addAttribute(VISITED);                                                                                   // 1
-                                                                                                                        // +
-        while (spanningTree.size() < graph.getNodeCount() - 1 && !edgesToChooseFrom.isEmpty()) {                        // v - 1 (nodes in graph)
-                                                                                                                        // *
-            Edge minEdge = edgesToChooseFrom.poll();                                                                    // log(n)
-                                                                                                                        // +
-            if (isStillRelevant(minEdge)) {                                                                             // 1
-                Node newNode = getNewlyAddedNode(minEdge);                                                              // 1
-                spanningTree.add(minEdge);                                                                              // 1
-                newNode.addAttribute(VISITED);                                                                          // 1
-                minEdge.addAttribute(USED);                                                                             // 1
-                addRelevantEdges(newNode);                                                                              // e*(n + log(n))
-                treeWeight += getWeight(minEdge);                                                                       // 1
+    @Override
+    protected void makeTree() {
+        System.out.println(graph + "   "  +graph.getNodeCount());
+
+
+        source = graph.getNode(0);
+        edgesToChooseFrom.addAll(source.getEdgeSet());                                                                  // s*log(n) (edges of source)
+        for (Edge edge : source) {
+            edge.addAttribute(IN_QUEUE);
+        }
+        source.addAttribute(VISITED);
+
+        while (spanningTree.size() < graph.getNodeCount() - 1 && !edgesToChooseFrom.isEmpty()) {                        // v (nodes in graph)
+                                                                                                                        //      *
+            Edge minEdge = edgesToChooseFrom.poll();                                                                    //      log(n)
+
+            if (isStillRelevant(minEdge)) {
+                Node newNode = getNewlyAddedNode(minEdge);
+                spanningTree.add(minEdge);
+                newNode.addAttribute(VISITED);
+                minEdge.addAttribute(USED);
+                addRelevantEdges(newNode);                                                                              //      e*(log(n))
+                treeWeight += getWeight(minEdge);
             }
         }
     }
-                                                                                                                        // O(e*log(n) + 1 + (v - 1) * (log(n) + 2 + 1 + 1 + 1 + 1 + (e*(n + log(n))) + 2))
-                                                                                                                        // O(e*log(n) + 1 + (v - 1) * (log(n) + 8 + e*(n + log(n)))
-                                                                                                                        // O(e*log(n) + v*(log(n)+ e*(n + log(n)))
-                                                                                                                        // first e << n
-                                                                                                                        // O(v*(log(n) + e * (n + log(n)))
+
+    @Override
+    public <T extends Edge> Iterator<T> getTreeEdgesIterator() {
+        return null;
+    }
+
+    @Override
+    public void clear() {
+        for (Node node : graph) {
+            node.removeAttribute(VISITED);
+        }
+        for (Edge edge : graph.getEdgeSet()) {
+            edge.removeAttribute(USED);
+        }
+        treeWeight = 0;
+        spanningTree.clear();
+        edgesToChooseFrom.clear();
+        this.graph = null;
+        this.source = null;
+    }
                                                                                                                         // v = nodes in graph
                                                                                                                         // e = edges of current node
                                                                                                                         // m = edges in PQ
+                                                                                                                        // O(v*(log(n) + log(n^e)))
+                                                                                                                        // O(v * log(n^(e + 1))
+
+
 
 
 
@@ -62,13 +96,13 @@ public class PrimPQ {
 
     private void addRelevantEdges(Node node) {
         for (Edge edge : node) {                                                                                        // e (edges of the node)
-            if (!edge.hasAttribute(USED) && !edgesToChooseFrom.contains(edge)) edgesToChooseFrom.add(edge);             // 1 + n + log(n)
-        }                                                                                                               // --> O(e*(n + log(n)))
+            if (!edge.hasAttribute(USED) && !edge.hasAttribute(IN_QUEUE)) edgesToChooseFrom.add(edge);                  // 1 + 1 + log(n)
+        }                                                                                                               // --> O(e*(log(n)))
     }
 
 
-    private int getWeight(Edge edge) {
-        return edge.getAttribute("weight");                                                                        // 1
+    public static int getWeight(Edge edge) {
+        return edge.getAttribute("weight");                                                                         // 1
     }                                                                                                                   // --> O(1)
 
     public int getTreeWeight() {

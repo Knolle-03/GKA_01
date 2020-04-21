@@ -9,55 +9,28 @@ import org.graphstream.graph.Node;
 import java.util.*;
 
 
-public class Kruskal extends AbstractSpanningTree {
+public class Kruskal1 extends AbstractSpanningTree {
 
-    private static final String DEFAULT_ATTR = "weight";
-
-    private final String attr;
-
-
-    List<Edge> edges = new ArrayList<>();
+    List<Edge> edges;
     DisjointSets<Node> forest;
     Graph graph;
+    List<Edge> treeEdges;
     int treeWeight = 0;
-    List<Edge> treeEdges = new LinkedList<>();
 
-
-    public Kruskal() {
-        this(DEFAULT_ATTR, null);
-    }
-
-    public Kruskal(String attr, String flag) {
-        this(attr, flag, true, false);
-    }
-
-    public Kruskal(String attr, String flag, Object used, Object unused) {
-        super(flag, used, unused);
-        this.attr = attr;
-    }
-
-
-    public void init(Graph graph) {
-        this.graph = graph;                                                                                             // 1
-        edges.addAll(graph.getEdgeSet());                                                                               // e ( e= number of edges in the graph
-        edges.sort(Comparator.comparingInt(this::getEdgeWeight));
+    @Override
+    protected void makeTree() {
+        edges = new ArrayList<>();
+        treeEdges = new LinkedList<>();
+        edges.addAll(graph.getEdgeSet());                                                                               // e ( e = number of edges in the graph)
+        edges.sort(Comparator.comparingInt(this::getEdgeWeight));                                                       // e lg(e)
         forest = new DisjointSets<>(graph.getNodeCount());
 
 
         for (Node node : graph) {
-            forest.add(node);
+            forest.add(node);                                                                                           // n (n = number of nodes in the graph)
         }
 
-    }
-
-    @Override
-    protected void makeTree() {
-
-    }
-
-
-    public void compute() {
-        for (Edge edge : edges) {
+        for (Edge edge : edges) {                                                                                       // e
             if (forest.union(edge.getNode0(), edge.getNode1())) {
                 treeWeight += getEdgeWeight(edge);
                 treeEdges.add(edge);
@@ -67,6 +40,8 @@ public class Kruskal extends AbstractSpanningTree {
             }
         }
     }
+
+
 
 
     public void clear() {
@@ -81,7 +56,7 @@ public class Kruskal extends AbstractSpanningTree {
 
 
     private int getEdgeWeight(Edge edge) {
-        if (!edge.hasAttribute(attr)) {
+        if (!edge.hasAttribute("weight")) {
             return 1;
         }
 

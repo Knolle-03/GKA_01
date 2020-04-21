@@ -43,6 +43,11 @@ public class Stopwatch {
     }
 
 
+    public long millisElapsed() {
+        return stopTime - startTime;
+    }
+
+
 
     public String elapsedTime() {
 
