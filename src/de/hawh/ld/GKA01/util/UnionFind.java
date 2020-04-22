@@ -16,7 +16,7 @@ public class UnionFind {
         }
     }
 
-
+//TODO path compression
     public int root(int i) {
         //int initI = i;
         while (parent[i] != i) {

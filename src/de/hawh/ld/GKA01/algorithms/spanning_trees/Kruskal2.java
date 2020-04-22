@@ -13,7 +13,6 @@ public class Kruskal2 extends AbstractSpanningTree {
 
     PriorityQueue<Edge> graphEdges;
     UnionFind unionFind;
-    Graph graph;
     int treeWeight = 0;
     List<Edge> treeEdges;
 

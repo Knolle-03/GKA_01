@@ -12,7 +12,6 @@ import java.util.List;
 
 public class PrimFibonacciHeap extends AbstractSpanningTree {
 
-    private Graph graph;
     private List<Edge> spanningTree;
     private int treeWeight = 0;
 
@@ -21,13 +20,10 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
         FibonacciHeap<Integer, Node>.Node node;
     }
 
-    public void init(Graph graph) {
-        this.graph = graph;
-    }
+
 
     @Override
     protected void makeTree() {
-        System.out.println(graph);
         spanningTree = new ArrayList<>();
         FibonacciHeap<Integer, Node> heap = new FibonacciHeap<>();                                                  // 1
         Data[] nodeData = new Data[graph.getNodeCount()];                                                           // 1

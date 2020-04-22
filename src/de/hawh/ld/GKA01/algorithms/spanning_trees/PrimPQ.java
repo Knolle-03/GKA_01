@@ -18,7 +18,6 @@ public class PrimPQ extends AbstractSpanningTree {
 
     private int treeWeight;
 
-    private Graph graph;
     private Node source;
 
 
@@ -28,9 +27,6 @@ public class PrimPQ extends AbstractSpanningTree {
 
     @Override
     protected void makeTree() {
-        System.out.println(graph + "   "  +graph.getNodeCount());
-
-
         source = graph.getNode(0);
         edgesToChooseFrom.addAll(source.getEdgeSet());                                                                  // s*log(n) (edges of source)
         for (Edge edge : source) {

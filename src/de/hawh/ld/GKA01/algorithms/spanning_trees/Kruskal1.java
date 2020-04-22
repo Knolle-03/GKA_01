@@ -13,7 +13,6 @@ public class Kruskal1 extends AbstractSpanningTree {
 
     List<Edge> edges;
     DisjointSets<Node> forest;
-    Graph graph;
     List<Edge> treeEdges;
     int treeWeight = 0;
 

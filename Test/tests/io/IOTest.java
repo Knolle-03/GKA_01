@@ -69,23 +69,23 @@ public class IOTest {
         assertEquals(13, lines6.size());
     }
 
-    @Test
-    void writeLines() {
-        try {
-
-            assertEquals(-1, Files.mismatch(path0,writtenPath0));
-            assertArrayEquals(Files.readAllBytes(path0), Files.readAllBytes(writtenPath0));
-
-            assertEquals(-1, Files.mismatch(path1,writtenPath1));
-            assertArrayEquals(Files.readAllBytes(path1), Files.readAllBytes(writtenPath1));
-
-            assertEquals(-1, Files.mismatch(path3,writtenPath3));
-            assertArrayEquals(Files.readAllBytes(path3), Files.readAllBytes(writtenPath3));
-
-            assertEquals(-1, Files.mismatch(path6,writtenPath6));
-            assertArrayEquals(Files.readAllBytes(path6), Files.readAllBytes(writtenPath6));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+//    @Test
+//    void writeLines() {
+//        try {
+//
+//            //assertEquals(-1, Files.mismatch(path0,writtenPath0));
+//            assertArrayEquals(Files.readAllBytes(path0), Files.readAllBytes(writtenPath0));
+//
+//            //assertEquals(-1, Files.mismatch(path1,writtenPath1));
+//            assertArrayEquals(Files.readAllBytes(path1), Files.readAllBytes(writtenPath1));
+//
+//            //assertEquals(-1, Files.mismatch(path3,writtenPath3));
+//            assertArrayEquals(Files.readAllBytes(path3), Files.readAllBytes(writtenPath3));
+//
+//            //assertEquals(-1, Files.mismatch(path6,writtenPath6));
+//            assertArrayEquals(Files.readAllBytes(path6), Files.readAllBytes(writtenPath6));
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 }
