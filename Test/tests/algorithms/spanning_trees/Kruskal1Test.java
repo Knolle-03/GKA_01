@@ -36,7 +36,6 @@ class Kruskal1Test {
         int nodeCount = 500_000;
 
         for (int j = 0; j < REPS; j++) {
-//            System.out.println("initializing graph...");
             Graph graph = new MultiGraph("rndGraph");
             Generator gen = new DorogovtsevMendesGenerator();
             gen.addSink(graph);

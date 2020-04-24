@@ -4,8 +4,7 @@ import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal1;
 import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal2;
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFibonacciHeap;
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
-import de.hawh.ld.GKA01.util.ExcelExporter;
-import de.hawh.ld.GKA01.util.Stopwatch;
+import de.hawh.ld.GKA01.util.*;
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.Kruskal;
 import org.graphstream.algorithm.Prim;
@@ -16,7 +15,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,38 +29,56 @@ public class Main {
     private static final Random random = new Random();
     private static int currentLoop;
     private static final int repetitions = 16;
-    private static int nodeCount = 125;
+    private static int nodeCount = 16;
     private static final List<String[]> algorithmData = setTable(nodeCount);
 
     public static void main(String[] args) {
 
-        for (currentLoop = 0 ; currentLoop < repetitions ; currentLoop++) {
-
-            Graph graph = generateGraph();
-            printHeader();
-            int row = 1;
-            int counter = 0;
-            for (AbstractSpanningTree tree : abstractSpanningTrees) {
-                stopwatch.start();
-                tree.init(graph);
-                tree.compute();
-                stopwatch.stop();
-                tree.clear();
-                System.out.printf("#  %15s took %s.                       #\n",algorithmNames[counter], stopwatch.elapsedTime());
-                algorithmData.get(row++)[currentLoop + 1] = "" + stopwatch.millisElapsed();
-                stopwatch.reset();
-            }
-            printFooter();
-            nodeCount *= 2;
-
-        }
+        Graph graph = generateGraph();
+        PrimFibonacciHeap primFibonacciHeap = new PrimFibonacciHeap();
+        Painter painter = new Painter();
+        primFibonacciHeap.init(graph);
+        primFibonacciHeap.compute();
+        painter.attach(graph, ColoringType.MINIMAL_SPANNING_TREE);
+        painter.colorGraph(primFibonacciHeap.getSpanningTree());
+        graph.display();
 
 
-        try {
-            excelExporter.exportData( "test2", algorithmData);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+
+
+
+
+
+
+
+
+//        for (currentLoop = 0 ; currentLoop < repetitions ; currentLoop++) {
+//
+//            Graph graph = generateGraph();
+//            printHeader();
+//            int row = 1;
+//            int counter = 0;
+//            for (AbstractSpanningTree tree : abstractSpanningTrees) {
+//                stopwatch.start();
+//                tree.init(graph);
+//                tree.compute();
+//                stopwatch.stop();
+//                tree.clear();
+//                System.out.printf("#  %15s took %s.                       #\n",algorithmNames[counter], stopwatch.elapsedTime());
+//                algorithmData.get(row++)[currentLoop + 1] = "" + stopwatch.millisElapsed();
+//                stopwatch.reset();
+//            }
+//            printFooter();
+//            nodeCount *= 2;
+//
+//        }
+//
+//
+//        try {
+//            excelExporter.exportData( "test2", algorithmData);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
 

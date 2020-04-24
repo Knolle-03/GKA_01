@@ -3,7 +3,6 @@ package de.hawh.ld.GKA01.algorithms.spanning_trees;
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.util.FibonacciHeap;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
 
     private List<Edge> spanningTree;
     private int treeWeight = 0;
+
 
     protected static class Data {
         Edge cheapestEdgeToUse = null;
@@ -78,16 +78,10 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
         return null;
     }
 
-
-
     public void clear() {
         treeWeight = 0;
         spanningTree.clear();
     }
-
-
-
-
 
     public List<Edge> getSpanningTree() {
             return spanningTree;
@@ -96,9 +90,5 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
     public int getTreeWeight() {
             return treeWeight;
         }
-
-
-
-
 
 }

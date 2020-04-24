@@ -4,14 +4,13 @@ package de.hawh.ld.GKA01.algorithms.spanning_trees;
 import de.hawh.ld.GKA01.util.UnionFind;
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 
 import java.util.*;
 
 
 public class Kruskal2 extends AbstractSpanningTree {
 
-    PriorityQueue<Edge> graphEdges;
+    List<Edge> graphEdges;
     UnionFind unionFind;
     int treeWeight = 0;
     List<Edge> treeEdges;
@@ -20,12 +19,15 @@ public class Kruskal2 extends AbstractSpanningTree {
     protected void makeTree() {
         treeEdges = new LinkedList<>();
         unionFind = new UnionFind(graph.getNodeCount());
-        graphEdges = new PriorityQueue<>(Comparator.comparingInt(Kruskal2::getEdgeWeight));
+        graphEdges = new ArrayList<>();
         graphEdges.addAll(graph.getEdgeSet());
+        graphEdges.sort(Comparator.comparingInt(Kruskal2::getEdgeWeight));
 
-        for (Edge edge : graphEdges) {                                                                                       // e
-            if (!unionFind.connected(edge.getNode0().getIndex(), edge.getNode1().getIndex())) {
-                unionFind.union(edge.getNode0().getIndex(), edge.getNode1().getIndex());
+        for (Edge edge : graphEdges) {
+            int node0Index = edge.getNode0().getIndex();
+            int node1Index = edge.getNode1().getIndex();
+            if (!unionFind.connected(node0Index, node1Index)) {
+                unionFind.union(node0Index, node1Index);
                 treeWeight += getEdgeWeight(edge);
                 treeEdges.add(edge);
                 if (treeEdges.size() == graph.getNodeCount() - 1) {
@@ -46,7 +48,6 @@ public class Kruskal2 extends AbstractSpanningTree {
         unionFind = null;
         treeWeight = 0;
         treeEdges.clear();
-
     }
 
 

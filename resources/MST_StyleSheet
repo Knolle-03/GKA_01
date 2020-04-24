@@ -1,0 +1,16 @@
+graph {
+    fill-color: grey;
+}
+
+edge.used {
+    size: 3px;
+    fill-mode: plain;
+    fill-color: yellow;
+}
+
+
+edge.unused {
+    size: 1px;
+    fill-mode: plain;
+    fill-color: red;
+}
