@@ -2,7 +2,6 @@ package de.hawh.ld.GKA01.algorithms.spanning_trees;
 
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.*;
@@ -21,12 +20,11 @@ public class PrimPQ extends AbstractSpanningTree {
     private Node source;
 
 
-    public void init(Graph graph) {
-        this.graph = graph;
-    }
+
 
     @Override
     protected void makeTree() {
+
         source = graph.getNode(0);
         edgesToChooseFrom.addAll(source.getEdgeSet());                                                                  // s*log(n) (edges of source)
         for (Edge edge : source) {

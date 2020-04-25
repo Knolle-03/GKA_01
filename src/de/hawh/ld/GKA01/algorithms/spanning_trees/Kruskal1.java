@@ -3,7 +3,6 @@ package de.hawh.ld.GKA01.algorithms.spanning_trees;
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.util.DisjointSets;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
 import java.util.*;

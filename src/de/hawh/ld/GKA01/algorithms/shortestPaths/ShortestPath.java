@@ -17,10 +17,6 @@ public class ShortestPath {
     private LinkedList<Node> path;
 
 
-
-
-    public ShortestPath(){}
-
     public void init(Graph graph, Node source, Node target) {
         this.source = source;
         this.target = target;
@@ -40,6 +36,7 @@ public class ShortestPath {
             // trivial case (source == target)
             if (source.equals(target)) {
                 path.add(source);
+                return;
             }
 
             //System.out.println(target + " is reachable in " + target.getAttribute("step") + (target.getAttribute("step") == Integer.valueOf(1) ?" step" : " steps")  + " from " + source + ".");

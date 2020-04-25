@@ -15,9 +15,9 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
     private int treeWeight = 0;
 
 
-    protected static class Data {
-        Edge cheapestEdgeToUse = null;
+    private static class NodeInfo {
         FibonacciHeap<Integer, Node>.Node node;
+        Edge cheapestEdgeToUse = null;
     }
 
 
@@ -25,12 +25,12 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
     @Override
     protected void makeTree() {
         spanningTree = new ArrayList<>();
-        FibonacciHeap<Integer, Node> heap = new FibonacciHeap<>();                                                  // 1
-        Data[] nodeData = new Data[graph.getNodeCount()];                                                           // 1
+        FibonacciHeap<Integer, Node> heap = new FibonacciHeap<>();
+        NodeInfo[] nodeData = new NodeInfo[graph.getNodeCount()];
 
         for (int i = 0; i < graph.getNodeCount() ; i++) {                                                           // v (v = nodes in graph)
-            nodeData[i] = new Data();                                                                               // 1
-            nodeData[i].node = heap.add(Integer.MAX_VALUE, graph.getNode(i));                                       // 1
+            nodeData[i] = new NodeInfo();
+            nodeData[i].node = heap.add(Integer.MAX_VALUE, graph.getNode(i));
         }
         // visit all nodes of the graph
         while (!heap.isEmpty()) {                                                                                   // n (n = nodes in the heap)
@@ -38,16 +38,16 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
             Node currNode = heap.extractMin();                                                                      // log(n) (n = nodes in the heap)
 
             //get data of current min
-            Data minData = nodeData[currNode.getIndex()];                                                           // 1
+            NodeInfo minNodeInfo = nodeData[currNode.getIndex()];                                                           // 1
 
             //mark node as visited
             nodeData[currNode.getIndex()] = null;                                                                   // 1
 
 
-            if (minData.cheapestEdgeToUse != null){                                                                 // 1
-                spanningTree.add(minData.cheapestEdgeToUse);                                                        // 1
-                treeWeight += minData.node.getKey();                                                                // 1
-                minData.cheapestEdgeToUse = null;                                                                   // 1
+            if (minNodeInfo.cheapestEdgeToUse != null){                                                                 // 1
+                spanningTree.add(minNodeInfo.cheapestEdgeToUse);                                                        // 1
+                treeWeight += minNodeInfo.node.getKey();                                                                // 1
+                minNodeInfo.cheapestEdgeToUse = null;                                                                   // 1
             }
 
 
@@ -56,13 +56,13 @@ public class PrimFibonacciHeap extends AbstractSpanningTree {
                 // skip edges to visited nodes                                                                      // e << n
                 if (nodeData[edge.getOpposite(currNode).getIndex()] != null) {                                      // 1
                     Node oppositeNode = edge.getOpposite(currNode);                                                 // 1
-                    Data oppositeNodeData = nodeData[oppositeNode.getIndex()];                                      // 1
+                    NodeInfo oppositeNodInfo = nodeData[oppositeNode.getIndex()];                                      // 1
                     // replace Integer.MAX_VALUE with actual edge weight if edge is viewed for the first time or
                     // adjust the cost for reaching that node if it is cheaper from another node.
                     int weight = edge.getAttribute("weight");                                                  // 1
-                    if (weight < oppositeNodeData.node.getKey()) {                                                  // 1
-                        heap.decreaseKey(oppositeNodeData.node, weight);                                            // 1
-                        oppositeNodeData.cheapestEdgeToUse = edge;                                                  // 1
+                    if (weight < oppositeNodInfo.node.getKey()) {                                                  // 1
+                        heap.decreaseKey(oppositeNodInfo.node, weight);                                            // 1
+                        oppositeNodInfo.cheapestEdgeToUse = edge;                                                  // 1
                     }
                 }
                 // O(v + n*(log(n) + e) )

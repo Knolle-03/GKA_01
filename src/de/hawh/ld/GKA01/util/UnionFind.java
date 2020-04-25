@@ -18,11 +18,11 @@ public class UnionFind {
 
 //TODO path compression
     public int root(int i) {
-        //int initI = i;
+        int initI = i;
         while (parent[i] != i) {
             i = parent[i];
         }
-        //parent[initI] = i;
+        parent[initI] = i;
         return i;
     }
 
