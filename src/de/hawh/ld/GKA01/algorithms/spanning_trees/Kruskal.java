@@ -8,7 +8,7 @@ import org.graphstream.graph.Edge;
 import java.util.*;
 
 
-public class Kruskal2 extends AbstractSpanningTree {
+public class Kruskal extends AbstractSpanningTree {
 
     //PriorityQueue<Edge> graphEdges;
 
@@ -19,15 +19,11 @@ public class Kruskal2 extends AbstractSpanningTree {
 
     @Override
     protected void makeTree() {
-        treeEdges = new LinkedList<>();
+        treeEdges = new ArrayList<>();
         unionFind = new UnionFind(graph.getNodeCount());
         edges = new ArrayList<>();
         edges.addAll(graph.getEdgeSet());
-        edges.sort(Comparator.comparingInt(Kruskal2::getEdgeWeight));
-
-
-        //        graphEdges = new PriorityQueue<>(Comparator.comparingInt(Kruskal2::getEdgeWeight));
-//        graphEdges.addAll(graph.getEdgeSet());
+        edges.sort(Comparator.comparingInt(Kruskal::getEdgeWeight));
 
         for (Edge edge : edges) {                                                                                       // e
             if (!unionFind.connected(edge.getNode0().getIndex(), edge.getNode1().getIndex())) {

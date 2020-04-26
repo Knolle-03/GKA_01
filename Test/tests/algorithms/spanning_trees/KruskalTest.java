@@ -1,6 +1,6 @@
 package tests.algorithms.spanning_trees;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal1;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal;
 import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -14,12 +14,12 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Kruskal1Test {
+class KruskalTest {
 
 
     private final org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
-    private final Kruskal1 myKruskal1 = new Kruskal1();
-    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new RandomGenerator(5), new PetersenGraphGenerator()};
+    private final Kruskal myKruskal = new Kruskal();
+    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new RandomGenerator(5),};
     private static final int WEIGHT_MAX = 20;
     private static final int nodeCount = 1_000_000;
 
@@ -59,13 +59,13 @@ class Kruskal1Test {
             gsKruskal.init(graph);
             gsKruskal.compute();
 
-            myKruskal1.init(graph);
-            myKruskal1.compute();
+            myKruskal.init(graph);
+            myKruskal.compute();
 
 
-            assertEquals(gsKruskal.getTreeWeight(), myKruskal1.getTreeWeight());
+            assertEquals(gsKruskal.getTreeWeight(), myKruskal.getTreeWeight());
             gsKruskal.clear();
-            myKruskal1.clear();
+            myKruskal.clear();
         }
     }
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PrimFibonacciHeap extends AbstractSpanningTree {
+public class PrimFH extends AbstractSpanningTree {
 
     private List<Edge> spanningTree;
     private int treeWeight = 0;

@@ -2,6 +2,17 @@ graph {
     fill-color: grey;
 }
 
+node.source {
+    size: 15px;
+    fill-color: blue;
+}
+
+node.visited {
+    size:12px;
+    fill-color: lightblue;
+}
+
+
 edge.used {
     size: 3px;
     fill-mode: plain;
@@ -12,5 +23,5 @@ edge.used {
 edge.unused {
     size: 1px;
     fill-mode: plain;
-    fill-color: red;
+    fill-color: grey;
 }

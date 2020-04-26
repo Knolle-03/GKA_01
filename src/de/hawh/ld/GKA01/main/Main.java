@@ -1,12 +1,9 @@
 package de.hawh.ld.GKA01.main;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal1;
-import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal2;
-import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFibonacciHeap;
-import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFH;
 import de.hawh.ld.GKA01.util.*;
 import org.graphstream.algorithm.AbstractSpanningTree;
-import org.graphstream.algorithm.Kruskal;
 import org.graphstream.algorithm.Prim;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
@@ -15,6 +12,7 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,78 +21,62 @@ import java.util.Random;
 public class Main {
 
     private static final String[] algorithmNames = new String[] {"gsPrim", "myPrimFH", "myPrimPQ", "myKruskal", "myKruskal2", "gsKruskal"};
-    private static final AbstractSpanningTree[] abstractSpanningTrees = new AbstractSpanningTree[] {new Prim("used", null, null), new PrimFibonacciHeap(), new PrimPQ(), new Kruskal1(), new Kruskal2(), new Kruskal()};
+    private static final AbstractSpanningTree[] abstractSpanningTrees = new AbstractSpanningTree[] {new Prim("used", null, null), new PrimFH(), new Kruskal(), new org.graphstream.algorithm.Kruskal()};
     private static final ExcelExporter excelExporter = new ExcelExporter();
     private static final Stopwatch stopwatch = new Stopwatch();
     private static final Random random = new Random();
     private static int currentLoop;
-    private static final int repetitions = 16;
-    private static int nodeCount = 16;
+    private static final int repetitions = 5;
+    private static int nodeCount = 13;
     private static final List<String[]> algorithmData = setTable(nodeCount);
 
     public static void main(String[] args) {
-
-        Graph graph = generateGraph();
-        PrimFibonacciHeap primFibonacciHeap = new PrimFibonacciHeap();
-        Painter painter = new Painter();
-        primFibonacciHeap.init(graph);
-        primFibonacciHeap.compute();
-        painter.attach(graph, ColoringType.MINIMAL_SPANNING_TREE);
-        painter.colorGraph(primFibonacciHeap.getSpanningTree());
-        graph.display();
-
-
-
-
-
-
-
-
-
-
-//        for (currentLoop = 0 ; currentLoop < repetitions ; currentLoop++) {
-//
-//            Graph graph = generateGraph();
-//            printHeader();
-//            int row = 1;
-//            int counter = 0;
-//            for (AbstractSpanningTree tree : abstractSpanningTrees) {
-//                stopwatch.start();
-//                tree.init(graph);
-//                tree.compute();
-//                stopwatch.stop();
-//                tree.clear();
-//                System.out.printf("#  %15s took %s.                       #\n",algorithmNames[counter], stopwatch.elapsedTime());
-//                algorithmData.get(row++)[currentLoop + 1] = "" + stopwatch.millisElapsed();
-//                stopwatch.reset();
-//            }
-//            printFooter();
-//            nodeCount *= 2;
-//
-//        }
-//
-//
-//        try {
-//            excelExporter.exportData( "test2", algorithmData);
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        //analyseRuntime();
+        testVisuals();
     }
 
 
+    private static void testVisuals() {
+        Graph graph = generateGraph();
+        PrimFH primFibonacciHeap = new PrimFH();
+        Painter painter = new Painter();
+        primFibonacciHeap.init(graph);
+        painter.attach(graph, ColoringType.MINIMAL_SPANNING_TREE);
+        graph.display();
+        primFibonacciHeap.compute();
+        painter.colorGraph(primFibonacciHeap.getSpanningTree());
+    }
 
 
+    private static void analyseRuntime() {
+        for (currentLoop = 0 ; currentLoop < repetitions ; currentLoop++) {
+
+            Graph graph = generateGraph();
+            printHeader();
+            int row = 1;
+            int counter = 0;
+            for (AbstractSpanningTree tree : abstractSpanningTrees) {
+                stopwatch.start();
+                tree.init(graph);
+                tree.compute();
+                stopwatch.stop();
+                tree.clear();
+                System.out.printf("#  %15s took %s.                       #\n",algorithmNames[counter++], stopwatch.elapsedTime());
+                algorithmData.get(row++)[currentLoop + 1] = "" + stopwatch.millisElapsed();
+                stopwatch.reset();
+            }
+            printFooter();
+            nodeCount *= 2;
+
+        }
 
 
-
-
-
-
-
-
-
-
-
+        try {
+            excelExporter.exportData( "test3", algorithmData);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     private static Graph generateGraph() {
         Graph graph = new MultiGraph("rndGraph");
@@ -106,7 +88,7 @@ public class Main {
         gen.end();
 
         for (Edge edge : graph.getEachEdge()) {
-            int rndInt = random.nextInt(5);
+            int rndInt = random.nextInt(50);
             edge.addAttribute("weight", rndInt);
             edge.addAttribute("ui.label", rndInt);
         }

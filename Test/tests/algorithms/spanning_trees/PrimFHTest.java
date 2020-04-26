@@ -1,6 +1,6 @@
 package tests.algorithms.spanning_trees;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal2;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFH;
 import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -14,31 +14,31 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class Kruskal2Test {
+class PrimFHTest {
 
-
-    private final org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
-    private final Kruskal2 myKruskal2 = new Kruskal2();
-    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new RandomGenerator(5),
-            new PetersenGraphGenerator()};
+    private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
+    private final PrimFH myPrim = new PrimFH();
+    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new RandomGenerator(5)};
+    private static final int nodeCount = 100_000;
     private static final int WEIGHT_MAX = 20;
-    private static final int nodeCount = 1_000_000;
+
 
     private static final List<Graph> testGraphs = new ArrayList<>();
-
 
     @BeforeEach
     void setUp() {
 
         for (Generator generator : generators) {
-
-//          System.out.println("initializing graph...");
+            System.out.println("initializing " + generator.toString() + " graph...");
             Graph graph = new MultiGraph("testGraph");
             generator.addSink(graph);
             generator.begin();
-            for (int i = 0; i < nodeCount; i++)
+            for (int i = 0; i < nodeCount; i++){
                 generator.nextEvents();
+                if (i % 1000 == 0) System.out.println(i);
+            }
             generator.end();
+
 
             Random random = new Random();
 
@@ -49,25 +49,25 @@ class Kruskal2Test {
             testGraphs.add(graph);
 
         }
-
-
     }
 
     @Test
     void testCorrectness() {
 
         for (Graph graph : testGraphs) {
-            gsKruskal.init(graph);
-            gsKruskal.compute();
+            gsPrim.init(graph);
+            gsPrim.compute();
 
-            myKruskal2.init(graph);
-            myKruskal2.compute();
+            myPrim.init(graph);
+            myPrim.compute();
 
+            assertEquals(gsPrim.getTreeWeight(), myPrim.getTreeWeight());
 
-            assertEquals(gsKruskal.getTreeWeight(), myKruskal2.getTreeWeight());
-            gsKruskal.clear();
-            myKruskal2.clear();
+            gsPrim.clear();
+            myPrim.clear();
         }
     }
+
+
 
 }

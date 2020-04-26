@@ -19,7 +19,7 @@ class PrimPQTest {
     private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
     private final PrimPQ myPrim = new PrimPQ();
     private static final Random random = new Random();
-    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new PetersenGraphGenerator()};
+    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator()};
     private static final int nodeCount = 100_000;
     private static final int WEIGHT_MAX = 20;
 

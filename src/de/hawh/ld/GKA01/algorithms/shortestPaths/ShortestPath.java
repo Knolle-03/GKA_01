@@ -30,9 +30,7 @@ public class ShortestPath {
 
 
         // test if target is reachable from source
-        if (!bfs.breadthFirstSearch()){
-            System.out.println("There is no path between " + source + " and " + target + ".");
-        } else {
+        if (bfs.breadthFirstSearch()) {
             // trivial case (source == target)
             if (source.equals(target)) {
                 path.add(source);
@@ -49,21 +47,11 @@ public class ShortestPath {
 
 
             while (!path.contains(source)){
-
                 Node currentNode = path.get(0);
-                //if (currentNode == null) throw new NullPointerException("null node in graph: " + target.getGraph());
-                // TODO:: figure out in which case currentNode can be null
-                //only one node
-
                 Node reachableNode = getNodeWithCurrentStepSizeMinusOne(currentNode);
                 path.addFirst(reachableNode);
             }
-            // print shortest Path to console for debugging
-//            System.out.print("start: " + list.get(list.size() - 1));
-//            for (int i = list.size() - 2 ; i >= 0 ; i--) {
-//                System.out.print(" --> " + list.get(i));
-//            }
-//            System.out.println();
+
 
         }
     }
@@ -103,24 +91,4 @@ public class ShortestPath {
         }
         return null;
     }
-
-
-    private static List<Node> getAllNodesFromEnteringEdgesWithCurrentStepSizeMinusOne(Node node) {
-        int sourceStep = node.getAttribute("step");
-        Iterable<Edge> enteringEdges = node.getEachEnteringEdge();
-        List<Node> nodes = new ArrayList<>();
-        for (Edge edge : enteringEdges) {
-            Node currentNode = edge.getOpposite(node);
-            if (currentNode.hasAttribute("step")){
-                int adjacentNodesStep = currentNode.getAttribute("step");
-                if ( adjacentNodesStep + 1 == sourceStep) {
-                    nodes.add(currentNode);
-                }
-            }
-
-        }
-
-        return nodes;
-    }
-
 }
