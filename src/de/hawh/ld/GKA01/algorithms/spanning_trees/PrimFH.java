@@ -11,84 +11,94 @@ import java.util.List;
 
 public class PrimFH extends AbstractSpanningTree {
 
-    private List<Edge> spanningTree;
-    private int treeWeight = 0;
-
-
-    private static class NodeInfo {
-        FibonacciHeap<Integer, Node>.Node node;
-        Edge cheapestEdgeToUse = null;
+    private final List<Edge> spanningTree = new ArrayList<>();                                                          // stores edges in spanning tree
+    private int treeWeight = 0;                                                                                         // weight of spanning tree
+    private final FibonacciHeap<Integer, Node> nodesOrderedByCost = new FibonacciHeap<>();                              // Heap storing all nodes in graph (ordered by cost to reach them)
+    private NodeInfo[] nodeInfo;                                                                                        // stores nodeInfo for each node in the graph
+    private static class NodeInfo {                                                                                     // stores info of a single node
+        FibonacciHeap<Integer, Node>.Node node;                                                                         // reference to node in heap
+        Edge cheapestEdgeToUse = null;                                                                                  // cheapest edge to get to the node
     }
 
 
 
     @Override
     protected void makeTree() {
-        spanningTree = new ArrayList<>();
-        FibonacciHeap<Integer, Node> heap = new FibonacciHeap<>();
-        NodeInfo[] nodeData = new NodeInfo[graph.getNodeCount()];
+        nodeInfo = new NodeInfo[graph.getNodeCount()];                                                                  // init an array with each NodeInfo object
+        for (int i = 0; i < graph.getNodeCount() ; i++) {                                                               // representing a single node component
+            nodeInfo[i] = new NodeInfo();
+            nodeInfo[i].node = nodesOrderedByCost.add(Integer.MAX_VALUE, graph.getNode(i));                             // Get reference to node in heap
+        }                                                                                                               // to use decreaseKey() later
 
-        for (int i = 0; i < graph.getNodeCount() ; i++) {                                                           // v (v = nodes in graph)
-            nodeData[i] = new NodeInfo();
-            nodeData[i].node = heap.add(Integer.MAX_VALUE, graph.getNode(i));
-        }
-        // visit all nodes of the graph
-        while (!heap.isEmpty()) {                                                                                   // n (n = nodes in the heap)
-            //get current min
-            Node currNode = heap.extractMin();                                                                      // log(n) (n = nodes in the heap)
-
-            //get data of current min
-            NodeInfo minNodeInfo = nodeData[currNode.getIndex()];                                                           // 1
-
-            //mark node as visited
-            nodeData[currNode.getIndex()] = null;                                                                   // 1
-
-
-            if (minNodeInfo.cheapestEdgeToUse != null){                                                                 // 1
-                spanningTree.add(minNodeInfo.cheapestEdgeToUse);                                                        // 1
-                treeWeight += minNodeInfo.node.getKey();                                                                // 1
-                minNodeInfo.cheapestEdgeToUse = null;                                                                   // 1
-            }
-
-
-            // bubble up low cost edges in heap
-            for (Edge edge : currNode) {                                                                            // e (edges of currNode)
-                // skip edges to visited nodes                                                                      // e << n
-                if (nodeData[edge.getOpposite(currNode).getIndex()] != null) {                                      // 1
-                    Node oppositeNode = edge.getOpposite(currNode);                                                 // 1
-                    NodeInfo oppositeNodInfo = nodeData[oppositeNode.getIndex()];                                      // 1
-                    // replace Integer.MAX_VALUE with actual edge weight if edge is viewed for the first time or
-                    // adjust the cost for reaching that node if it is cheaper from another node.
-                    int weight = edge.getAttribute("weight");                                                  // 1
-                    if (weight < oppositeNodInfo.node.getKey()) {                                                  // 1
-                        heap.decreaseKey(oppositeNodInfo.node, weight);                                            // 1
-                        oppositeNodInfo.cheapestEdgeToUse = edge;                                                  // 1
-                    }
+        while (!nodesOrderedByCost.isEmpty()) {                                                                         // visit all nodes in the graph
+            Node currNode = nodesOrderedByCost.extractMin();                                                            // get current min
+            NodeInfo minNodeInfo = nodeInfo[currNode.getIndex()];                                                       // get data of current min
+            nodeInfo[currNode.getIndex()] = null;                                                                       // mark node as visited
+            if (minNodeInfo.cheapestEdgeToUse != null) addLowestCostEdgeToSpanningTree(minNodeInfo);                    // add lowest cost edge to spanning tree
+            for (Edge edge : currNode) {                                                                                // look at each adjacent node
+                if (nodeInfo[edge.getOpposite(currNode).getIndex()] != null) {                                          // skip edges to visited nodes
+                    adjustCostOfReachableNodes(edge, currNode);                                                         // let node swim up that got cheaper to use
                 }
-                // O(v + n*(log(n) + e) )
-                // O(v + (n*log(n))
-
-
             }
         }
+    }
+
+    private void adjustCostOfReachableNodes(Edge edge, Node currNode) {
+        NodeInfo oppositeNodeInfo = nodeInfo[edge.getOpposite(currNode).getIndex()];
+        if (getEdgeWeight(edge) < oppositeNodeInfo.node.getKey()) {                                                     // if currently looked at edge is cheaper to use than best known edge
+            nodesOrderedByCost.decreaseKey(oppositeNodeInfo.node, getEdgeWeight(edge));                                 // let Node swim up in heap by decreasing the key
+            oppositeNodeInfo.cheapestEdgeToUse = edge;                                                                  // replace last best edge with current edge
+        }
+    }
+
+    private void addLowestCostEdgeToSpanningTree(NodeInfo minNodeInfo) {
+        spanningTree.add(minNodeInfo.cheapestEdgeToUse);                                                                // add cheapest edge to spanning tree
+        treeWeight += minNodeInfo.node.getKey();                                                                        // adjust tree weight
     }
 
     @Override
     public <T extends Edge> Iterator<T> getTreeEdgesIterator() {
-        return null;
+        return new TreeIterator<>();
     }
 
-    public void clear() {
+    public void clear() {                                                                                               // rest spanning tree
         treeWeight = 0;
         spanningTree.clear();
     }
 
+
+    private int getEdgeWeight(Edge edge) {
+        if (!edge.hasAttribute("weight")) {
+            return 1;
+        }
+        return edge.getAttribute("weight");
+    }
+
     public List<Edge> getSpanningTree() {
             return spanningTree;
-        }
+    }
 
     public int getTreeWeight() {
             return treeWeight;
+    }
+
+    protected class TreeIterator<T extends Edge> implements Iterator<T> {
+
+        protected Iterator<Edge> it = spanningTree.iterator();
+
+        public boolean hasNext() {
+            return it.hasNext();
         }
+
+        @SuppressWarnings("unchecked")
+        public T next() {
+            return (T) it.next();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException(
+                    "This iterator does not support remove.");
+        }
+    }
 
 }

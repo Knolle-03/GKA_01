@@ -24,10 +24,10 @@ public class ShortestPathTest {
     ShortestPath shortestPath = new ShortestPath();
     Dijkstra dijkstraForRandomGraph = new Dijkstra(Dijkstra.Element.EDGE, null, null);
     private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator(), new RandomGenerator(5),};
-    private static final int nodeCount = 100_000;
+    private static final int nodeCount = 1_000_000;
     private static final int WEIGHT_MAX = 20;
     private static final List<Graph> testGraphs = new ArrayList<>();
-    private static final int REPS_IN_RANDOM_GRAPH = 100;
+    private static final int REPS_IN_RANDOM_GRAPH = 1_000;
 
     int firstID;
     int secondID;
@@ -38,12 +38,13 @@ public class ShortestPathTest {
     public void setUp() {
 
         for (Generator generator : generators) {
-            int nodes = 0;
+
             Graph graph = new MultiGraph(generator.toString());
             generator.addSink(graph);
             generator.begin();
             for (int i = 0; i < nodeCount; i++){
                 generator.nextEvents();
+                if (i % 50_000 == 0) System.out.println(i + " nodes generated");
             }
 
             generator.end();
@@ -98,9 +99,9 @@ public class ShortestPathTest {
                             break;
                         }
                     }
-                    assertTrue(pathIncluded);
+                    assertTrue(pathIncluded, "" + graph + " done");
                 } else {
-                    assertFalse(pathIncluded);
+                    assertFalse(pathIncluded, "" + graph + " done");
                 }
 
 

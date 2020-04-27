@@ -1,64 +1,40 @@
 package tests.algorithms.spanning_trees;
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
-import org.graphstream.algorithm.generator.*;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.MultiGraph;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PrimPQTest {
+class PrimPQTest extends SpanningTreeTest {
 
     private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
     private final PrimPQ myPrim = new PrimPQ();
-    private static final Random random = new Random();
-    private static final Generator[] generators = new Generator[] {new BarabasiAlbertGenerator(), new ChvatalGenerator(), new DorogovtsevMendesGenerator()};
-    private static final int nodeCount = 100_000;
-    private static final int WEIGHT_MAX = 20;
-
-
-    private static final List<Graph> testGraphs = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        generateTestGraphs();
+    }
 
-        for (Generator generator : generators) {
-            Graph graph = new MultiGraph(generator.toString());
-            generator.addSink(graph);
-            generator.begin();
-            for (int i = 0; i < nodeCount; i++)
-                generator.nextEvents();
-            generator.end();
-
-
-            for (Edge edge : graph.getEachEdge()) {
-                edge.addAttribute("weight", random.nextInt(WEIGHT_MAX));
-            }
-
-            testGraphs.add(graph);
-
-        }
+    @AfterEach
+    void resetLists() {
+        resetGenerators();
     }
 
     @Test
     void testCorrectness() {
 
         for (Graph graph : testGraphs) {
+            if (graph.toString().contains("RandomGenerator")) continue;
             gsPrim.init(graph);
             gsPrim.compute();
 
             myPrim.init(graph);
             myPrim.compute();
 
-            assertEquals(gsPrim.getTreeWeight(), myPrim.getTreeWeight());
-            System.out.println(graph.toString() + " done");
+            assertEquals(gsPrim.getTreeWeight(), myPrim.getTreeWeight(), "" + graph + " done");
             gsPrim.clear();
             myPrim.clear();
         }
