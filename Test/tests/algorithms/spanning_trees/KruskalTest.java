@@ -1,9 +1,9 @@
 package tests.algorithms.spanning_trees;
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.Kruskal;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.algorithms.superclasses.SpanningTreeTest;
 
 class KruskalTest extends SpanningTreeTest {
 
@@ -12,10 +12,10 @@ class KruskalTest extends SpanningTreeTest {
     private final Kruskal myKruskal = new Kruskal();
 
     @BeforeEach
-    void setUp() { generateTestGraphs(); }
+    void setUp() { generateWeightedTestGraphs(); }
 
-    @AfterEach
-    void resetLists() { resetGenerators(); }
+//    @AfterEach
+//    void resetLists() { resetGenerators(); }
 
     @Test
     void testCorrectness() { super.testEachGraph(gsKruskal, myKruskal);}

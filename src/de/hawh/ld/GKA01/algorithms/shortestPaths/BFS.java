@@ -35,7 +35,6 @@ public class BFS {
 
         // trivial case (source == target)
         if (source.equals(target)) {
-            System.out.println("Source and target are the same vertex.");
             return true;
         }
 

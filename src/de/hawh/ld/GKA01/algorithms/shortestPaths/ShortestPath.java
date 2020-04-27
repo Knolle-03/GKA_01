@@ -1,14 +1,14 @@
 package de.hawh.ld.GKA01.algorithms.shortestPaths;
 
+import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ShortestPath {
+public class ShortestPath extends AbstractSpanningTree {
 
 
     private BFS bfs;
@@ -17,14 +17,19 @@ public class ShortestPath {
     private LinkedList<Node> path;
 
 
-    public void init(Graph graph, Node source, Node target) {
+    public void setSource(Node source) {
         this.source = source;
+
+    }
+
+    public void setTarget(Node target) {
         this.target = target;
         bfs = new BFS(graph, source, target);
         path = new LinkedList<>();
     }
 
-    public void compute() {
+    @Override
+    protected void makeTree() {
         //check if nodes are valid
         if (source == null || target == null) throw new IllegalArgumentException("One or both nodes are null");
 
@@ -36,12 +41,6 @@ public class ShortestPath {
                 path.add(source);
                 return;
             }
-
-            //System.out.println(target + " is reachable in " + target.getAttribute("step") + (target.getAttribute("step") == Integer.valueOf(1) ?" step" : " steps")  + " from " + source + ".");
-
-            // list of nodes used for shortest Path
-
-
 
             path.add(target);
 
@@ -58,6 +57,12 @@ public class ShortestPath {
 
 
 
+
+
+
+
+
+
     /**
      * Uses BFS to test if there is a way between the nodes
      *
@@ -69,6 +74,13 @@ public class ShortestPath {
 
     public List<Node> getShortestPath() {
         return path;
+    }
+
+
+
+    @Override
+    public <T extends Edge> Iterator<T> getTreeEdgesIterator() {
+        return null;
     }
 
     public void clear() {

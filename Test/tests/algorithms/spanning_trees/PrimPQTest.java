@@ -2,9 +2,9 @@ package tests.algorithms.spanning_trees;
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
 import org.graphstream.graph.Graph;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.algorithms.superclasses.SpanningTreeTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,13 +15,13 @@ class PrimPQTest extends SpanningTreeTest {
 
     @BeforeEach
     void setUp() {
-        generateTestGraphs();
+        super.generateWeightedTestGraphs();
     }
 
-    @AfterEach
-    void resetLists() {
-        resetGenerators();
-    }
+//    @AfterEach
+//    void resetLists() {
+//        super.resetGenerators();
+//    }
 
     @Test
     void testCorrectness() {
