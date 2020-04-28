@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MyDijkstra {
+public class OwnDijkstra {
 
     public static class Data {
         FibonacciHeap<Double, Node>.Node firstNode;
@@ -56,7 +56,7 @@ public class MyDijkstra {
 
 
 
-    public MyDijkstra(Graph graph) {
+    public OwnDijkstra(Graph graph) {
         this.graph = graph;
     }
 

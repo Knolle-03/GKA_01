@@ -50,16 +50,19 @@ public class Stopwatch {
 
 
     public String elapsedTime() {
+        return elapsedTime(stopTime - startTime);
+    }
 
-        if (state == State.RUNNING) {
-            System.out.println("Stopwatch is still running use stop() and then elapsedTime().");
-            return null;
-        } else if(state == State.READY) {
-            System.out.println("Stopwatch has not been started.\nUse start() and stop() to measure time\nand elapsedTime() to get the time.");
-            return null;
-        }
+    public String elapsedTime(long millis) {
+//
+//        if (state == State.RUNNING) {
+//            System.out.println("Stopwatch is still running use stop() and then elapsedTime().");
+//            return null;
+//        } else if(state == State.READY) {
+//            System.out.println("Stopwatch has not been started.\nUse start() and stop() to measure time\nand elapsedTime() to get the time.");
+//            return null;
+//        }
 
-        long millis = stopTime - startTime;
 
         int hours = (int) (millis / 3_600_000);
         int hoursRemainder = (int) (millis % 3_600_000);
@@ -72,7 +75,4 @@ public class Stopwatch {
 
         return String.format("%02dh:%02dm:%02ds:%03dms", hours, minutes, seconds, remainingMillis);
     }
-
-
-
 }

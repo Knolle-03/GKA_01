@@ -1,12 +1,12 @@
 package tests.algorithms.spanning_trees;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimFH;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimFH;
 import org.graphstream.algorithm.Prim;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.algorithms.superclasses.SpanningTreeTest;
 
-class PrimFHTest extends SpanningTreeTest {
+class ownPrimFHTest extends SpanningTreeTest {
 
     @BeforeEach
     void setUp() {
@@ -15,6 +15,6 @@ class PrimFHTest extends SpanningTreeTest {
 
     @Test
     void testCorrectness() {
-        super.testEachGraph(new Prim(), new PrimFH());
+        super.testEachGraph(new Prim(), new OwnPrimFH());
     }
 }

@@ -18,7 +18,7 @@ package tests.algorithms.spanning_trees;
 //         \__|_| |_|\___|  \___/_/\_\___|_|  \___|_|___/\___|
 
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
+import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimPQ;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +26,10 @@ import tests.algorithms.superclasses.SpanningTreeTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PrimPQTest extends SpanningTreeTest {
+class ownPrimPQTest extends SpanningTreeTest {
 
     private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
-    private final PrimPQ myPrim = new PrimPQ();
+    private final OwnPrimPQ myPrim = new OwnPrimPQ();
 
     @BeforeEach
     void setUp() {

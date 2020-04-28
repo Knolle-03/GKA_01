@@ -12,27 +12,47 @@ import java.util.List;
 
 public class ExcelExporter {
 
-    public void exportData(String filename, List<String[]> data) throws IOException {
+    public void exportData(String filename, String[] header , List<long[]> data) throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
 
-        XSSFSheet spreadsheet = workbook.createSheet( "Time data");
+        XSSFSheet spreadsheet = workbook.createSheet( "runtime data");
 
         XSSFRow row;
 
+//
+//        for (int i = 0; i < data.size(); i++) {
+//            row = sheet.createRow(i);
+//            for (int j = 0; j < data.get(i).length; j++) {
+//                Cell cell = row.createCell(j);
+//                cell.setCellValue(data.get(i)[j]);
+//            }
+//        }
 
-        //Iterate over data and write to sheet
 
-        int rowid = 0;
 
-        for (Object[] objArr : data) {
-            row = spreadsheet.createRow(rowid++);
 
-            int cellid = 0;
+        // fill header
+        int rowId = 0;
+        row = spreadsheet.createRow(rowId++);
+        int cellId = 0;
 
-            for (Object obj : objArr){
-                Cell cell = row.createCell(cellid++);
-                cell.setCellValue((String)obj);
+        for (String str : header) {
+            Cell cell = row.createCell(cellId++);
+            cell.setCellValue(str);
+
+        }
+
+
+
+        for (long[] longArr : data) {
+            row = spreadsheet.createRow(rowId++);
+
+            cellId = 0;
+
+            for (long runtime : longArr){
+                Cell cell = row.createCell(cellId++);
+                cell.setCellValue(runtime);
             }
         }
 

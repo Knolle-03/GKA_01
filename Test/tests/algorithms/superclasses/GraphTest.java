@@ -15,7 +15,7 @@ public class GraphTest {
 
     protected static final List<Graph> testGraphs = new ArrayList<>();
     protected static final Random random = new Random();
-    protected static final int nodeCount = 1_000;
+    protected static final int nodeCount = 100_000;
     protected static final List<Generator> generators = Arrays.asList(new DorogovtsevMendesGenerator(), new RandomGenerator(5));
 
 

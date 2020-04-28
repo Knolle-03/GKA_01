@@ -37,14 +37,14 @@ import org.graphstream.graph.Node;
 
 import java.util.*;
 
-public class PrimPQ extends AbstractSpanningTree {
+public class OwnPrimPQ extends AbstractSpanningTree {
 
     private final String VISITED = "visited";
     private final String USED = "used";
     private final String IN_QUEUE = "inQueue";
 
     private final Set<Edge> spanningTree = new HashSet<>();
-    private final PriorityQueue<Edge> edgesToChooseFrom = new PriorityQueue<>(Comparator.comparingInt(PrimPQ::getWeight));
+    private final PriorityQueue<Edge> edgesToChooseFrom = new PriorityQueue<>(Comparator.comparingInt(OwnPrimPQ::getWeight));
 
     private int treeWeight;
 

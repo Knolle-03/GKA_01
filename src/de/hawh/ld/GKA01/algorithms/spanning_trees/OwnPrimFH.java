@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class PrimFH extends AbstractSpanningTree {
+public class OwnPrimFH extends AbstractSpanningTree {
 
     private final List<Edge> spanningTree = new ArrayList<>();
     private final FibonacciHeap<Integer, Node> nodesOrderedByCost = new FibonacciHeap<>();                              // Heap storing all nodes in graph (ordered by cost to reach them)
@@ -72,8 +72,10 @@ public class PrimFH extends AbstractSpanningTree {
     }
 
     public void clear() {                                                                                               // rest spanning tree
-        treeWeight = 0;
         spanningTree.clear();
+        treeWeight = 0;
+        nodesOrderedByCost.clear();
+        nodeInfo = null;
     }
 
     public int getTreeWeight() {
