@@ -33,5 +33,14 @@
     <orderEntry type="library" name="org.apache.poi:poi-ooxml:4.1.0" level="project" />
     <orderEntry type="library" name="gs-algo-1" level="project" />
     <orderEntry type="library" name="org.apache.poi:poi:4.1.0" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/19.0.0/annotations-19.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

@@ -6,7 +6,6 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
@@ -23,7 +22,7 @@ public class PathTest extends GraphTest {
 
 
     public void shortestPath(ShortestPath shortestPath) {
-        generateNonWeightedTestGraphs();
+        if (testGraphs.size() == 0) generateNonWeightedTestGraphs();
         for (Graph graph : testGraphs) {
 
             source = graph.getNode(random.nextInt(graph.getNodeCount()));
@@ -61,7 +60,7 @@ public class PathTest extends GraphTest {
                     assertFalse(pathIncluded);
                 }
 
-                if ((i + 1) % 100 == 0) System.out.println(i + " reps done");
+                //if (i % 99 == 1) System.out.println((i + 1) + " reps done");
 
                 target = graph.getNode(random.nextInt(graph.getNodeCount()));
                 shortestPath.clear();
@@ -70,7 +69,6 @@ public class PathTest extends GraphTest {
         }
     }
 
-    @Test
     public void shortestPathInGraphWithOneNode() {
         Graph graph = new SingleGraph("lonelyNode");
         Node lonelyNode = graph.addNode("lonelyNode");

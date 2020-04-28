@@ -7,16 +7,9 @@ import tests.algorithms.superclasses.SpanningTreeTest;
 
 class KruskalTest extends SpanningTreeTest {
 
-
-    private final org.graphstream.algorithm.Kruskal gsKruskal = new org.graphstream.algorithm.Kruskal();
-    private final Kruskal myKruskal = new Kruskal();
-
     @BeforeEach
-    void setUp() { generateWeightedTestGraphs(); }
-
-//    @AfterEach
-//    void resetLists() { resetGenerators(); }
+    void setUp() { setWeightOfTestGraphEdges(); }
 
     @Test
-    void testCorrectness() { super.testEachGraph(gsKruskal, myKruskal);}
+    void testCorrectness() { super.testEachGraph(new org.graphstream.algorithm.Kruskal(), new Kruskal());}
 }

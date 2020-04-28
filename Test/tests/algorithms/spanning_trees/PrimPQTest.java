@@ -1,5 +1,23 @@
 package tests.algorithms.spanning_trees;
 
+
+//          _   _       _                      _            __
+//         | \ | |     | |                    | |          / _|
+//         |  \| | ___ | |_   _ __   __ _ _ __| |_    ___ | |_
+//         | . ` |/ _ \| __| | '_ \ / _` | '__| __|  / _ \|  _|
+//         | |\  | (_) | |_  | |_) | (_| | |  | |_  | (_) | |
+//         |_| \_|\___/ \__| | .__/ \__,_|_|   \__|  \___/|_|
+//                           | |
+//                           |_|
+//
+//          _   _                                   _
+//         | | | |                                 (_)
+//         | |_| |__   ___    _____  _____ _ __ ___ _ ___  ___
+//         | __| '_ \ / _ \  / _ \ \/ / _ \ '__/ __| / __|/ _ \
+//         | |_| | | |  __/ |  __/>  <  __/ | | (__| \__ \  __/
+//         \__|_| |_|\___|  \___/_/\_\___|_|  \___|_|___/\___|
+
+
 import de.hawh.ld.GKA01.algorithms.spanning_trees.PrimPQ;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,13 +33,8 @@ class PrimPQTest extends SpanningTreeTest {
 
     @BeforeEach
     void setUp() {
-        super.generateWeightedTestGraphs();
+        super.setWeightOfTestGraphEdges();
     }
-
-//    @AfterEach
-//    void resetLists() {
-//        super.resetGenerators();
-//    }
 
     @Test
     void testCorrectness() {
@@ -34,7 +47,7 @@ class PrimPQTest extends SpanningTreeTest {
             myPrim.init(graph);
             myPrim.compute();
 
-            assertEquals(gsPrim.getTreeWeight(), myPrim.getTreeWeight(), "" + graph + " done");
+            assertEquals(gsPrim.getTreeWeight(), myPrim.getTreeWeight());
             gsPrim.clear();
             myPrim.clear();
         }
