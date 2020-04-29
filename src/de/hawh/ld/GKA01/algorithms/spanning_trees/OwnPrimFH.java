@@ -30,7 +30,7 @@ public class OwnPrimFH extends AbstractSpanningTree {
     @Override
     protected void makeTree() {
         nodeInfo = new NodeInfo[graph.getNodeCount()];                                                                  // init an array with each NodeInfo object
-        for (int i = 0; i < graph.getNodeCount() ; i++) {                                                               // representing a single node component
+        for (int i = 0; i < graph.getNodeCount() ; i++) {                                                               // representing a single node component             --> V
             nodeInfo[i] = new NodeInfo();
             nodeInfo[i].nodeReferenceInHeap = nodesOrderedByCost.add(Integer.MAX_VALUE, graph.getNode(i));              // Get reference to node in heap
         }                                                                                                               // to use decreaseKey() later
@@ -60,14 +60,14 @@ public class OwnPrimFH extends AbstractSpanningTree {
 
     private void adjustCostOfReachableNodes(Edge edge, Node currNode) {
         NodeInfo oppositeNodeInfo = nodeInfo[edge.getOpposite(currNode).getIndex()];
-        if (getEdgeWeight(edge) < oppositeNodeInfo.nodeReferenceInHeap.getKey()) {                                          // if currently looked at edge is cheaper to use than best known edge
-            nodesOrderedByCost.decreaseKey(oppositeNodeInfo.nodeReferenceInHeap, getEdgeWeight(edge));                // let Node swim up in heap by decreasing the key
+        if (getEdgeWeight(edge) < oppositeNodeInfo.nodeReferenceInHeap.getKey()) {                                      // if currently looked at edge is cheaper to use than best known edge
+            nodesOrderedByCost.decreaseKey(oppositeNodeInfo.nodeReferenceInHeap, getEdgeWeight(edge));                  // let Node swim up in heap by decreasing the key
             oppositeNodeInfo.cheapestEdgeToUse = edge;                                                                  // replace last best edge with current edge
         }
     }
 
     private void addLowestCostEdgeToSpanningTree(NodeInfo minNodeInfo) {
-        spanningTree.add(minNodeInfo.cheapestEdgeToUse);                                                                   // add cheapest edge to spanning tree
+        spanningTree.add(minNodeInfo.cheapestEdgeToUse);                                                                // add cheapest edge to spanning tree
         treeWeight += minNodeInfo.nodeReferenceInHeap.getKey();                                                         // adjust tree weight
     }
 

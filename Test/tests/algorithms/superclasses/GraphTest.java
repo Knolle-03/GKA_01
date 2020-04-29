@@ -1,10 +1,8 @@
 package tests.algorithms.superclasses;
 
-import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
-import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.RandomGenerator;
+import org.graphstream.algorithm.generator.*;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.graph.implementations.SingleGraph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +19,7 @@ public class GraphTest {
 
     public static void generateNonWeightedTestGraphs() {
         for (Generator generator : generators) {
-            Graph graph = new MultiGraph("" + generator);
+            Graph graph = new SingleGraph("" + generator);
             generator.addSink(graph);
             generator.begin();
             for (int i = 0; i < nodeCount; i++) {
@@ -33,4 +31,20 @@ public class GraphTest {
             testGraphs.add(graph);
         }
     }
+
+
+
+    public static void generateEulerianTestGraphs() {
+        Generator generator = new RandomEuclideanGenerator();
+        Graph graph = new SingleGraph("" + generator);
+        generator.addSink(graph);
+        generator.begin();
+        for (int i = 0; i < nodeCount; i++) {
+            generator.nextEvents();
+            if (i % 50_000 == 0) System.out.println(i + " nodes created.");
+        }
+        generator.end();
+        testGraphs.add(graph);
+    }
+
 }

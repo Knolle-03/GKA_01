@@ -17,19 +17,20 @@ public class OwnKruskal extends AbstractSpanningTree {
     private final List<Edge> graphEdges = new ArrayList<>();                                                            // stores all edges of the graph
     private UnionFind unionFind;                                                                                        // keeps track of components
     private int treeWeight = 0;
+
     @Override
     protected void makeTree() {
         unionFind = new UnionFind(graph.getNodeCount());                                                                // init UnionFind object with each node's ID representing a single node component
         graphEdges.addAll(graph.getEdgeSet());                                                                          // add all edges to the list
-        graphEdges.sort(Comparator.comparingInt(this::getEdgeWeight));                                               // sort the edges in ascending order by weight
-        for (Edge edge : graphEdges) {                                                                              // look at each edge
+        graphEdges.sort(Comparator.comparingInt(this::getEdgeWeight));                                                  // sort the edges in ascending order by weight
+        for (Edge edge : graphEdges) {                                                                                  // look at each edge
             int indexOfNode0 = edge.getNode0().getIndex();
             int indexOfNode1 = edge.getNode1().getIndex();
-            if (spanningTree.size() == graph.getNodeCount() - 1) break;                                             // break if all edges are in one component  (|E| = |V| - 1)
-            if (!unionFind.connected(indexOfNode0,indexOfNode1)) {                                                  // if the incident nodes are not connected
-                unionFind.union(indexOfNode0, indexOfNode1);                                                        // unite the two components to one via the current edge
-                treeWeight += getEdgeWeight(edge);                                                                  // adjust tree weight
-                spanningTree.add(edge);                                                                             // add edge to spanning tree
+            if (spanningTree.size() == graph.getNodeCount() - 1) break;                                                 // break if all edges are in one component  (|E| = |V| - 1)
+            if (!unionFind.connected(indexOfNode0,indexOfNode1)) {                                                      // if the incident nodes are not connected
+                unionFind.union(indexOfNode0, indexOfNode1);                                                            // unite the two components to one via the current edge
+                treeWeight += getEdgeWeight(edge);                                                                      // adjust tree weight
+                spanningTree.add(edge);                                                                                 // add edge to spanning tree
             }
         }
     }
@@ -45,7 +46,7 @@ public class OwnKruskal extends AbstractSpanningTree {
         return new SpanningTreeIterator<>();
     }
 
-    @Override                                                                                                           // reset the spanning tree
+    @Override
     public void clear() {
         graph = null;
         spanningTree.clear();

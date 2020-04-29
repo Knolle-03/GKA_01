@@ -2,8 +2,11 @@ package de.hawh.ld.GKA01.util;
 
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
+import org.graphstream.algorithm.generator.FullGenerator;
 import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Element;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -26,6 +29,8 @@ public class AlgorithmTester {
         Painter painter = new Painter();
         abstractSpanningTree.init(graph);
         painter.attach(graph, coloringType);
+        for (Element element : graph) element.addAttribute("ui.label", element.getId());
+        graph.addAttribute("ui.antialias");
         graph.display();
         abstractSpanningTree.compute();
 
@@ -49,7 +54,7 @@ public class AlgorithmTester {
             millisAddedUp[0] = nodeCount;
             for (int i = 0; i < repsOfEachRun; i++) {
 
-                Generator generator = new DorogovtsevMendesGenerator();
+                Generator generator = new RandomGenerator(10);
                 Graph graph = new MultiGraph(generator + " graph", false,true);
                 generator.addSink(graph);
                 generator.begin();
@@ -106,7 +111,7 @@ public class AlgorithmTester {
         for (Edge edge : graph.getEachEdge()) {
             int rndInt = rng.nextInt(upperBoundWeight - lowerBoundWeight) + lowerBoundWeight;
             edge.addAttribute("weight", rndInt);
-            //edge.addAttribute("ui.label", rndInt);
+            edge.addAttribute("ui.label", rndInt);
         }
 
         return graph;
@@ -154,13 +159,13 @@ public class AlgorithmTester {
     public void printRound(int currentLoop, int nodeCount,String[] names, long[] runTimes) {
         Stopwatch stopwatch = new Stopwatch();
         System.out.println("\n");
-        System.out.printf("###############################################################%02d###############################################################\n", (currentLoop));
-        System.out.printf("#                                                     graph with %8d nodes                                                #\n", nodeCount);
-        System.out.println("################################################################################################################################");
+        System.out.printf("###################%02d##################\n", (currentLoop));
+        System.out.printf("#      graph with %8d nodes      #\n", nodeCount);
+        System.out.println("#######################################");
         for (int i = 1; i < names.length; i++) {
-            System.out.printf("#  %70s      took %s.                         #\n",names[i], stopwatch.elapsedTime(runTimes[i]));
+            System.out.printf("#  %10s took %s  #\n",names[i], stopwatch.elapsedTime(runTimes[i]));
         }
-        System.out.println("################################################################################################################################");
+        System.out.println("#######################################");
     }
 
     private String[] getADTNames(AbstractSpanningTree ... ADTs) {

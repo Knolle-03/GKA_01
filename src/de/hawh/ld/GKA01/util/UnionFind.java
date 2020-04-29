@@ -2,7 +2,6 @@ package de.hawh.ld.GKA01.util;
 
 public class UnionFind {
 
-
     private final int[] parent;
     private final int[] treeSize;
 
@@ -16,7 +15,6 @@ public class UnionFind {
         }
     }
 
-//TODO path compression
     public int root(int i) {
         int initI = i;
         while (parent[i] != i) {
