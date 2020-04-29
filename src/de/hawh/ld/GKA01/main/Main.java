@@ -24,7 +24,7 @@ public class Main {
         AlgorithmTester algorithmTester = new AlgorithmTester();
         AbstractSpanningTree[] ASTs = new AbstractSpanningTree[] {new Prim(), new OwnPrimFH(), new Kruskal(), new OwnKruskal()};
 
-        algorithmTester.analyseRuntime(1000, 100, 14, true, "largeTest2", ASTs);
+        algorithmTester.analyseRuntime(1_000, 100, 14, true, "1k_100reps_14doubling", ASTs);
 
 
     }

@@ -57,6 +57,9 @@ public class AlgorithmTester {
                     generator.nextEvents();
                 }
                 generator.end();
+                Random random = new Random();
+
+                for (Edge edge : graph.getEdgeSet()) edge.addAttribute("weight", random.nextInt(20) );
                 System.out.println(nodeCount + " nodes done");
 
                 // graph = generateWeightedGraph(generator, nodeCount, 1, 20);
