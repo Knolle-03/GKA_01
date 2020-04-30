@@ -20,7 +20,6 @@ public class OwnPrimFH extends AbstractSpanningTree {
         FibonacciHeap<Integer, Node>.Node nodeReferenceInHeap;                                                                         // reference to node in heap
         Edge cheapestEdgeToUse = null;                                                                                  // cheapest edge to get to the node
 
-
 //        @Override
 //        public String toString() {
 //            return "NodeInfo: node = " + node + ", cheapestEdgeToUse=" + cheapestEdgeToUse;

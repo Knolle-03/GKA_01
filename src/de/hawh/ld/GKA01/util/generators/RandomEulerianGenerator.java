@@ -1,10 +1,11 @@
-package de.hawh.ld.GKA01.util;
+package de.hawh.ld.GKA01.util.generators;
 
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -64,6 +65,9 @@ public class RandomEulerianGenerator extends BaseGenerator {
         connected.add(node0);
         degree[node1.getIndex()] = 1;
         connected.add(node1);
+
+
+
     }
 
 
@@ -72,20 +76,42 @@ public class RandomEulerianGenerator extends BaseGenerator {
     public boolean nextEvents() {
 
         if (notDone) {
-            while (unconnected.size() > 0) {
-                Node nodeInGraph = connected.get(random.nextInt(connected.size()));
-                Node nodeToAdd = unconnected.remove(random.nextInt(unconnected.size()));
-                degree[Integer.parseInt(nodeInGraph.getId())] += 1;
-                degree[Integer.parseInt(nodeToAdd.getId())] = 1;
-                connected.add(nodeToAdd);
-                addEdge(nodeInGraph + "-" + nodeToAdd, nodeInGraph.getId(), nodeToAdd.getId());
-            }
+//            while (unconnected.size() > 0) {
+//                Node nodeInGraph = connected.get(random.nextInt(connected.size()));
+//                Node nodeToAdd = unconnected.remove(random.nextInt(unconnected.size()));
+//                degree[] += 1;
+//                degree[Integer.parseInt(nodeToAdd.getId())] = 1;
+//                connected.add(nodeToAdd);
+//                addEdge(nodeInGraph + "-" + nodeToAdd, nodeInGraph.getId(), nodeToAdd.getId());
+//
+//                try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+
+
+
+
+
+
+
 
             List<Node> oddDegreeNodes = new ArrayList<>();
             List<Node> evenDegreeNodes = new ArrayList<>();
             for (int i = 0; i < degree.length; i++) {
                 if (degree[i] % 2 == 1) oddDegreeNodes.add(internalGraph.getNode(i));
                 else evenDegreeNodes.add(internalGraph.getNode(i));
+            }
+
+            System.out.println(Arrays.toString(oddDegreeNodes.toArray()));
+            System.out.println(Arrays.toString(evenDegreeNodes.toArray()));
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             while (oddDegreeNodes.size() > 0) {

@@ -26,11 +26,11 @@ public class OwnKruskal extends AbstractSpanningTree {
         for (Edge edge : graphEdges) {                                                                                  // look at each edge
             int indexOfNode0 = edge.getNode0().getIndex();
             int indexOfNode1 = edge.getNode1().getIndex();
-            if (spanningTree.size() == graph.getNodeCount() - 1) break;                                                 // break if all edges are in one component  (|E| = |V| - 1)
             if (!unionFind.connected(indexOfNode0,indexOfNode1)) {                                                      // if the incident nodes are not connected
                 unionFind.union(indexOfNode0, indexOfNode1);                                                            // unite the two components to one via the current edge
                 treeWeight += getEdgeWeight(edge);                                                                      // adjust tree weight
                 spanningTree.add(edge);                                                                                 // add edge to spanning tree
+                if (spanningTree.size() == graph.getNodeCount() - 1) break;                                             // break if all edges are in one component  (|E| = |V| - 1)
             }
         }
     }
@@ -46,7 +46,7 @@ public class OwnKruskal extends AbstractSpanningTree {
         return new SpanningTreeIterator<>();
     }
 
-    @Override
+    @Override                                                                                                           // reset the spanning tree
     public void clear() {
         graph = null;
         spanningTree.clear();

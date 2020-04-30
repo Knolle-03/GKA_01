@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PathTest extends GraphTest {
 
     Dijkstra dijkstraForRandomGraph = new Dijkstra(Dijkstra.Element.EDGE, null, null);
-    public static final int REPS_IN_RANDOM_GRAPH = 100;
+    public static final int REPS_IN_RANDOM_GRAPH = 1;
     Node source;
     Node target;
     boolean pathIncluded;

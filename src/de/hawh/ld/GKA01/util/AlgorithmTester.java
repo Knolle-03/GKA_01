@@ -1,13 +1,11 @@
 package de.hawh.ld.GKA01.util;
 
+import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import org.graphstream.algorithm.AbstractSpanningTree;
-import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
-import org.graphstream.algorithm.generator.FullGenerator;
 import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Edge;
-import org.graphstream.graph.Element;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.MultiGraph;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -29,8 +27,6 @@ public class AlgorithmTester {
         Painter painter = new Painter();
         abstractSpanningTree.init(graph);
         painter.attach(graph, coloringType);
-        for (Element element : graph) element.addAttribute("ui.label", element.getId());
-        graph.addAttribute("ui.antialias");
         graph.display();
         abstractSpanningTree.compute();
 
@@ -54,7 +50,7 @@ public class AlgorithmTester {
             millisAddedUp[0] = nodeCount;
             for (int i = 0; i < repsOfEachRun; i++) {
 
-                Generator generator = new RandomGenerator(10);
+                Generator generator = new OwnRandomGenerator(nodeCount, nodeCount * 5);
                 Graph graph = new MultiGraph(generator + " graph", false,true);
                 generator.addSink(graph);
                 generator.begin();
@@ -64,8 +60,13 @@ public class AlgorithmTester {
                 generator.end();
                 Random random = new Random();
 
-                for (Edge edge : graph.getEdgeSet()) edge.addAttribute("weight", random.nextInt(20) );
-                System.out.println(nodeCount + " nodes done");
+                for (Edge edge : graph.getEdgeSet()) {
+                    edge.addAttribute("weight", random.nextInt(20) );
+                    edge.addAttribute("ui.label", (Integer) edge.getAttribute("weight"));
+                }
+                for (Node node : graph)  {
+                    node.addAttribute("ui.label", node.getId());
+                }
 
                 // graph = generateWeightedGraph(generator, nodeCount, 1, 20);
                 int ADTIndex = 1;
@@ -78,6 +79,7 @@ public class AlgorithmTester {
                     millisAddedUp[ADTIndex++] +=  stopwatch.millisElapsed();
                     stopwatch.reset();
                 }
+                System.out.println(i + ". " +  nodeCount + " nodes graph done");
                 graph = null;
                 System.gc();
 
