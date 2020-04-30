@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+
+/**
+ * A Generator that is compatible with graph stream
+ */
+
 public class OwnRandomGenerator extends BaseGenerator {
 
     private int nodeNames = 0;
@@ -20,11 +26,18 @@ public class OwnRandomGenerator extends BaseGenerator {
     private int lowerBound = 0;
     private final List<Node> connected = new ArrayList<>();
 
-
-
     public OwnRandomGenerator() {
         setUseInternalGraph(true);
     }
+
+    // The constructors allow to give upper and lower bounds for the weight of edge and require the number of nodes and and edges
+    /**
+     * A Generator that is compatible with graph stream
+     *
+     * @throws  IllegalArgumentException if not all nodes can be connected.
+     */
+
+
 
     public OwnRandomGenerator(int nodesToAdd, int edgesToAdd) {
         this();
@@ -51,40 +64,66 @@ public class OwnRandomGenerator extends BaseGenerator {
 
     @Override
     public void begin() {
+
+        // if no Random generator was given create one
         this.rng = this.rng == null ? new Random(System.currentTimeMillis()) : this.rng;
+        //start with a single node in the Graph
         addNode(Integer.toString(nodeNames++));
+        //add it to the list of nodes that are connected in the graph
         connected.add(internalGraph.getNode(nodeNames - 1));
         nodesToAdd--;
 
+
+        // while not all nodes are added
         while (nodesToAdd > 0) {
+
+            //add another node
             addNode(Integer.toString(nodeNames++));
+
             Node nodeToAdd = internalGraph.getNode(nodeNames - 1);
             Node nodeInGraph = connected.get(rng.nextInt(connected.size()));
+            // connect the new node with a random node that is already in the graph
             addEdge(nodeInGraph + "-" + nodeToAdd, nodeInGraph.getId(), nodeToAdd.getId());
-
+            // add new node to the list of connected nodes
             connected.add(internalGraph.getNode(nodeNames - 1));
+
             nodesToAdd--;
             edgesToAdd--;
         }
 
+        // if there are more edges to add
+
+        //while not all edges are added
         while (edgesToAdd > 0) {
+
+            // find two random nodes in the graph
             Node rngNode1 = connected.get(rng.nextInt(connected.size()));
             Node rngNode2 = connected.get(rng.nextInt(connected.size()));
 
+            // check if they are already connected
             while (rngNode1.hasEdgeBetween(rngNode2)) {
+                // if so and node one is not already connected to all nodes
                 if (rngNode1.getDegree() < nodesToAdd - 1) {
+                    // pick another second node
                     rngNode2 = connected.get(rng.nextInt(connected.size()));
                 } else {
+                    // else pick tow new nodes
                     rngNode1 = connected.get(rng.nextInt(connected.size()));
+                    rngNode2 = connected.get(rng.nextInt(connected.size()));
                 }
             }
-
+            // connect both nodes
             addEdge(rngNode1 + "-" + rngNode2, rngNode1.getId(), rngNode2.getId());
+
 
             edgesToAdd--;
         }
 
+        // now all nodes are added
+
+        // loop through nodes
         for (Edge edge : internalGraph.getEdgeSet()) {
+            // give each node a weight attribute with a value between upper and lower bound
             edge.addAttribute("weight", rng.nextInt(upperBound - lowerBound) + lowerBound);
         }
 
@@ -92,7 +131,7 @@ public class OwnRandomGenerator extends BaseGenerator {
 
     @Override
     public boolean nextEvents() {
-        return true;
+        return false;
     }
 
     @Override

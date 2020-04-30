@@ -19,15 +19,12 @@ public class SpanningTreeTest extends GraphTest {
 
     public void setWeightOfTestGraphEdges() {
         if (testGraphs.size() == 0) generateNonWeightedTestGraphs();
-        System.out.println(testGraphs.size());
         for (Graph graph : testGraphs) {
-            //System.out.println(!graph.getNode(0).hasAttribute("weight"));
             if (!graph.getEdge(0).hasAttribute("weight")){
                 int counter = 0;
                 for (Edge edge: graph.getEdgeSet()) {
-                    if (counter++ % 50_000 == 0) System.out.println(counter + " edges weighted.");
+                    //if (counter++ % 50_000 == 0) System.out.println(counter + " edges weighted.");
                     edge.addAttribute("weight", random.nextInt(WEIGHT_MAX));
-                    //edge.addAttribute("ui.label", (Integer) edge.getAttribute("weight"));
                 }
             }
 
@@ -37,10 +34,8 @@ public class SpanningTreeTest extends GraphTest {
     public void testEachGraph(AbstractSpanningTree referenceAST , AbstractSpanningTree ownAST) {
         setWeightOfTestGraphEdges();
 
-        System.out.println(testGraphs.size());
 
         for (Graph graph : testGraphs) {
-            System.out.println(graph);
             referenceAST.init(graph);
             referenceAST.compute();
 

@@ -18,6 +18,9 @@ package tests.algorithms.spanning_trees;
 //         \__|_| |_|\___|  \___/_/\_\___|_|  \___|_|___/\___|
 
 
+// not comparable with graphStream implementation of the Prim algorithm since this one only calculates the MST of one tree in a forest if the given graph is not a single component
+// whereas graphStream calculates the sum of the MSTs in the forest
+
 import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimPQ;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.BeforeEach;
