@@ -1,6 +1,7 @@
 package tests.algorithms.superclasses;
 
 import org.graphstream.algorithm.AbstractSpanningTree;
+import org.graphstream.algorithm.Algorithm;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 

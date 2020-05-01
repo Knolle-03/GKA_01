@@ -100,7 +100,7 @@ public class SimpleGenerator {
 
 
     public static void main(String[] args) {
-        SimpleGenerator simpleGenerator = new SimpleGenerator(1000, 2000);
+        SimpleGenerator simpleGenerator = new SimpleGenerator(10, 20);
         Graph graph = simpleGenerator.generate();
         graph.display();
     }
