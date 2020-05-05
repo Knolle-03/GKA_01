@@ -22,23 +22,27 @@ package tests.algorithms.spanning_trees;
 // whereas graphStream calculates the sum of the MSTs in the forest
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimPQ;
+import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
+import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.algorithms.superclasses.SpanningTreeTest;
+import tests.TestGraphGenerator;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ownPrimPQTest extends SpanningTreeTest {
 
+
+    private final int lowerBound = 1;
+    private final int upperBound = 20;
     private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
     private final OwnPrimPQ myPrim = new OwnPrimPQ();
-
-    @BeforeEach
-    void setUp() {
-        super.setWeightOfTestGraphEdges();
-    }
-
+    private final TestGraphGenerator testGraphGenerator = new TestGraphGenerator(1_000_000, new DorogovtsevMendesGenerator(), new RandomGenerator(), new OwnRandomGenerator());
+    private final List<Graph> testGraphs = testGraphGenerator.generateWeightedTestGraphs(lowerBound, upperBound);
     @Test
     void testCorrectness() {
 

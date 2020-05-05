@@ -1,18 +1,30 @@
 package tests.algorithms.superclasses;
 
 import de.hawh.ld.GKA01.algorithms.shortestPaths.ShortestPath;
+import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import org.graphstream.algorithm.Dijkstra;
+import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
+import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.SingleGraph;
+import tests.TestGraphGenerator;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PathTest extends GraphTest {
+public class PathTest {
 
+
+    private static final int nodeCount = 1_000_000;
+    private static final int edgeCount = 2_000_000;
+    private final TestGraphGenerator testGraphGenerator = new TestGraphGenerator(nodeCount, new DorogovtsevMendesGenerator(), new OwnRandomGenerator(nodeCount, edgeCount), new RandomGenerator());
+    private final List<Graph> testGraphs = testGraphGenerator.generateNonWeightedTestGraphs();
+    private final Random rng = new Random();
     Dijkstra dijkstraForRandomGraph = new Dijkstra(Dijkstra.Element.EDGE, null, null);
     public static final int REPS_IN_RANDOM_GRAPH = 1;
     Node source;
@@ -20,13 +32,12 @@ public class PathTest extends GraphTest {
     boolean pathIncluded;
 
 
-
     public void shortestPath(ShortestPath shortestPath) {
-        if (testGraphs.size() == 0) generateNonWeightedTestGraphs();
+
         for (Graph graph : testGraphs) {
 
-            source = graph.getNode(random.nextInt(graph.getNodeCount()));
-            target = graph.getNode(random.nextInt(graph.getNodeCount()));
+            source = graph.getNode(rng.nextInt(graph.getNodeCount()));
+            target = graph.getNode(rng.nextInt(graph.getNodeCount()));
 
             dijkstraForRandomGraph.init(graph);
             dijkstraForRandomGraph.setSource(source);
@@ -62,7 +73,7 @@ public class PathTest extends GraphTest {
 
                 //if (i % 99 == 1) System.out.println((i + 1) + " reps done");
 
-                target = graph.getNode(random.nextInt(graph.getNodeCount()));
+                target = graph.getNode(rng.nextInt(graph.getNodeCount()));
                 shortestPath.clear();
             }
 

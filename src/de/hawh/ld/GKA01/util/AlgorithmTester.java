@@ -2,6 +2,7 @@ package de.hawh.ld.GKA01.util;
 
 import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import org.graphstream.algorithm.AbstractSpanningTree;
+import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -50,7 +51,7 @@ public class AlgorithmTester {
             millisAddedUp[0] = nodeCount;
             for (int i = 0; i < repsOfEachRun; i++) {
 
-                Generator generator = new OwnRandomGenerator(nodeCount, nodeCount * 5);
+                Generator generator = new DorogovtsevMendesGenerator();
                 Graph graph = new MultiGraph(generator + " graph", false,true);
                 generator.addSink(graph);
                 generator.begin();

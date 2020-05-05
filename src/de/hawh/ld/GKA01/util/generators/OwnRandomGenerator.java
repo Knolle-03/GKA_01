@@ -2,7 +2,9 @@ package de.hawh.ld.GKA01.util.generators;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +20,13 @@ public class OwnRandomGenerator extends BaseGenerator {
 
     private int nodeNames = 0;
 
-
     private Random rng;
     private int nodesToAdd;
     private int edgesToAdd;
     private int upperBound = 10;
     private int lowerBound = 0;
     private final List<Node> connected = new ArrayList<>();
+
 
     public OwnRandomGenerator() {
         setUseInternalGraph(true);
@@ -59,6 +61,7 @@ public class OwnRandomGenerator extends BaseGenerator {
     public OwnRandomGenerator(int nodesToAdd, int edgesToAdd, Random rng, int upperBound, int lowerBound){
         this(nodesToAdd, edgesToAdd, rng, upperBound);
         this.lowerBound = lowerBound;
+
     }
 
 
@@ -84,6 +87,7 @@ public class OwnRandomGenerator extends BaseGenerator {
             Node nodeInGraph = connected.get(rng.nextInt(connected.size()));
             // connect the new node with a random node that is already in the graph
             addEdge(nodeInGraph + "-" + nodeToAdd, nodeInGraph.getId(), nodeToAdd.getId());
+
             // add new node to the list of connected nodes
             connected.add(internalGraph.getNode(nodeNames - 1));
 
@@ -119,13 +123,9 @@ public class OwnRandomGenerator extends BaseGenerator {
             edgesToAdd--;
         }
 
-        // now all nodes are added
 
-        // loop through nodes
-        for (Edge edge : internalGraph.getEdgeSet()) {
-            // give each node a weight attribute with a value between upper and lower bound
-            edge.addAttribute("weight", rng.nextInt(upperBound - lowerBound) + lowerBound);
-        }
+
+        //all nodes are added
 
     }
 
