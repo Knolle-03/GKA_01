@@ -1,61 +1,40 @@
 package tests.generators;
 
 import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
-import org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RandomEulerianGeneratorTest {
+public class RandomEulerianGeneratorTest extends GeneratorTest {
 
-    private static final int loops = 100000;
-    private static int initialNodeCount = 10;
+    private static final int loops = 1_000_000;
+
+
     private static final Graph graph = new SingleGraph("testGraph", false, true);
 
     @Test
     void isEulerianTest() {
-        for (int i = 0; i < loops; i++) {
-            Generator generator = new RandomEulerianGenerator(initialNodeCount);
-            generator.addSink(graph);
-            generator.begin();
-            generator.end();
+        int initialNodeCount = 12;
+        for (int j = initialNodeCount; j < 1_000_001 ; j++) {
+            for (int i = 0; i < loops; i++) {
+                Generator generator = new RandomEulerianGenerator(j);
+                generator.addSink(graph);
+                generator.begin();
+                generator.end();
+                System.out.println("Graph #" + (i + 1) + " with " + j + " nodes tested.");
+                assertTrue(isConnected(graph));
+                assertTrue(eachNodeHasEvenEdgeCount(graph));
 
-            boolean allEven = true;
-            for (Node node : graph) {
-                if (node.getDegree() % 2 != 0) {
-                    allEven = false;
-                    break;
-                }
+                graph.clear();
             }
-            //System.out.println("currently " + initialNodeCount + " nodes");
-            System.out.print("connected: ");
-            assertTrue(isConnected());
-            System.out.println();
-
-            System.out.print("all even: ");
-            assertTrue(allEven);
-            System.out.println();
-            //System.out.println(i + ". run with " + initialNodeCount + " nodes completed");
-            //initialNodeCount += 1;
-            graph.clear();
         }
+
     }
 
-    boolean isConnected() {
-        Iterator<Node> graphIterator = RandomEulerianGeneratorTest.graph.getNode(0).getBreadthFirstIterator(false);
-        int visitedNodes = 0;
-        while (graphIterator.hasNext()) {
-            graphIterator.next();
-            visitedNodes++;
-        }
-        return visitedNodes == RandomEulerianGeneratorTest.graph.getNodeCount();
-    }
+
 
 
 }
