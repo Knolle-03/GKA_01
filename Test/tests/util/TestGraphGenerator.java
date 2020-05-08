@@ -1,4 +1,4 @@
-package tests;
+package tests.util;
 
 import de.hawh.ld.GKA01.util.Stopwatch;
 import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;

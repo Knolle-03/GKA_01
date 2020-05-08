@@ -5,7 +5,7 @@ import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
-import tests.TestGraphGenerator;
+import tests.util.TestGraphGenerator;
 
 import java.util.List;
 

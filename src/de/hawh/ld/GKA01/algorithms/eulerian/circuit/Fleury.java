@@ -1,7 +1,7 @@
 package de.hawh.ld.GKA01.algorithms.eulerian.circuit;
 
-import org.graphstream.algorithm.Algorithm;
 import org.graphstream.algorithm.ConnectedComponents;
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -9,7 +9,7 @@ import org.graphstream.graph.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fleury implements Algorithm {
+public class Fleury implements EulerianCircuitAlgorithm {
 
     private final ConnectedComponents connectedComponents = new ConnectedComponents();
     private Graph graph;
@@ -20,10 +20,12 @@ public class Fleury implements Algorithm {
 
     @Override
     public void init(Graph graph) {
-        connectedComponents.init(graph);
-        connectedComponents.setCutAttribute("used");
-        startNode = graph.getNode(0);
-        this.graph = graph;
+        if (isEulerian(graph)) {
+            connectedComponents.init(graph);
+            connectedComponents.setCutAttribute("used");
+            startNode = graph.getNode(0);
+            this.graph = graph;
+        }
     }
 
     @Override
@@ -32,15 +34,16 @@ public class Fleury implements Algorithm {
         currNode = startNode;                                                                                           // start with an arbitrary node
         while (usableEdges(currNode).size() > 0) {                                                                      // while not all edges are used
             List<Edge> usableEdges = usableEdges(currNode);                                                             // list of all edges that were not used yet.
+            Edge nextEdge;
+
             if (usableEdges.size() == 1) {                                                                              // if there is only one edge left to use
-                Edge nextEdge = usableEdges.get(0);                                                                     // use it
+                nextEdge = usableEdges.get(0);
                 nextEdge.addAttribute("used");
-                useEdge(nextEdge);
             } else {                                                                                                    // if there are more
-                Edge nextEdge = getNonBridgeEdge(usableEdges);                                                          // find a non bridge edge
+                nextEdge = getNonBridgeEdge(usableEdges);                                                               // find a non bridge edge
                 assert nextEdge != null;
-                useEdge(nextEdge);                                                                                      // use it
             }
+            useEdge(nextEdge);                                                                                          // use it
         }
 
     }
@@ -102,7 +105,25 @@ public class Fleury implements Algorithm {
             edge.removeAttribute("used");
         }
     }
+
+    public boolean isEulerian(Graph graph) {
+        boolean allEven = true;
+
+        for (Node node : graph) {
+            if (node.getDegree() % 2 != 0) {
+                allEven = false;
+                break;
+            }
+        }
+
+        return allEven && Toolkit.isConnected(graph);
+    }
+
+
 }
+
+
+
 
 
 

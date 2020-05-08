@@ -28,7 +28,7 @@ import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.Test;
 import tests.algorithms.superclasses.SpanningTreeTest;
-import tests.TestGraphGenerator;
+import tests.util.TestGraphGenerator;
 
 import java.util.List;
 
