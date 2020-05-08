@@ -1,5 +1,7 @@
 package tests;
 
+import de.hawh.ld.GKA01.util.Stopwatch;
+import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -34,6 +36,28 @@ public class TestGraphGenerator {
         this.doubleNodeCountInLoop = doubleNodeCountInLoop;
     }
 
+    public List<Graph> generateEulerianGraphs() {
+        List<Graph> testGraphs = new ArrayList<>();
+        Stopwatch stopwatch = new Stopwatch();
+        int currentNodeCount = nodeCount;
+        for (int i = 0; i < numberOfEachType; i++) {
+            stopwatch.start();
+            Generator generator = new RandomEulerianGenerator(currentNodeCount);
+            Graph graph = new SingleGraph("testGraph", false, true);
+            generator.addSink(graph);
+            generator.begin();
+            generator.end();
+            testGraphs.add(graph);
+            stopwatch.stop();
+            System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
+            stopwatch.reset();
+            //
+            if (doubleNodeCountInLoop) currentNodeCount += nodeCount;
+        }
+
+        return testGraphs;
+    }
+
 
 
     public List<Graph> generateNonWeightedTestGraphs() {
@@ -50,7 +74,7 @@ public class TestGraphGenerator {
                 }
                 generator.end();
                 testGraphs.add(graph);
-                if (doubleNodeCountInLoop) currentNodeCount *=2;
+                if (doubleNodeCountInLoop) currentNodeCount *= 2;
             }
         }
 

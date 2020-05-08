@@ -1,6 +1,5 @@
 package de.hawh.ld.GKA01.util.generators;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.graph.Element;
 import org.graphstream.graph.Node;
@@ -20,7 +19,7 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
 
     public RandomEulerianGenerator() {
-        this.nodeCount = 3;
+        this.nodeCount = 20;
         setUseInternalGraph(true);
     }
 

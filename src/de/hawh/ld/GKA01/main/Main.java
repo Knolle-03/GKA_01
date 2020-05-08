@@ -1,35 +1,33 @@
 package de.hawh.ld.GKA01.main;
 
-import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnKruskal;
-import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimFH;
-import de.hawh.ld.GKA01.util.AlgorithmTester;
-import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
-import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
-import org.graphstream.algorithm.AbstractSpanningTree;
-import org.graphstream.algorithm.ConnectedComponents;
-import org.graphstream.algorithm.generator.Generator;
-import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
-import org.graphstream.algorithm.generator.RandomGenerator;
-import org.graphstream.graph.Edge;
+import de.hawh.ld.GKA01.algorithms.eulerian.circuit.Fleury;
+import de.hawh.ld.GKA01.conversion.GraphFromList;
+import de.hawh.ld.GKA01.io.FileReader;
+import de.hawh.ld.GKA01.util.ColoringType;
+import de.hawh.ld.GKA01.util.Painter;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
 
-import java.util.Random;
+import java.util.List;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        RandomEulerianGenerator randomEulerianGenerator = new RandomEulerianGenerator(42);
-        Graph graph = new SingleGraph("testEulerianGraph", false, true);
-        randomEulerianGenerator.addSink(graph);
-        randomEulerianGenerator.begin();
-        randomEulerianGenerator.end();
+
+
+        String path = "resources\\smallEulerianTestGraphs\\6._16_graph.graph";
+        List<String> lines = FileReader.readLines(path);
+
+        Graph graph = GraphFromList.populateGraph(lines, path);
+        Fleury fleury = new Fleury();
+        fleury.init(graph);
+        fleury.compute();
+        System.out.println(fleury.getEulerianTour());
+        graph.addAttribute("ui.antialias");
+        Painter painter = new Painter();
         graph.display();
-        ConnectedComponents connectedComponents = new ConnectedComponents();
-        connectedComponents.init(graph);
-        connectedComponents.compute();
-        System.out.println(connectedComponents.getConnectedComponentsCount());
+        painter.attach(graph, ColoringType.MINIMAL_SPANNING_TREE);
+        painter.colorGraph(fleury.getEulerianTour());
 
 
     }

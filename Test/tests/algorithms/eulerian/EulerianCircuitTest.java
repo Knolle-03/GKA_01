@@ -2,54 +2,73 @@ package tests.algorithms.eulerian;
 
 import de.hawh.ld.GKA01.algorithms.eulerian.circuit.Fleury;
 import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
-import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.graph.Node;
 import org.junit.jupiter.api.Test;
+import tests.TestGraphGenerator;
 
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+
+
 public class EulerianCircuitTest {
 
-    private static Graph graph;
-    private static Generator generator;
-    private static int initialNodeCount = 3;
-    private static int loops = 20;
+    private static final int initialNodeCount = 16;
+    private final TestGraphGenerator testGraphGenerator = new TestGraphGenerator(initialNodeCount, 100, true, new RandomEulerianGenerator());
+    private List<Graph> testGraphs;
+
+
     @Test
     void testEulerianCircuit() {
-
-        for (int i = 0; i < loops; i++) {
-            graph = generateEulerianGraph(initialNodeCount);
+        for (int i = 0; i < 10; i++) {
+            testGraphs = testGraphGenerator.generateEulerianGraphs();
             Fleury fleury = new Fleury();
-            fleury.init(graph);
-            fleury.compute();
-            System.out.println(i);
-            assertEquals(fleury.getEulerianTour().size(), graph.getEdgeCount());
-            System.out.println("edgeCount ticks");
-            System.out.println(fleury.getEulerianTour());
-            assertTrue(edgesUsedExactlyOnce(fleury.getEulerianTour()));
-            initialNodeCount *= 2;
+            for (Graph graph : testGraphs) {
+                fleury.init(graph);
+                fleury.compute();
+                // test if eulerian tour and the edge count of the graph are of same size
+                assertEquals(graph.getEdgeCount(), fleury.getEulerianTour().size());
+                // test if all edges are used exactly once
+                assertTrue(edgesUsedExactlyOnce(fleury.getEulerianTour()));
+                // test if the path is "walkable"
+                assertTrue(isEulerTour(fleury.getEulerianTour(), graph));
+                System.out.println("Graph with " + graph.getNodeCount() + " nodes done.");
+                fleury.clear();
+            }
         }
+
     }
 
 
-    private Graph generateEulerianGraph(int nodecount) {
-        generator = new RandomEulerianGenerator(initialNodeCount);
-        graph = new SingleGraph("eulerianTestGraph", false, true);
-        generator.addSink(graph);
-        generator.begin();
-        generator.end();
+    private boolean isEulerTour(List<Edge> circuit, Graph graph){
+        Iterator<Edge> edgeIterator = circuit.iterator();
+        Node startNode = graph.getNode(0);
+        Node currNode = startNode;
+        while (edgeIterator.hasNext()) {
+            Edge nextEdge = edgeIterator.next();
+            nextEdge.addAttribute("used");
+            Node formerCurrNode = currNode;
+            currNode = nextEdge.getOpposite(currNode);
+            assertTrue(formerCurrNode.hasEdgeToward(currNode));
+        }
+        assertSame(startNode, currNode);
 
-        return graph;
+
+        List<Edge> nonUsedEdges = new ArrayList<>();
+
+        for (Edge edge : graph.getEdgeSet()) {
+            if (!edge.hasAttribute("used")) nonUsedEdges.add(edge);
+        }
+
+        return 0 == nonUsedEdges.size();
     }
-
-
 
     private boolean edgesUsedExactlyOnce(List<Edge> circuit) {
         Set<Edge> hashSet = new HashSet<>(circuit);
         return hashSet.size() == circuit.size();
-
     }
 
 }

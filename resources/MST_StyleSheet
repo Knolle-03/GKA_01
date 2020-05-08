@@ -23,5 +23,5 @@ edge.used {
 edge.unused {
     size: 1px;
     fill-mode: plain;
-    fill-color: grey;
+    fill-color: red;
 }
