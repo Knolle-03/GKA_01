@@ -1,6 +1,6 @@
 package tests.algorithms.eulerian;
 
-import de.hawh.ld.GKA01.algorithms.eulerian.circuit.Fleury;
+import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Fleury;
 import de.hawh.ld.GKA01.util.ColoringType;
 import de.hawh.ld.GKA01.util.Painter;
 import org.graphstream.graph.Graph;
@@ -26,8 +26,8 @@ public class SmallEulerianGraphTest extends EulerianCircuitTest {
         for (Graph graph : eulerianTestGraphs) {
             fleury.init(graph);
             fleury.compute();
-            assertTrue(super.edgesUsedExactlyOnce(fleury.getEulerianTour()));
-            super.isEulerianCircuit(fleury.getEulerianTour(), graph);
+            assertTrue(super.edgesUsedExactlyOnce(fleury.getEulerianCircuit()));
+            super.isEulerianCircuit(fleury.getEulerianCircuit(), graph);
             fleury.clear();
         }
     }
@@ -46,7 +46,7 @@ public class SmallEulerianGraphTest extends EulerianCircuitTest {
                 graph.display();
                 Painter painter = new Painter();
                 painter.attach(graph, ColoringType.MINIMAL_SPANNING_TREE);
-                painter.colorGraph(fleury.getEulerianTour());
+                painter.colorGraph(fleury.getEulerianCircuit());
             }
         }
     }

@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms.eulerian.circuit;
+package de.hawh.ld.GKA01.algorithms.eulerian_circuits;
 
 import org.graphstream.algorithm.ConnectedComponents;
 import org.graphstream.algorithm.Toolkit;
@@ -13,14 +13,16 @@ public class Fleury implements EulerianCircuitAlgorithm {
 
     private final ConnectedComponents connectedComponents = new ConnectedComponents();
     private Graph graph;
-    private final List<Edge> eulerianTour = new ArrayList<>();
+    private final List<Edge> eulerianCircuit = new ArrayList<>();
     private Node currNode;
     private Node startNode;
 
 
     @Override
     public void init(Graph graph) {
+
         if (isEulerian(graph)) {
+            // init instance variables
             connectedComponents.init(graph);
             connectedComponents.setCutAttribute("used");
             startNode = graph.getNode(0);
@@ -30,20 +32,26 @@ public class Fleury implements EulerianCircuitAlgorithm {
 
     @Override
     public void compute() {
-
-        currNode = startNode;                                                                                           // start with an arbitrary node
-        while (usableEdges(currNode).size() > 0) {                                                                      // while not all edges are used
-            List<Edge> usableEdges = usableEdges(currNode);                                                             // list of all edges that were not used yet.
+        // start with an arbitrary node
+        currNode = startNode;
+        // while not all edges are used
+        while (usableEdges(currNode).size() > 0) {
+            // list of all edges that were not used yet.
+            List<Edge> usableEdges = usableEdges(currNode);
             Edge nextEdge;
-
-            if (usableEdges.size() == 1) {                                                                              // if there is only one edge left to use
+            // if there is only one edge left to use
+            if (usableEdges.size() == 1) {
                 nextEdge = usableEdges.get(0);
                 nextEdge.addAttribute("used");
-            } else {                                                                                                    // if there are more
-                nextEdge = getNonBridgeEdge(usableEdges);                                                               // find a non bridge edge
+            }
+            // if there are more
+            else {
+                // find a non bridge edge
+                nextEdge = getNonBridgeEdge(usableEdges);
                 assert nextEdge != null;
             }
-            useEdge(nextEdge);                                                                                          // use it
+            // use it
+            useEdge(nextEdge);
         }
 
     }
@@ -51,16 +59,21 @@ public class Fleury implements EulerianCircuitAlgorithm {
     // returns a List of all usable Edges
     private List<Edge> usableEdges(Node node) {
         List<Edge> usableEdges = new ArrayList<>();
+        // look at each edge of the node
         for (Edge edge : node.getEdgeSet()) {
+            // if it wasn't used yet add it to the list
             if (!edge.hasAttribute("used")) usableEdges.add(edge);
         }
+
         return usableEdges;
     }
 
 
     private void useEdge(Edge edge) {
+        // jump to adjacent node using the edge
         currNode = edge.getOpposite(currNode);
-        eulerianTour.add(edge);
+        // add edge to eulerian circuit
+        eulerianCircuit.add(edge);
     }
 
 
@@ -75,13 +88,14 @@ public class Fleury implements EulerianCircuitAlgorithm {
             edge.addAttribute("used");
             // recalculate component count
             connectedComponents.compute();
-            // if component count is still one the edge is not bridge
+            // if component count is still one the edge is not a bridge
             if (connectedComponents.getConnectedComponentsCount(2) == 1 && edge.getOpposite(currNode) != startNode) {
                 assert connectedComponents.getConnectedComponentsCount(2) == 1;
                 return edge;
             }
-            // else it is a bridge. Therefore "add" the edge back in.
+            // else it is a bridge.
             else {
+                // therefore "add" the edge back in
                 edge.removeAttribute("used");
                 connectedComponents.compute();
                 assert connectedComponents.getConnectedComponentsCount(2) == 1;
@@ -89,26 +103,29 @@ public class Fleury implements EulerianCircuitAlgorithm {
         }
 
 
-        // if we get here there is no non bridge edge left.
+        // if we get here there is no non bridge edge left
+        // which in reality can't happen, since we only call this method
+        // if we have two or more edges available
 
         return null;
     }
 
-
-    public List<Edge> getEulerianTour() {
-        return eulerianTour;
+    public List<Edge> getEulerianCircuit() {
+        return eulerianCircuit;
     }
 
     public void clear() {
-        eulerianTour.clear();
+        eulerianCircuit.clear();
         for (Edge edge : graph.getEdgeSet()) {
             edge.removeAttribute("used");
         }
     }
 
+    // checks if the given graph is eulerian
     public boolean isEulerian(Graph graph) {
         boolean allEven = true;
 
+        // check if all nodes have even degree
         for (Node node : graph) {
             if (node.getDegree() % 2 != 0) {
                 allEven = false;
@@ -116,46 +133,7 @@ public class Fleury implements EulerianCircuitAlgorithm {
             }
         }
 
+        // also check if the graph is connected
         return allEven && Toolkit.isConnected(graph);
     }
-
-
 }
-
-
-
-
-
-
-
-
-//for (Edge edge : currNode.getEdgeSet()) {
-//        if (edge.hasAttribute("used")) continue;
-//        if (usableEdges(currNode)) {
-//        edge.addAttribute("used");
-//        // use it
-//        eulerianTour.add(edge);
-//        // set opposite node as current node
-//        currNode = edge.getOpposite(currNode);
-//        break;
-//        }
-//        // "delete" edge
-//        edge.addAttribute("used");
-//        // compute number of components
-//        cc.compute();
-//        // if edge wasn't a bridge
-//        System.out.println(cc.getConnectedComponentsCount());
-//        if (cc.getConnectedComponentsCount() == 1) {
-//        // use it
-//        eulerianTour.add(edge);
-//        // set opposite node as current node
-//        currNode = edge.getOpposite(currNode);
-//        break;
-//        // the edge was a bridge
-//        } else {
-//        // add bridge again
-//        edge.removeAttribute("used");
-//        // compute components again
-//        cc.compute();
-//        }
-//        }

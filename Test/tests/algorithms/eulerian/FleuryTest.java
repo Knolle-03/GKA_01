@@ -1,6 +1,6 @@
 package tests.algorithms.eulerian;
 
-import de.hawh.ld.GKA01.algorithms.eulerian.circuit.Fleury;
+import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Fleury;
 import org.junit.jupiter.api.Test;
 import tests.algorithms.eulerian.superclasses.EulerianCircuitTest;
 

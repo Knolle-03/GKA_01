@@ -19,21 +19,29 @@ public class TestGraphGenerator {
 
     private final Random rng = new Random();
     private final int nodeCount;
-    private int numberOfEachType;
+    private int numberOfEachType = 1;
     private boolean doubleNodeCountInLoop = false;
     private final List<Generator> generators;
-
+    private int increment = 0;
 
     public TestGraphGenerator(int nodeCount, Generator ... generators) {
         this.nodeCount = nodeCount;
         this.generators = Arrays.asList(generators);
-        numberOfEachType = 1;
+    }
+
+    public TestGraphGenerator(int nodeCount,int numberOfEachType, Generator ... generators) {
+        this(nodeCount, generators);
+        this.numberOfEachType = numberOfEachType;
     }
 
     public TestGraphGenerator(int nodeCount, int numberOfEachType, boolean doubleNodeCountInLoop, Generator ... generators) {
-        this(nodeCount, generators);
-        this.numberOfEachType = numberOfEachType;
+        this(nodeCount, numberOfEachType, generators);
         this.doubleNodeCountInLoop = doubleNodeCountInLoop;
+    }
+
+    public TestGraphGenerator(int nodeCount, int numberOfEachType, int increment, Generator ... generators) {
+        this(nodeCount, numberOfEachType, generators);
+        this.increment = increment;
     }
 
     public List<Graph> generateEulerianGraphs() {
@@ -49,10 +57,11 @@ public class TestGraphGenerator {
             generator.end();
             testGraphs.add(graph);
             stopwatch.stop();
-            System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
+            //System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
             stopwatch.reset();
-            //
+
             if (doubleNodeCountInLoop) currentNodeCount += nodeCount;
+            else currentNodeCount += increment;
         }
 
         return testGraphs;

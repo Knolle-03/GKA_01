@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms.shortestPaths;
+package de.hawh.ld.GKA01.algorithms.shortest_paths;
 
 import org.graphstream.algorithm.AbstractSpanningTree;
 import org.graphstream.graph.Edge;

@@ -1,4 +1,4 @@
-package de.hawh.ld.GKA01.algorithms.shortestPaths;
+package de.hawh.ld.GKA01.algorithms.shortest_paths;
 
 
 //          _   _       _                      _            __

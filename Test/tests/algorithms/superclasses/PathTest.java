@@ -1,6 +1,6 @@
 package tests.algorithms.superclasses;
 
-import de.hawh.ld.GKA01.algorithms.shortestPaths.ShortestPath;
+import de.hawh.ld.GKA01.algorithms.shortest_paths.ShortestPath;
 import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;

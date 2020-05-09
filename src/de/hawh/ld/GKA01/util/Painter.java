@@ -24,6 +24,7 @@ public class Painter {
 
 
     public void colorGraph(List<Edge> edgesToColor) {
+        graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet", "url(" + coloringType.getPath() + ")");
 
 
@@ -31,7 +32,7 @@ public class Painter {
         graph.getNode(0).addAttribute("ui.class", "source");
         for (Edge edge : edgesToColor) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(200);
                 if (edgesToColor.contains(edge)) edge.addAttribute("ui.class", "used");
                 if (!edge.getNode0().hasAttribute("ui.class")) edge.getNode0().addAttribute("ui.class", "visited");
                 if (!edge.getNode1().hasAttribute("ui.class")) edge.getNode1().addAttribute("ui.class", "visited");

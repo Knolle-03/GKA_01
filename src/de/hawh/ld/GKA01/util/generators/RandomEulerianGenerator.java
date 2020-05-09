@@ -1,5 +1,7 @@
 package de.hawh.ld.GKA01.util.generators;
 
+import org.apache.poi.ss.formula.functions.T;
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.graph.Element;
 import org.graphstream.graph.Node;
@@ -53,7 +55,7 @@ public class RandomEulerianGenerator extends BaseGenerator {
         //connect those nodes
         addEdge(node0 + "-" + node1, node0.getId(), node1.getId());
 
-        // adjust degree and connected state of nodes
+        // adjust connected state of nodes
         connected.add(node0);
         connected.add(node1);
 
@@ -71,13 +73,25 @@ public class RandomEulerianGenerator extends BaseGenerator {
         List<Node> oddDegreeNodes = new ArrayList<>();
         List<Node> evenDegreeNodes = new ArrayList<>();
         for (Node node : internalGraph) {
-            if (node.getDegree() % 2 == 1) {
-                oddDegreeNodes.add(node);
-            } else evenDegreeNodes.add(node);
+            if (node.getDegree() % 2 == 1) oddDegreeNodes.add(node);
+            else evenDegreeNodes.add(node);
         }
 
         // while there are still odd nodes
         while (oddDegreeNodes.size() > 0) {
+
+//            if (oddDegreeNodes.size() == 2) {
+//                Node oddNode0 = oddDegreeNodes.get(0);
+//                Node oddNode1 = oddDegreeNodes.get(1);
+//
+//                if (oddNode0.hasEdgeBetween(oddNode1)) {
+//                    internalGraph.removeEdge(oddNode0, oddNode1);
+//                } else {
+//                    internalGraph.addEdge(oddNode0 + "-" + oddNode1, oddNode0.getId(), oddNode1.getId());
+//                }
+//                break;
+//            }
+
             // get an odd node
             Node oddNode = oddDegreeNodes.remove(random.nextInt(oddDegreeNodes.size()));
 

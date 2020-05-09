@@ -1,6 +1,6 @@
 package tests.algorithms.shortest_paths;
 
-import de.hawh.ld.GKA01.algorithms.shortestPaths.ShortestPath;
+import de.hawh.ld.GKA01.algorithms.shortest_paths.ShortestPath;
 import org.junit.jupiter.api.Test;
 import tests.algorithms.superclasses.PathTest;
 
