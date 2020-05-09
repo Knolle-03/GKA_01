@@ -1,13 +1,9 @@
 package de.hawh.ld.GKA01.util.generators;
 
-import org.apache.poi.ss.formula.functions.T;
-import org.graphstream.algorithm.Toolkit;
 import org.graphstream.algorithm.generator.BaseGenerator;
-import org.graphstream.graph.Element;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,12 +26,6 @@ public class RandomEulerianGenerator extends BaseGenerator {
         setUseInternalGraph(true);
         this.nodeCount = nodeCount;
     }
-
-    public RandomEulerianGenerator(int nodeCount, Random random) {
-        this(nodeCount);
-        this.random = random;
-    }
-
 
     @Override
     public void begin() {
@@ -130,20 +120,6 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
 
     }
-
-
-    private  <T extends Element> void debug(long millis, List<T> ...  lists) {
-        try {
-            for (List<T> list : lists) System.out.println(Arrays.toString(list.toArray()));
-            internalGraph.display();
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
 
     @Override
     public boolean nextEvents() {
