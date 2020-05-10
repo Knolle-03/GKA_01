@@ -1,6 +1,7 @@
 package de.hawh.ld.GKA01.util.generators;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Random;
 public class RandomEulerianGenerator extends BaseGenerator {
 
     protected int nodeNames = 0;
-
     protected int nodeCount;
     protected List<Node> unconnected = new ArrayList<>();
     protected List<Node> connected = new ArrayList<>();
@@ -52,7 +52,11 @@ public class RandomEulerianGenerator extends BaseGenerator {
         //connect remaining nodes randomly
         while (unconnected.size() > 0) {
             Node unconnectedNode = unconnected.remove(random.nextInt(unconnected.size()));
-            Node nodeInGraph = connected.get(random.nextInt(connected.size()));
+            Node nodeInGraph;
+
+            do {
+                nodeInGraph = connected.get(random.nextInt(connected.size()));
+            } while (nodeInGraph.getDegree() == nodeCount - 2);
             addEdge(unconnectedNode + "-" + nodeInGraph, unconnectedNode.getId(), nodeInGraph.getId());
             connected.add(unconnectedNode);
         }
@@ -70,17 +74,7 @@ public class RandomEulerianGenerator extends BaseGenerator {
         // while there are still odd nodes
         while (oddDegreeNodes.size() > 0) {
 
-//            if (oddDegreeNodes.size() == 2) {
-//                Node oddNode0 = oddDegreeNodes.get(0);
-//                Node oddNode1 = oddDegreeNodes.get(1);
-//
-//                if (oddNode0.hasEdgeBetween(oddNode1)) {
-//                    internalGraph.removeEdge(oddNode0, oddNode1);
-//                } else {
-//                    internalGraph.addEdge(oddNode0 + "-" + oddNode1, oddNode0.getId(), oddNode1.getId());
-//                }
-//                break;
-//            }
+
 
             // get an odd node
             Node oddNode = oddDegreeNodes.remove(random.nextInt(oddDegreeNodes.size()));
@@ -110,15 +104,35 @@ public class RandomEulerianGenerator extends BaseGenerator {
                         addEdge(oddNode + "-" + evenDegreeNode, oddNode.getId(), evenDegreeNode.getId());
                         // add former even node to odd list since it got another edge
                         evenDegreeNodes.remove(evenDegreeNode);
-                        oddDegreeNodes.add(evenDegreeNode);
                         evenDegreeNodes.add(oddNode);
+                        // add former odd node to even list since it got another edge
+                        oddDegreeNodes.add(evenDegreeNode);
+                        connectedByNow = true;
                         break;
                     }
                 }
             }
+
+
+            // handle edge case where one node is connected to all other nodes
+//            if (!connectedByNow && oddDegreeNodes.size() == 1) {
+//
+//                Node theOtherOddNode = oddDegreeNodes.remove(0);
+//
+//                if (theOtherOddNode.hasEdgeBetween(oddNode) && theOtherOddNode.getDegree() > 1 && oddNode.getDegree() > 1) {
+//                    Edge edgeToRemove = oddNode.getEdgeBetween(theOtherOddNode);
+//                    delEdge(edgeToRemove.getId());
+//                    evenDegreeNodes.add(oddNode);
+//                    evenDegreeNodes.add(theOtherOddNode);
+//                    connectedByNow = true;
+//                } else {
+//                    oddDegreeNodes.add(theOtherOddNode);
+//                }
+//            }
+            if (!connectedByNow) oddDegreeNodes.add(oddNode);
+
+
         }
-
-
     }
 
     @Override
