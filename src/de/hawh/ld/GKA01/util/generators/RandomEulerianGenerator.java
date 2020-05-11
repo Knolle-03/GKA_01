@@ -1,7 +1,6 @@
 package de.hawh.ld.GKA01.util.generators;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 
 import java.util.ArrayList;
@@ -17,19 +16,26 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
 
     public RandomEulerianGenerator() {
-        this.nodeCount = 20;
+        this.nodeCount = 3;
         setUseInternalGraph(true);
     }
 
 
     public RandomEulerianGenerator(int nodeCount) {
+        if (nodeCount < 3) throw new IllegalArgumentException("An eulerian graph must have at least three nodes.");
         setUseInternalGraph(true);
         this.nodeCount = nodeCount;
     }
 
     @Override
     public void begin() {
-        this.random = this.random == null ? new Random(System.currentTimeMillis()) : this.random;
+
+
+
+        random =  new Random(System.currentTimeMillis());
+
+
+
 
         for (int i = 0; i < nodeCount; i++) {
             addNode(Integer.toString(i));
@@ -49,72 +55,79 @@ public class RandomEulerianGenerator extends BaseGenerator {
         connected.add(node0);
         connected.add(node1);
 
-        //connect remaining nodes randomly
-        while (unconnected.size() > 0) {
-            Node unconnectedNode = unconnected.remove(random.nextInt(unconnected.size()));
-            Node nodeInGraph;
 
-            do {
-                nodeInGraph = connected.get(random.nextInt(connected.size()));
-            } while (nodeInGraph.getDegree() == nodeCount - 2);
-            addEdge(unconnectedNode + "-" + nodeInGraph, unconnectedNode.getId(), nodeInGraph.getId());
-            connected.add(unconnectedNode);
-        }
+        if (nodeCount == 3) {
+            Node lastUnconnectedNode = unconnected.get(0);
+            addEdge(lastUnconnectedNode + "-" + node0, lastUnconnectedNode.getId(), node0.getId());
+            addEdge(lastUnconnectedNode + "-" + node1, lastUnconnectedNode.getId(), node1.getId());
 
+        } else {
+            //connect remaining nodes randomly
+            while (unconnected.size() > 0) {
+                Node unconnectedNode = unconnected.remove(random.nextInt(unconnected.size()));
+                Node nodeInGraph;
 
-
-        // get two lists for nodes with odd and even degree
-        List<Node> oddDegreeNodes = new ArrayList<>();
-        List<Node> evenDegreeNodes = new ArrayList<>();
-        for (Node node : internalGraph) {
-            if (node.getDegree() % 2 == 1) oddDegreeNodes.add(node);
-            else evenDegreeNodes.add(node);
-        }
-
-        // while there are still odd nodes
-        while (oddDegreeNodes.size() > 0) {
-
-
-
-            // get an odd node
-            Node oddNode = oddDegreeNodes.remove(random.nextInt(oddDegreeNodes.size()));
-
-
-            boolean connectedByNow = false;
-
-            // try to connect the node with another odd node
-            for (Node anotherOddNode : oddDegreeNodes) {
-                // only if not already directly connected
-                if (!oddNode.hasEdgeBetween(anotherOddNode)) {
-                    //connect nodes
-                    addEdge(oddNode + "-" + anotherOddNode, oddNode.getId(), anotherOddNode.getId());
-                    oddDegreeNodes.remove(anotherOddNode);
-                    evenDegreeNodes.add(oddNode);
-                    evenDegreeNodes.add(anotherOddNode);
-                    connectedByNow = true;
-                    break;
-                }
+                do {
+                    nodeInGraph = connected.get(random.nextInt(connected.size()));
+                } while (nodeInGraph.getDegree() == nodeCount - 2);
+                addEdge(unconnectedNode + "-" + nodeInGraph, unconnectedNode.getId(), nodeInGraph.getId());
+                connected.add(unconnectedNode);
             }
 
-            // if no odd node was found connect with even node
-            if (!connectedByNow) {
-                for (Node evenDegreeNode : evenDegreeNodes) {
-                    // only if not already connected
-                    if (!oddNode.hasEdgeBetween(evenDegreeNode)) {
-                        addEdge(oddNode + "-" + evenDegreeNode, oddNode.getId(), evenDegreeNode.getId());
-                        // add former even node to odd list since it got another edge
-                        evenDegreeNodes.remove(evenDegreeNode);
+
+
+            // get two lists for nodes with odd and even degree
+            List<Node> oddDegreeNodes = new ArrayList<>();
+            List<Node> evenDegreeNodes = new ArrayList<>();
+            for (Node node : internalGraph) {
+                if (node.getDegree() % 2 == 1) oddDegreeNodes.add(node);
+                else evenDegreeNodes.add(node);
+            }
+
+            // while there are still odd nodes
+            while (oddDegreeNodes.size() > 0) {
+
+
+
+                // get an odd node
+                Node oddNode = oddDegreeNodes.remove(random.nextInt(oddDegreeNodes.size()));
+
+
+                boolean connectedByNow = false;
+
+                // try to connect the node with another odd node
+                for (Node anotherOddNode : oddDegreeNodes) {
+                    // only if not already directly connected
+                    if (!oddNode.hasEdgeBetween(anotherOddNode)) {
+                        //connect nodes
+                        addEdge(oddNode + "-" + anotherOddNode, oddNode.getId(), anotherOddNode.getId());
+                        oddDegreeNodes.remove(anotherOddNode);
                         evenDegreeNodes.add(oddNode);
-                        // add former odd node to even list since it got another edge
-                        oddDegreeNodes.add(evenDegreeNode);
+                        evenDegreeNodes.add(anotherOddNode);
                         connectedByNow = true;
                         break;
                     }
                 }
-            }
+
+                // if no odd node was found connect with even node
+                if (!connectedByNow) {
+                    for (Node evenDegreeNode : evenDegreeNodes) {
+                        // only if not already connected
+                        if (!oddNode.hasEdgeBetween(evenDegreeNode)) {
+                            addEdge(oddNode + "-" + evenDegreeNode, oddNode.getId(), evenDegreeNode.getId());
+                            // add former even node to odd list since it got another edge
+                            evenDegreeNodes.remove(evenDegreeNode);
+                            evenDegreeNodes.add(oddNode);
+                            // add former odd node to even list since it got another edge
+                            oddDegreeNodes.add(evenDegreeNode);
+                            //connectedByNow = true;
+                            break;
+                        }
+                    }
+                }
 
 
-            // handle edge case where one node is connected to all other nodes
+                // handle edge case where one node is connected to all other nodes
 //            if (!connectedByNow && oddDegreeNodes.size() == 1) {
 //
 //                Node theOtherOddNode = oddDegreeNodes.remove(0);
@@ -129,10 +142,13 @@ public class RandomEulerianGenerator extends BaseGenerator {
 //                    oddDegreeNodes.add(theOtherOddNode);
 //                }
 //            }
-            if (!connectedByNow) oddDegreeNodes.add(oddNode);
+//            if (!connectedByNow) oddDegreeNodes.add(oddNode);
 
 
+            }
         }
+
+
     }
 
     @Override

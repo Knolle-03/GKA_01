@@ -4,32 +4,32 @@ import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.junit.jupiter.api.Test;
-import tests.generators.superclasses.GeneratorTest;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import tests.generators.superclass.GeneratorTest;
 
-import java.util.Random;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OwnRandomGeneratorTest extends GeneratorTest {
 
 
-    private static final int upperBound = 10;
-    private static final int lowerBound = 1;
-    private static final int graphCount = 100;
 
-    private static final Generator generator = new OwnRandomGenerator(10_000, 15_000, new Random(), upperBound, lowerBound);
+    @ParameterizedTest
+    @CsvSource({"5000,10,10,10"})
+    void generatorWorks(int totalGraphCount, int numberOfEachSize, int initialNodeCount, int increment ) {
 
-
-    @Test
-    void generatorWorks() {
-        for (int i = 0; i < graphCount; i++) {
-            Graph graph = new SingleGraph("ownRandomGeneratorGraph", false, true);
-            generator.addSink(graph);
-            generator.begin();
-            generator.end();
-
-            super.isConnected(graph);
-            super.isWeighted(graph);
-            super.correctWeights(graph, upperBound, lowerBound);
+        int currentNodesCount = initialNodeCount;
+        for (int i = 0; i < totalGraphCount; i += numberOfEachSize) {
+            for (int j = 0; j < numberOfEachSize; j++) {
+                Generator generator = new OwnRandomGenerator(currentNodesCount, currentNodesCount * 2);
+                Graph graph = new SingleGraph("ownRandomGeneratorGraph", false, true);
+                generator.addSink(graph);
+                generator.begin();
+                generator.end();
+                super.isConnected(graph);
+                assertEquals(currentNodesCount, graph.getNodeCount());
+                assertEquals(currentNodesCount * 2, graph.getEdgeCount());
+            }
+            currentNodesCount += increment;
         }
     }
 

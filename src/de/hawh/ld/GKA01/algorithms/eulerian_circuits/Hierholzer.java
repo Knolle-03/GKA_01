@@ -1,5 +1,6 @@
 package de.hawh.ld.GKA01.algorithms.eulerian_circuits;
 
+import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -20,6 +21,7 @@ public class Hierholzer implements EulerianCircuitAlgorithm {
 
     @Override
     public void init(Graph graph) {
+        if (!isEulerian(graph)) throw new IllegalArgumentException("The given graph is not eulerian.");
         // init instance variables
         this.graph = graph;
         nodeInfos = new NodeInfo[graph.getNodeCount()];
@@ -155,5 +157,20 @@ public class Hierholzer implements EulerianCircuitAlgorithm {
     public void clear() {
         eulerianTour.clear();
         nodeInfos = null;
+    }
+
+    public boolean isEulerian(Graph graph) {
+        boolean allEven = true;
+
+        // check if all nodes have even degree
+        for (Node node : graph) {
+            if (node.getDegree() % 2 != 0) {
+                allEven = false;
+                break;
+            }
+        }
+
+        // also check if the graph is connected
+        return allEven && Toolkit.isConnected(graph);
     }
 }

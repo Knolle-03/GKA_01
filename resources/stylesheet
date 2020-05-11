@@ -1,0 +1,13 @@
+graph { fill-color: grey; }
+
+node {
+    size: 5px;
+}
+
+edge {
+    size: 0.5px;
+    fill-color: red;
+}
+
+
+

@@ -23,11 +23,11 @@ package tests.algorithms.spanning_trees;
 
 import de.hawh.ld.GKA01.algorithms.spanning_trees.OwnPrimPQ;
 import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
+import org.graphstream.algorithm.Prim;
 import org.graphstream.algorithm.generator.DorogovtsevMendesGenerator;
 import org.graphstream.algorithm.generator.RandomGenerator;
 import org.graphstream.graph.Graph;
 import org.junit.jupiter.api.Test;
-import tests.algorithms.superclasses.SpanningTreeTest;
 import tests.util.TestGraphGenerator;
 
 import java.util.List;
@@ -39,7 +39,7 @@ class ownPrimPQTest extends SpanningTreeTest {
 
     private final int lowerBound = 1;
     private final int upperBound = 20;
-    private final org.graphstream.algorithm.Prim gsPrim = new org.graphstream.algorithm.Prim();
+    private final Prim gsPrim = new Prim();
     private final OwnPrimPQ myPrim = new OwnPrimPQ();
     private final TestGraphGenerator testGraphGenerator = new TestGraphGenerator(1_000_000, new DorogovtsevMendesGenerator(), new RandomGenerator(), new OwnRandomGenerator());
     private final List<Graph> testGraphs = testGraphGenerator.generateWeightedTestGraphs(lowerBound, upperBound);

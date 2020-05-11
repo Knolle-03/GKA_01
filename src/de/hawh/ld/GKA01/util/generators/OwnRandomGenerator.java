@@ -1,10 +1,7 @@
 package de.hawh.ld.GKA01.util.generators;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +108,7 @@ public class OwnRandomGenerator extends BaseGenerator {
                     // pick another second node
                     rngNode2 = connected.get(rng.nextInt(connected.size()));
                 } else {
-                    // else pick tow new nodes
+                    // else pick two new nodes
                     rngNode1 = connected.get(rng.nextInt(connected.size()));
                     rngNode2 = connected.get(rng.nextInt(connected.size()));
                 }

@@ -20,14 +20,13 @@ public class Fleury implements EulerianCircuitAlgorithm {
 
     @Override
     public void init(Graph graph) {
+        if (!isEulerian(graph)) throw new IllegalArgumentException("The given graph is not eulerian.");
 
-        if (isEulerian(graph)) {
-            // init instance variables
-            connectedComponents.init(graph);
-            connectedComponents.setCutAttribute("used");
-            startNode = graph.getNode(0);
-            this.graph = graph;
-        }
+        // init instance variables
+        connectedComponents.init(graph);
+        connectedComponents.setCutAttribute("used");
+        startNode = graph.getNode(0);
+        this.graph = graph;
     }
 
     @Override

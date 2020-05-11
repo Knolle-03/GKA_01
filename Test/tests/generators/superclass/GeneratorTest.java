@@ -1,4 +1,4 @@
-package tests.generators.superclasses;
+package tests.generators.superclass;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -6,20 +6,21 @@ import org.graphstream.graph.Node;
 
 import java.util.Iterator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 
 public class GeneratorTest {
 
-
-
     public void isConnected(Graph graph) {
+
         Iterator<Node> graphIterator = graph.getNode(0).getBreadthFirstIterator(false);
         int visitedNodes = 0;
         while (graphIterator.hasNext()) {
             graphIterator.next();
             visitedNodes++;
         }
-
 
         assertEquals(graph.getNodeCount(), visitedNodes);
     }
@@ -59,6 +60,5 @@ public class GeneratorTest {
         }
 
         assertTrue(allCorrect);
-
     }
 }

@@ -1,12 +1,14 @@
 package tests.util;
 
 import de.hawh.ld.GKA01.util.Stopwatch;
+import de.hawh.ld.GKA01.util.generators.OwnRandomGenerator;
 import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,7 @@ public class TestGraphGenerator {
     private int numberOfEachType = 1;
     private boolean doubleNodeCountInLoop = false;
     private final List<Generator> generators;
-    private int increment = 0;
+    private int increment;
 
     public TestGraphGenerator(int nodeCount, Generator ... generators) {
         this.nodeCount = nodeCount;
@@ -57,11 +59,11 @@ public class TestGraphGenerator {
             generator.end();
             testGraphs.add(graph);
             stopwatch.stop();
-            //System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
+            System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
             stopwatch.reset();
 
-            if (doubleNodeCountInLoop) currentNodeCount += nodeCount;
-            else currentNodeCount += increment;
+            if (doubleNodeCountInLoop) currentNodeCount *= 2;
+            else if (increment != 0) currentNodeCount += increment;
         }
 
         return testGraphs;
@@ -72,18 +74,23 @@ public class TestGraphGenerator {
     public List<Graph> generateNonWeightedTestGraphs() {
         List<Graph> testGraphs = new ArrayList<>();
         for (Generator generator : generators) {
+
             int currentNodeCount = nodeCount;
             for (int i = 0; i < numberOfEachType; i++) {
+
+                if (generator.getClass() == OwnRandomGenerator.class) generator = new OwnRandomGenerator(nodeCount, nodeCount * 2);
+
                 Graph graph = new SingleGraph("" + generator, false, true);
                 generator.addSink(graph);
                 generator.begin();
                 for (int j = 0; j < currentNodeCount; j++) {
                     if (!generator.nextEvents()) break;
-                    //if (i % 50_000 == 0) System.out.println(i + " nodes created.");
                 }
                 generator.end();
                 testGraphs.add(graph);
+                System.out.println("Graph with " + currentNodeCount + " nodes created.");
                 if (doubleNodeCountInLoop) currentNodeCount *= 2;
+                else if (increment != 0) currentNodeCount += increment;
             }
         }
 
@@ -101,4 +108,11 @@ public class TestGraphGenerator {
 
         return testGraphs;
     }
+
+    public List<Graph> readTestGraphsFromFolder(File folder) {
+        return GraphReader.getGraphsInDirectory(folder);
+    }
+
+
+
 }
