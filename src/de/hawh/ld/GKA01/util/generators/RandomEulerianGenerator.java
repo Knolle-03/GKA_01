@@ -22,7 +22,7 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
 
     public RandomEulerianGenerator(int nodeCount) {
-        if (nodeCount < 3) throw new IllegalArgumentException("An eulerian graph must have at least three nodes.");
+        if (nodeCount < 1 || nodeCount == 2) throw new IllegalArgumentException("An eulerian graph must have only one node or at least three nodes.");
         setUseInternalGraph(true);
         this.nodeCount = nodeCount;
     }
@@ -30,7 +30,10 @@ public class RandomEulerianGenerator extends BaseGenerator {
     @Override
     public void begin() {
 
-
+        if (nodeCount == 1) {
+            addNode(Integer.toString(1));
+            return;
+        }
 
         random =  new Random(System.currentTimeMillis());
 
@@ -56,12 +59,12 @@ public class RandomEulerianGenerator extends BaseGenerator {
         connected.add(node1);
 
 
-        if (nodeCount == 3) {
-            Node lastUnconnectedNode = unconnected.get(0);
-            addEdge(lastUnconnectedNode + "-" + node0, lastUnconnectedNode.getId(), node0.getId());
-            addEdge(lastUnconnectedNode + "-" + node1, lastUnconnectedNode.getId(), node1.getId());
-
-        } else {
+//        if (nodeCount == 3) {
+//            Node lastUnconnectedNode = unconnected.get(0);
+//            addEdge(lastUnconnectedNode + "-" + node0, lastUnconnectedNode.getId(), node0.getId());
+//            addEdge(lastUnconnectedNode + "-" + node1, lastUnconnectedNode.getId(), node1.getId());
+//
+//        } else {
             //connect remaining nodes randomly
             while (unconnected.size() > 0) {
                 Node unconnectedNode = unconnected.remove(random.nextInt(unconnected.size()));
@@ -69,7 +72,7 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
                 do {
                     nodeInGraph = connected.get(random.nextInt(connected.size()));
-                } while (nodeInGraph.getDegree() == nodeCount - 2);
+                } while (nodeInGraph.getDegree() == nodeCount - 2 && nodeCount % 2 == 0);
                 addEdge(unconnectedNode + "-" + nodeInGraph, unconnectedNode.getId(), nodeInGraph.getId());
                 connected.add(unconnectedNode);
             }
@@ -106,11 +109,28 @@ public class RandomEulerianGenerator extends BaseGenerator {
                         evenDegreeNodes.add(anotherOddNode);
                         connectedByNow = true;
                         break;
+//                    } else if (oddNode.getDegree() > 2 && anotherOddNode.getDegree() > 2) {
+//                        delEdge(oddNode.getEdgeBetween(anotherOddNode).getId());
+//                        oddDegreeNodes.remove(anotherOddNode);
+//                        evenDegreeNodes.add(oddNode);
+//                        evenDegreeNodes.add(anotherOddNode);
+//                        connectedByNow = true;
+//                        break;
                     }
                 }
 
                 // if no odd node was found connect with even node
                 if (!connectedByNow) {
+
+
+//                    try {
+//                        System.out.println(nodeCount);
+//                        internalGraph.display();
+//                        Thread.sleep(50000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
                     for (Node evenDegreeNode : evenDegreeNodes) {
                         // only if not already connected
                         if (!oddNode.hasEdgeBetween(evenDegreeNode)) {
@@ -146,7 +166,6 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
 
             }
-        }
 
 
     }

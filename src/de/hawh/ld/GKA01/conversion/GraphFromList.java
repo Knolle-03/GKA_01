@@ -56,11 +56,11 @@ public class GraphFromList {
 
         boolean isDirected = isGraphDirected(lines.get(0));
 
-
-
+        int totalLines = lines.size();
+        int lineCounter = 0;
         for (String line : lines) {
 
-
+            System.out.println("processing line " + lineCounter++ + " of " + totalLines);
             if (ONE_NODE_PATTERN.matcher(line).matches()) {
 
                 String node1 = patternFromString(ID_PATTERN, line);

@@ -20,7 +20,7 @@ public class Fleury implements EulerianCircuitAlgorithm {
 
     @Override
     public void init(Graph graph) {
-        if (!isEulerian(graph)) throw new IllegalArgumentException("The given graph is not eulerian.");
+        if (graph.getNodeCount() < 1 || !isEulerian(graph)) throw new IllegalArgumentException("The given graph is not eulerian.");
 
         // init instance variables
         connectedComponents.init(graph);
