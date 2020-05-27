@@ -72,6 +72,8 @@ public class RandomEulerianGenerator extends BaseGenerator {
 
                 do {
                     nodeInGraph = connected.get(random.nextInt(connected.size()));
+                // make sure a node is not connected to all other nodes if the graph has an even node count
+                // because that node would have an uneven edge count and can't be connected to any more nodes.
                 } while (nodeInGraph.getDegree() == nodeCount - 2 && nodeCount % 2 == 0);
                 addEdge(unconnectedNode + "-" + nodeInGraph, unconnectedNode.getId(), nodeInGraph.getId());
                 connected.add(unconnectedNode);
@@ -122,15 +124,6 @@ public class RandomEulerianGenerator extends BaseGenerator {
                 // if no odd node was found connect with even node
                 if (!connectedByNow) {
 
-
-//                    try {
-//                        System.out.println(nodeCount);
-//                        internalGraph.display();
-//                        Thread.sleep(50000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-
                     for (Node evenDegreeNode : evenDegreeNodes) {
                         // only if not already connected
                         if (!oddNode.hasEdgeBetween(evenDegreeNode)) {
@@ -164,7 +157,9 @@ public class RandomEulerianGenerator extends BaseGenerator {
 //            }
 //            if (!connectedByNow) oddDegreeNodes.add(oddNode);
 
-
+//                System.out.println("even: " + evenDegreeNodes.size());
+//                System.out.println("uneven: " + oddDegreeNodes.size());
+//                System.out.println("--------");
             }
 
 

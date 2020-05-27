@@ -1,8 +1,7 @@
 package tests.algorithms.eulerian;
 
 import de.hawh.ld.GKA01.algorithms.eulerian_circuits.EulerianCircuitAlgorithm;
-import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Fleury;
-import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Hierholzer;
+import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Fleury2;
 import de.hawh.ld.GKA01.algorithms.eulerian_circuits.Hierholzer2;
 import de.hawh.ld.GKA01.util.Stopwatch;
 import de.hawh.ld.GKA01.util.generators.RandomEulerianGenerator;
@@ -40,14 +39,14 @@ public class EulerianCircuitTest {
 
     private static Stream<Arguments> algorithms() {
         return Stream.of(
-                Arguments.of(new Fleury()),
-                Arguments.of(new Hierholzer()),
-                Arguments.of(new Hierholzer2()));
+//                Arguments.of(new Fleury()),
+//                Arguments.of(new Hierholzer()),
+                Arguments.of(new Fleury2()));
     }
 
     @BeforeAll
     void setUp() {
-        testGraphGenerator = new TestGraphGenerator(1_000_000, 4 , true, new RandomEulerianGenerator());
+        testGraphGenerator = new TestGraphGenerator(500, 4 , true, new RandomEulerianGenerator());
     }
 
 
@@ -56,6 +55,7 @@ public class EulerianCircuitTest {
     void testSmallEulerianTestGraphs(EulerianCircuitAlgorithm algorithm) {
         List<Graph> eulerianTestGraphs = testGraphGenerator.readTestGraphsFromFolder(new File("Test\\testResources\\smallEulerianTestGraphs"));
         for (Graph graph : eulerianTestGraphs) {
+            System.out.println(graph.getNodeCount());
             algorithm.init(graph);
             algorithm.compute();
             assertEquals(graph.getEdgeCount(), algorithm.getEulerianCircuit().size());
@@ -146,6 +146,7 @@ public class EulerianCircuitTest {
         Iterator<Edge> edgeIterator = algorithm.getEulerianCircuit().iterator();
         Node startNode = graph.getNode(0);
         Node currNode = startNode;
+        System.out.println("Circuit: " + algorithm.getEulerianCircuit());
 
 
 

@@ -19,10 +19,10 @@ public  class GraphReader {
         List<Graph> testGraphs = new ArrayList<>();
         for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
             if (fileEntry.isFile() && FilenameUtils.getExtension(String.valueOf(fileEntry)).equals("graph")) {
-                System.out.println(fileEntry.getName() + " found!");
+                //System.out.println(fileEntry.getName() + " found!");
                 testGraphs.add(GraphFromList.populateGraph(FileReader.readLines(fileEntry.toString()), fileEntry.toString()));
 
-                System.out.println("TestGraph with: " + testGraphs.get(testGraphs.size() - 1).getNodeCount() + " nodes and " + testGraphs.get(testGraphs.size() - 1).getEdgeCount() + "read from file.");
+                //System.out.println("TestGraph with: " + testGraphs.get(testGraphs.size() - 1).getNodeCount() + " nodes and " + testGraphs.get(testGraphs.size() - 1).getEdgeCount() + " edges read from file.");
             }
         }
 
