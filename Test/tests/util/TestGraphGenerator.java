@@ -59,7 +59,7 @@ public class TestGraphGenerator {
             generator.end();
             testGraphs.add(graph);
             stopwatch.stop();
-            System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
+            //System.out.println("graph with " + currentNodeCount + " nodes created in " + stopwatch.elapsedTime() + ".");
             stopwatch.reset();
 
             if (doubleNodeCountInLoop) currentNodeCount *= 2;

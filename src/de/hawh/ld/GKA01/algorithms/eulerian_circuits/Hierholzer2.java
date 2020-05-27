@@ -1,6 +1,5 @@
 package de.hawh.ld.GKA01.algorithms.eulerian_circuits;
 
-import de.hawh.ld.GKA01.util.Stopwatch;
 import org.graphstream.algorithm.Toolkit;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
@@ -17,9 +16,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
     private static class NodeInfo {
         LinkedList<Edge> incidentNonUsedEdges = new LinkedList<>();
     }
-    private final Stopwatch stopwatchI = new Stopwatch();
-    private final Stopwatch stopwatchFNC = new Stopwatch();
-    private final Stopwatch stopwatchRLUE = new Stopwatch();
 
 
 
@@ -28,7 +24,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
 
     @Override
     public void init(Graph graph) {
-        stopwatchI.start();
         if (graph.getNodeCount() < 1 || !isEulerian(graph)) throw new IllegalArgumentException("The given graph is not eulerian.");
         // init instance variables
         this.graph = graph;
@@ -40,9 +35,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
             nodeInfos[i] = new NodeInfo();
             nodeInfos[i].incidentNonUsedEdges.addAll(currNode.getEdgeSet());
         }
-        stopwatchI.stop();
-        stopwatchI.addToRoundTimes();
-        stopwatchI.reset();
     }
 
     @Override
@@ -59,7 +51,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
 
     // form a new cycle for the circuit
     private Deque<Edge> formCircuit(Node start) {
-        stopwatchFNC.start();
 
         Deque<Edge> cycle = new ArrayDeque<>();
         Node currNode = start;
@@ -106,7 +97,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
 
     // remove all leading used edges from the list
     private void removeLeadingUsedEdges(Node node) {
-        stopwatchRLUE.start();
 
         // reference to list
         LinkedList<Edge> edges = nodeInfos[node.getIndex()].incidentNonUsedEdges;
@@ -120,10 +110,6 @@ public class Hierholzer2 implements EulerianCircuitAlgorithm {
             // if removed edge was the last edge stop
             if (edges.isEmpty()) return;
         }
-
-        stopwatchRLUE.stop();
-        stopwatchRLUE.addToRoundTimes();
-        stopwatchRLUE.reset();
     }
 
     @Override

@@ -74,13 +74,13 @@ public class Hierholzer implements EulerianCircuitAlgorithm {
             // add the new cycle to the circuit
             combinePaths(newCycle, currNode);
         }
-
-        System.out.println("Removed leading used edges total times: " + stopwatchRLUE.getTotalTime());
-        System.out.println("Round times: " + stopwatchFNC.getRoundTimes());
-        System.out.println("Total time: " + stopwatchFNC.getTotalTime());
-        stopwatchFNC.resetRounds();
-        stopwatchFNC.reset();
-        System.out.println("----------------------------------------");
+//
+//        System.out.println("Removed leading used edges total times: " + stopwatchRLUE.getTotalTime());
+//        System.out.println("Round times: " + stopwatchFNC.getRoundTimes());
+//        System.out.println("Total time: " + stopwatchFNC.getTotalTime());
+//        stopwatchFNC.resetRounds();
+//        stopwatchFNC.reset();
+//        System.out.println("----------------------------------------");
     }
 
 
@@ -182,7 +182,7 @@ public class Hierholzer implements EulerianCircuitAlgorithm {
         }
 
 
-        System.out.println(cycle.size());
+        //System.out.println(cycle.size());
         stopwatchFNC.stop();
         stopwatchFNC.addToRoundTimes();
         stopwatchFNC.reset();
